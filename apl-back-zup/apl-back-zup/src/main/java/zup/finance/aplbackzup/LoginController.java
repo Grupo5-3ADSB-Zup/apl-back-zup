@@ -33,6 +33,7 @@ public class LoginController {
             usuarios.remove(indice);
             return "Removido";
         }
+
         return "Não encontrado";
     }
 }
