@@ -1,7 +1,5 @@
 package zup.finance.aplbackzup;
 
-import zup.finance.aplbackzup.Usuario;
-
 public class UsuarioComum extends Usuario {
     private String cpf;
 
@@ -21,3 +19,4 @@ public class UsuarioComum extends Usuario {
         this.cpf = cpf;
     }
 }
+

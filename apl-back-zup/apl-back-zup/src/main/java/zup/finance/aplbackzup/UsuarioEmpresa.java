@@ -1,7 +1,5 @@
 package zup.finance.aplbackzup;
 
-import zup.finance.aplbackzup.Usuario;
-
 public class UsuarioEmpresa extends Usuario {
     private String cnpj;
 
