@@ -1,7 +1,6 @@
 package zup.finance.aplbackzup;
 
 import org.springframework.web.bind.annotation.*;
-import zup.finance.aplbackzup.Usuario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +21,8 @@ public class LoginController {
     }
 
     @GetMapping("/{indice}")
-    public Usuario get(@PathVariable int indice){
-        if (usuarios.get(indice) instanceof UsuarioComum){
+    public Usuario get(@PathVariable int indice) {
+        if (usuarios.get(indice) instanceof UsuarioComum) {
             return usuarios.get(indice);
         }
         return null;
