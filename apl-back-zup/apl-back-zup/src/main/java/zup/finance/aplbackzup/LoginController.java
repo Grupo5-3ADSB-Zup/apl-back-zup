@@ -27,4 +27,12 @@ public class LoginController {
         }
         return null;
     }
+    @DeleteMapping("/{indice}")
+    public String excluir(@PathVariable int indice){
+        if (indice >= 0 && indice < usuarios.size()){
+            usuarios.remove(indice);
+            return "Removido";
+        }
+        return "Não encontrado";
+    }
 }
