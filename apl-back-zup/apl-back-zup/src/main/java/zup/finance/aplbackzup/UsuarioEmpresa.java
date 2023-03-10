@@ -3,8 +3,8 @@ package zup.finance.aplbackzup;
 public class UsuarioEmpresa extends Usuario {
     private String cnpj;
 
-    public UsuarioEmpresa(String nome, String email, String username, String senha, boolean isInfluencer, boolean autenticado, String cnpj) {
-        super(nome, email, username, senha, isInfluencer, autenticado);
+    public UsuarioEmpresa(String nome, String cnpj) {
+        super(nome);
         this.cnpj = cnpj;
     }
 

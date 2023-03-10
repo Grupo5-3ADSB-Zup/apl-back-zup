@@ -8,15 +8,10 @@ public abstract class Usuario {
     private String username;
     private String senha;
     private boolean isInfluencer;
-    private boolean autenticado;
+    private Boolean autenticado;
 
-    public Usuario(String nome, String email, String username, String senha, boolean isInfluencer, boolean autenticado) {
+    public Usuario(String nome) {
         this.nome = nome;
-        this.email = email;
-        this.username = username;
-        this.senha = senha;
-        this.isInfluencer = isInfluencer;
-        this.autenticado = autenticado;
     }
 
     public Usuario() {
@@ -62,11 +57,11 @@ public abstract class Usuario {
         isInfluencer = influencer;
     }
 
-    public boolean isAutenticado() {
+    public Boolean getAutenticado() {
         return autenticado;
     }
 
-    public void setAutenticado(boolean autenticado) {
+    public void setAutenticado(Boolean autenticado) {
         this.autenticado = autenticado;
     }
 
@@ -75,7 +70,7 @@ public abstract class Usuario {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Usuario usuario = (Usuario) o;
-        return isInfluencer == usuario.isInfluencer && autenticado == usuario.autenticado && nome.equals(usuario.nome) && email.equals(usuario.email) && username.equals(usuario.username) && senha.equals(usuario.senha);
+        return isInfluencer == usuario.isInfluencer && nome.equals(usuario.nome) && email.equals(usuario.email) && username.equals(usuario.username) && senha.equals(usuario.senha) && autenticado.equals(usuario.autenticado);
     }
 
     @Override
