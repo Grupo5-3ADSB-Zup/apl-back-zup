@@ -15,23 +15,23 @@ public class LoginController {
     }
 
     @PostMapping("/comum")
-    public List<Usuario> adiconarUser(@RequestBody UsuarioComum user){
+    public Usuario adiconarUser(@RequestBody UsuarioComum user){
         var retornoUserComum = autenticar(user);
 
         if (retornoUserComum == true){
             usuarios.add(user);
-            return usuarios;
+            return user;
         }
         return null;
     }
 
     @PostMapping("/empresa")
-    public List<Usuario> adiconarUser(@RequestBody UsuarioEmpresa user){
+    public Usuario adiconarUser(@RequestBody UsuarioEmpresa user){
         var retornoUserEmpresa = autenticar(user);
 
         if (retornoUserEmpresa == true){
             usuarios.add(user);
-            return usuarios;
+            return user;
         }
         return null;
     }
