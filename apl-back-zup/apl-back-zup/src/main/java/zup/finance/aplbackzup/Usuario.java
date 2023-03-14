@@ -7,20 +7,8 @@ public abstract class Usuario {
     private String email;
     private String username;
     private String senha;
-    private boolean isInfluencer;
+    private boolean influencer;
     private Boolean autenticado;
-
-    public Usuario(String nome, String email, String username, String senha, boolean isInfluencer, Boolean autenticado) {
-        this.nome = nome;
-        this.email = email;
-        this.username = username;
-        this.senha = senha;
-        this.isInfluencer = isInfluencer;
-        this.autenticado = autenticado;
-    }
-
-    public Usuario() {
-    }
 
     public String getNome() {
         return nome;
@@ -54,12 +42,12 @@ public abstract class Usuario {
         this.senha = senha;
     }
 
-    public Boolean getInfluencer() {
-        return isInfluencer;
+    public boolean isInfluencer() {
+        return influencer;
     }
 
     public void setInfluencer(boolean influencer) {
-        isInfluencer = influencer;
+        this.influencer = influencer;
     }
 
     public Boolean getAutenticado() {
@@ -75,11 +63,11 @@ public abstract class Usuario {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Usuario usuario = (Usuario) o;
-        return Objects.equals(nome, usuario.nome) && Objects.equals(email, usuario.email) && Objects.equals(username, usuario.username) && Objects.equals(senha, usuario.senha) && Objects.equals(isInfluencer, usuario.isInfluencer) && Objects.equals(autenticado, usuario.autenticado);
+        return Objects.equals(nome, usuario.nome) && Objects.equals(email, usuario.email) && Objects.equals(username, usuario.username) && Objects.equals(senha, usuario.senha) && Objects.equals(influencer, usuario.influencer) && Objects.equals(autenticado, usuario.autenticado);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nome, email, username, senha, isInfluencer, autenticado);
+        return Objects.hash(nome, email, username, senha, influencer, autenticado);
     }
 }

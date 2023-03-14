@@ -8,11 +8,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/login")
 public class LoginController {
-    private List<Usuario> usuarios;
-
-    public LoginController() {
-        this.usuarios = new ArrayList<>();
-    }
+    private List<Usuario> usuarios = new ArrayList<>();
 
     @PostMapping("/comum")
     public Usuario adiconarUser(@RequestBody UsuarioComum user){
