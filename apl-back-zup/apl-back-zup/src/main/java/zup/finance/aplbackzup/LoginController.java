@@ -1,5 +1,6 @@
 package zup.finance.aplbackzup;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -11,29 +12,34 @@ public class LoginController {
     private List<Usuario> usuarios = new ArrayList<>();
 
     @PostMapping("/comum")
-    public Usuario adiconarUser(@RequestBody UsuarioComum user){
+    public ResponseEntity<Usuario> adiconarUser(@RequestBody UsuarioComum user){
         var retornoUserComum = autenticar(user);
 
         if (retornoUserComum == true){
             usuarios.add(user);
-            return user;
+            return  ResponseEntity.status(200).body(user);
         }
-        return null;
+        return ResponseEntity.status(401).build();
     }
 
     @PostMapping("/empresa")
-    public Usuario adiconarUser(@RequestBody UsuarioEmpresa user){
+    public ResponseEntity<Usuario> adiconarUser(@RequestBody UsuarioEmpresa user){
         var retornoUserEmpresa = autenticar(user);
 
         if (retornoUserEmpresa == true){
             usuarios.add(user);
-            return user;
+            return  ResponseEntity.status(200).body(user);
         }
-        return null;
+        return ResponseEntity.status(401).build();
+    }
+
+    @GetMapping
+    public List<Usuario> get(){
+        return usuarios;
     }
 
     @GetMapping("/{indice}")
-    public Usuario get(@PathVariable int indice) {
+    public Usuario getIndice(@PathVariable int indice) {
             if (indice >= 0 && indice < usuarios.size() && usuarios.get(indice) instanceof UsuarioComum){
                 return usuarios.get(indice);
             }else if (usuarios.get(indice) instanceof UsuarioEmpresa ){
@@ -79,8 +85,13 @@ public class LoginController {
 
     private boolean autenticar(Usuario user){
             if (user.getAutenticado() == false){
-                user.setAutenticado(true);
-                return true;
+                if (user instanceof UsuarioComum){
+                    user.setAutenticado(true);
+                    return true;
+                } else if (user instanceof UsuarioEmpresa) {
+                    user.setAutenticado(true);
+                    return true;
+                }
             }
         return false;
     }
