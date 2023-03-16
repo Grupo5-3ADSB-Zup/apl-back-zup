@@ -85,10 +85,10 @@ public class LoginController {
 
     private boolean autenticar(Usuario user){
             if (user.getAutenticado() == false){
-                if (user instanceof UsuarioComum){
+                if (user instanceof UsuarioComum && ((UsuarioComum) user).getCpf() != null){
                     user.setAutenticado(true);
                     return true;
-                } else if (user instanceof UsuarioEmpresa) {
+                } else if (user instanceof UsuarioEmpresa && ((UsuarioEmpresa) user).getCnpj() != null) {
                     user.setAutenticado(true);
                     return true;
                 }
