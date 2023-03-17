@@ -1,4 +1,4 @@
-package zup.finance.aplbackzup;
+package zup.finance.aplbackzup.controller.V1;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
