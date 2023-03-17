@@ -2,6 +2,9 @@ package zup.finance.aplbackzup;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import zup.finance.aplbackzup.Usuario;
+import zup.finance.aplbackzup.UsuarioComum;
+import zup.finance.aplbackzup.UsuarioEmpresa;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +13,7 @@ import java.util.List;
 @RequestMapping("/login")
 public class LoginController {
     private List<Usuario> usuarios = new ArrayList<>();
+
 
     @PostMapping("/comum")
     public ResponseEntity<Usuario> adiconarUser(@RequestBody UsuarioComum user){
