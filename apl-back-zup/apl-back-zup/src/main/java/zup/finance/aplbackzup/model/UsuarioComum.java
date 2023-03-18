@@ -1,4 +1,4 @@
-package zup.finance.aplbackzup;
+package zup.finance.aplbackzup.model;
 
 public class UsuarioComum extends Usuario {
     private String cpf;

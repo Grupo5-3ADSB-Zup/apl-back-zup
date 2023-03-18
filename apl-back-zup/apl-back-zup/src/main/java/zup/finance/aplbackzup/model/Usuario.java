@@ -1,6 +1,9 @@
-package zup.finance.aplbackzup;
+package zup.finance.aplbackzup.model;
+
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.Objects;
+
 
 public abstract class Usuario {
     private String nome;

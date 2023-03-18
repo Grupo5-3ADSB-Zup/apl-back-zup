@@ -1,25 +1,28 @@
-package zup.finance.aplbackzup.controller.V1;
+package zup.finance.aplbackzup.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import zup.finance.aplbackzup.Usuario;
-import zup.finance.aplbackzup.UsuarioComum;
-import zup.finance.aplbackzup.UsuarioEmpresa;
+import zup.finance.aplbackzup.model.Usuario;
+import zup.finance.aplbackzup.model.UsuarioComum;
+import zup.finance.aplbackzup.model.UsuarioEmpresa;
+import zup.finance.aplbackzup.service.CadastroService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/login")
-public class LoginController {
+@RequestMapping("/cadastro")
+public class CadastroController {
+    @Autowired
+    private CadastroService cadastroService;
     private List<Usuario> usuarios = new ArrayList<>();
-
 
     @PostMapping("/comum")
     public ResponseEntity<Usuario> adiconarUser(@RequestBody UsuarioComum user){
-        var retornoUserComum = autenticar(user);
+        var retornoUserComum = cadastroService.autenticar(user);
 
-        if (retornoUserComum == true){
+        if (retornoUserComum){
             usuarios.add(user);
             return  ResponseEntity.status(200).body(user);
         }
@@ -28,9 +31,9 @@ public class LoginController {
 
     @PostMapping("/empresa")
     public ResponseEntity<Usuario> adiconarUser(@RequestBody UsuarioEmpresa user){
-        var retornoUserEmpresa = autenticar(user);
+        var retornoUserEmpresa = cadastroService.autenticar(user);
 
-        if (retornoUserEmpresa == true){
+        if (retornoUserEmpresa){
             usuarios.add(user);
             return  ResponseEntity.status(200).body(user);
         }
@@ -80,23 +83,10 @@ public class LoginController {
     
     @DeleteMapping("/{indice}")
     public String excluir(@PathVariable int indice){
-        if (indice >= 0 && indice < usuarios.size() && usuarios.get(indice).getAutenticado() == true){
+        if (indice >= 0 && indice < usuarios.size() && usuarios.get(indice).getAutenticado()){
             usuarios.get(indice).setAutenticado(false);
             return "Removido com sucesso";
         }
         return "Já excluído da nossa Base";
-    }
-
-    private boolean autenticar(Usuario user){
-            if (user.getAutenticado() == false){
-                if (user instanceof UsuarioComum && ((UsuarioComum) user).getCpf() != null){
-                    user.setAutenticado(true);
-                    return true;
-                } else if (user instanceof UsuarioEmpresa && ((UsuarioEmpresa) user).getCnpj() != null) {
-                    user.setAutenticado(true);
-                    return true;
-                }
-            }
-        return false;
     }
 }
