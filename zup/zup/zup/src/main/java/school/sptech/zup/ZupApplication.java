@@ -1,13 +1,13 @@
-package zup.finance.aplbackzup;
+package school.sptech.zup;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AplBackZupApplication {
+public class ZupApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AplBackZupApplication.class, args);
+		SpringApplication.run(ZupApplication.class, args);
 	}
 
 }

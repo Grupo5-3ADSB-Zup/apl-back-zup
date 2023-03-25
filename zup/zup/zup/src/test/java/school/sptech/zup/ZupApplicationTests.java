@@ -1,10 +1,10 @@
-package zup.finance.aplbackzup;
+package school.sptech.zup;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AplBackZupApplicationTests {
+class ZupApplicationTests {
 
 	@Test
 	void contextLoads() {
