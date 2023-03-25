@@ -6,7 +6,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: urubu100
     ports:
-      - "3307:3307"
+      - "3306:3306"
     volumes:
       - zup_data:/var/lib/mysql
 
