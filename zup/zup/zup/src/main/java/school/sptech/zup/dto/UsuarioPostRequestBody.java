@@ -10,8 +10,6 @@ public class UsuarioPostRequestBody {
 
     private String username;
 
-    private String cpf;
-
     private String senha;
 
 }
