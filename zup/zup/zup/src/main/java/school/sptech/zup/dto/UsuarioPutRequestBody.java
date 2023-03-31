@@ -15,4 +15,8 @@ public class UsuarioPutRequestBody {
 
     private String senha;
 
+    private boolean influencer;
+
+    private Boolean autenticado;
+
 }

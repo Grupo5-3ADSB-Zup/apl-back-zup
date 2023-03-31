@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import school.sptech.zup.domain.Usuario;
+import school.sptech.zup.domain.UsuarioComum;
+import school.sptech.zup.domain.UsuarioEmpresa;
 import school.sptech.zup.dto.UsuarioPostRequestBody;
 import school.sptech.zup.dto.UsuarioPutRequestBody;
 import school.sptech.zup.repository.UsuarioRerpository;
@@ -40,6 +42,8 @@ public class CadastroService {
                 .email(usuarioPostRequestBody.getEmail())
                 .username(usuarioPostRequestBody.getUsername())
                 .senha(usuarioPostRequestBody.getSenha())
+                .autenticado(usuarioPostRequestBody.getAutenticado())
+                .influencer(usuarioPostRequestBody.isInfluencer())
                 .build();
          _usuarioRepository.save(usuario);
 
@@ -64,9 +68,24 @@ public class CadastroService {
                 .email(usuarioPutRequestBody.getEmail())
                 .username(usuarioPutRequestBody.getUsername())
                 .senha(usuarioPutRequestBody.getSenha())
+                .autenticado(usuarioPutRequestBody.getAutenticado())
+                .influencer(usuarioPutRequestBody.isInfluencer())
                 .build();
         _usuarioRepository.save(usuario);
 
         return ResponseEntity.status(200).body(usuario);
+    }
+
+    private boolean autenticar(Usuario user){
+        if (user.getAutenticado() == false){
+            if (user instanceof UsuarioComum && ((UsuarioComum) user).getCpf() != null){
+                user.setAutenticado(true);
+                return true;
+            } else if (user instanceof UsuarioEmpresa && ((UsuarioEmpresa) user).getCnpj() != null) {
+                user.setAutenticado(true);
+                return true;
+            }
+        }
+        return false;
     }
 }

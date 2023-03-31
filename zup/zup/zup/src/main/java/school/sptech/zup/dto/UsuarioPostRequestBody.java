@@ -12,4 +12,8 @@ public class UsuarioPostRequestBody {
 
     private String senha;
 
+    private boolean influencer;
+
+    private Boolean autenticado;
+
 }
