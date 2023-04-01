@@ -16,4 +16,10 @@ public class UsuarioPostRequestBody {
 
     private Boolean autenticado;
 
+    private boolean logado;
+
+    private String cpf;
+
+    private String cnpj;
+
 }

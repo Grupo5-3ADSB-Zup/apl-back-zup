@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import school.sptech.zup.domain.Usuario;
-import school.sptech.zup.domain.UsuarioComum;
-import school.sptech.zup.domain.UsuarioEmpresa;
 import school.sptech.zup.dto.UsuarioPostRequestBody;
 import school.sptech.zup.dto.UsuarioPutRequestBody;
 import school.sptech.zup.repository.UsuarioRerpository;
@@ -37,17 +35,23 @@ public class CadastroService {
     }
 
     public ResponseEntity<Usuario> save(UsuarioPostRequestBody usuarioPostRequestBody) {
-        Usuario usuario = Usuario.builder()
-                .nome(usuarioPostRequestBody.getNome())
-                .email(usuarioPostRequestBody.getEmail())
-                .username(usuarioPostRequestBody.getUsername())
-                .senha(usuarioPostRequestBody.getSenha())
-                .autenticado(usuarioPostRequestBody.getAutenticado())
-                .influencer(usuarioPostRequestBody.isInfluencer())
-                .build();
-         _usuarioRepository.save(usuario);
-
-         return ResponseEntity.status(200).body(usuario);
+        var retorno = autenticar(usuarioPostRequestBody);
+        if (retorno == true){
+            Usuario usuario = Usuario.builder()
+                    .nome(usuarioPostRequestBody.getNome())
+                    .email(usuarioPostRequestBody.getEmail())
+                    .username(usuarioPostRequestBody.getUsername())
+                    .senha(usuarioPostRequestBody.getSenha())
+                    .autenticado(usuarioPostRequestBody.getAutenticado())
+                    .influencer(usuarioPostRequestBody.isInfluencer())
+                    .logado(usuarioPostRequestBody.isLogado() == false)
+                    .cpf(usuarioPostRequestBody.getCpf())
+                    .cnpj(usuarioPostRequestBody.getCnpj())
+                    .build();
+            _usuarioRepository.save(usuario);
+            return ResponseEntity.status(200).body(usuario);
+        }
+         return ResponseEntity.status(401).build();
     }
 
     public ResponseEntity<Usuario> deleteUser(long id) {
@@ -70,22 +74,20 @@ public class CadastroService {
                 .senha(usuarioPutRequestBody.getSenha())
                 .autenticado(usuarioPutRequestBody.getAutenticado())
                 .influencer(usuarioPutRequestBody.isInfluencer())
+                .logado(usuarioPutRequestBody.isLogado() == false)
+                .cpf(usuarioPutRequestBody.getCpf())
+                .cnpj(usuarioPutRequestBody.getCnpj())
                 .build();
         _usuarioRepository.save(usuario);
 
         return ResponseEntity.status(200).body(usuario);
     }
 
-    private boolean autenticar(Usuario user){
+    private boolean autenticar(UsuarioPostRequestBody user){
         if (user.getAutenticado() == false){
-            if (user instanceof UsuarioComum && ((UsuarioComum) user).getCpf() != null){
-                user.setAutenticado(true);
-                return true;
-            } else if (user instanceof UsuarioEmpresa && ((UsuarioEmpresa) user).getCnpj() != null) {
                 user.setAutenticado(true);
                 return true;
             }
-        }
         return false;
     }
 }

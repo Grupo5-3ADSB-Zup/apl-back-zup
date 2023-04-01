@@ -31,4 +31,10 @@ public class Usuario {
     private boolean influencer;
 
     private Boolean autenticado;
+
+    private boolean logado;
+
+    private String cpf;
+
+    private String cnpj;
 }
