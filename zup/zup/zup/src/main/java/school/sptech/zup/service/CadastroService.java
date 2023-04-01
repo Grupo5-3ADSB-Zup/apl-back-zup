@@ -44,7 +44,7 @@ public class CadastroService {
                     .senha(usuarioPostRequestBody.getSenha())
                     .autenticado(usuarioPostRequestBody.getAutenticado())
                     .influencer(usuarioPostRequestBody.isInfluencer())
-                    .logado(usuarioPostRequestBody.isLogado() == false)
+                    .logado(usuarioPostRequestBody.isLogado())
                     .cpf(usuarioPostRequestBody.getCpf())
                     .cnpj(usuarioPostRequestBody.getCnpj())
                     .build();
@@ -66,25 +66,29 @@ public class CadastroService {
 
     public ResponseEntity<Usuario> atualizarUsuario(UsuarioPutRequestBody usuarioPutRequestBody) {
         var consulta = buscaPorId(usuarioPutRequestBody.getId());
-        Usuario usuario = Usuario.builder()
-                .id(consulta.getBody().getId())
-                .nome(usuarioPutRequestBody.getNome())
-                .email(usuarioPutRequestBody.getEmail())
-                .username(usuarioPutRequestBody.getUsername())
-                .senha(usuarioPutRequestBody.getSenha())
-                .autenticado(usuarioPutRequestBody.getAutenticado())
-                .influencer(usuarioPutRequestBody.isInfluencer())
-                .logado(usuarioPutRequestBody.isLogado() == false)
-                .cpf(usuarioPutRequestBody.getCpf())
-                .cnpj(usuarioPutRequestBody.getCnpj())
-                .build();
-        _usuarioRepository.save(usuario);
 
-        return ResponseEntity.status(200).body(usuario);
+        if (consulta.getStatusCodeValue() == 200){
+            Usuario usuario = Usuario.builder()
+                    .id(consulta.getBody().getId())
+                    .nome(usuarioPutRequestBody.getNome())
+                    .email(usuarioPutRequestBody.getEmail())
+                    .username(usuarioPutRequestBody.getUsername())
+                    .senha(usuarioPutRequestBody.getSenha())
+                    .autenticado(usuarioPutRequestBody.getAutenticado())
+                    .influencer(usuarioPutRequestBody.isInfluencer())
+                    .logado(usuarioPutRequestBody.isLogado())
+                    .cpf(usuarioPutRequestBody.getCpf())
+                    .cnpj(usuarioPutRequestBody.getCnpj())
+                    .build();
+            _usuarioRepository.save(usuario);
+
+            return ResponseEntity.status(200).body(usuario);
+        }
+        return ResponseEntity.status(404).build();
     }
 
     private boolean autenticar(UsuarioPostRequestBody user){
-        if (user.getAutenticado() == false){
+        if (user.getAutenticado() == false && user.isLogado() == false){
                 user.setAutenticado(true);
                 return true;
             }
