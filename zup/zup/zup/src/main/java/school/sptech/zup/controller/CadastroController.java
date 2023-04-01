@@ -14,7 +14,7 @@ import school.sptech.zup.util.DateUtil;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/cadastro")
 @Log4j2
 @RequiredArgsConstructor
 public class CadastroController {

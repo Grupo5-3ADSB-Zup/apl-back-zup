@@ -21,7 +21,7 @@ public class CadastroService {
     public ResponseEntity<List<Usuario>> TodosOsUsers() {
         var consulta = _usuarioRepository.findAll();
         if (consulta.isEmpty()){
-            return ResponseEntity.status(404).build();
+            return ResponseEntity.status(204).build();
         }
         return ResponseEntity.status(200).body(consulta);
     }

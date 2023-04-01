@@ -10,7 +10,7 @@ import school.sptech.zup.service.LoginService;
 import school.sptech.zup.util.DateUtil;
 
 @RestController
-@RequestMapping("/logins")
+@RequestMapping("/login")
 @Log4j2
 @RequiredArgsConstructor
 public class LoginController {
@@ -21,13 +21,22 @@ public class LoginController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> get(@PathVariable Long id) {
-        var consulta = _loginService.getId(id);
-        return consulta;
+        var retorno = _loginService.getId(id);
+
+        return retorno;
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<Usuario> logarUser(@PathVariable Long id){
-        var consulta = _loginService.logar(id);
-        return consulta;
+        var retorno = _loginService.logar(id);
+
+        return retorno;
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Usuario> Deslogar(@PathVariable Long id){
+        var retorno = _loginService.deslogar(id);
+
+        return retorno;
     }
 }
