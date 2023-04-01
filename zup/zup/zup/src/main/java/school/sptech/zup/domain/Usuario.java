@@ -26,9 +26,15 @@ public class Usuario {
 
     private String username;
 
-    private String cpf;
-
     private String senha;
 
+    private boolean influencer;
 
+    private Boolean autenticado;
+
+    private boolean logado;
+
+    private String cpf;
+
+    private String cnpj;
 }

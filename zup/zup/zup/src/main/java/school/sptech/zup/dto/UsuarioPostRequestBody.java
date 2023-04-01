@@ -10,8 +10,16 @@ public class UsuarioPostRequestBody {
 
     private String username;
 
+    private String senha;
+
+    private boolean influencer;
+
+    private Boolean autenticado;
+
+    private boolean logado;
+
     private String cpf;
 
-    private String senha;
+    private String cnpj;
 
 }
