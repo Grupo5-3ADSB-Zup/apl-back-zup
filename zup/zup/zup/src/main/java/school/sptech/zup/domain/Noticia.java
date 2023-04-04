@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.w3c.dom.Text;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,5 +21,8 @@ public class Noticia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String titulo;
+
     private String descricao;
+
+    private String link;
 }
