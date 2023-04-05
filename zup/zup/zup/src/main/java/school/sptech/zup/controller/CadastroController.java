@@ -25,7 +25,6 @@ public class CadastroController {
 
     @GetMapping
     public ResponseEntity<List<Usuario>> usuarios() {
-
         var retorno = _cadastroService.TodosOsUsers();
         return retorno;
     }
@@ -33,28 +32,24 @@ public class CadastroController {
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> findById(@PathVariable Long id) {
         var retorno = _cadastroService.buscaPorId(id);
-
         return retorno;
     }
 
     @PostMapping
     public ResponseEntity<Usuario> saveComum(@RequestBody UsuarioPostRequestBody usuario) {
         var retorno = _cadastroService.save(usuario);
-
         return retorno;
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Usuario> deleteUser(@PathVariable long id) {
         var retorno = _cadastroService.deleteUser(id);
-
         return retorno;
     }
 
     @PutMapping
     public ResponseEntity<Usuario> atualizarUser(@RequestBody UsuarioPutRequestBody usuarioPutRequestBody) {
         var retorno = _cadastroService.atualizarUsuario(usuarioPutRequestBody);
-
         return retorno;
     }
 }

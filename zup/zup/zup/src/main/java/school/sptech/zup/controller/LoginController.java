@@ -22,21 +22,18 @@ public class LoginController {
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> get(@PathVariable Long id) {
         var retorno = _loginService.getId(id);
-
         return retorno;
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<Usuario> logarUser(@PathVariable Long id){
         var retorno = _loginService.logar(id);
-
         return retorno;
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> Deslogar(@PathVariable Long id){
         var retorno = _loginService.deslogar(id);
-
         return retorno;
     }
 }
