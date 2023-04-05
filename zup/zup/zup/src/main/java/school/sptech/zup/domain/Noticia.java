@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.w3c.dom.Text;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @AllArgsConstructor
@@ -22,6 +19,8 @@ public class Noticia {
     private long id;
     private String titulo;
 
+    @Lob
+    @Column(name="CONTENT", length=2048)
     private String descricao;
 
     private String link;

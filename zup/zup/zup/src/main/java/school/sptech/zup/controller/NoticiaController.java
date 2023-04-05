@@ -24,11 +24,15 @@ import java.util.Optional;
 public class NoticiaController {
     @Autowired
     private NoticiaRepository _noticiaRepository;
-    List<Noticia> noticias = new ArrayList<>();
+
 
     @GetMapping
-    public List<Noticia> getRss(Noticia noticia){
+    public List<Noticia> getRss(){
         try {
+
+            List<Noticia> noticias = new ArrayList<>();
+
+
             String url = "http://rss.uol.com.br/feed/economia.xml";
 
             try (XmlReader reader = new XmlReader(new URL(url))) {
@@ -37,6 +41,8 @@ public class NoticiaController {
                 System.out.println("***********************************");
 
                 for (SyndEntry entry : feed.getEntries()) {
+                    Noticia noticia = new Noticia();
+
                     System.out.println("Titulo: \n" + entry.getTitleEx().getValue() + "\n");
                     noticia.setTitulo(entry.getTitleEx().getValue());
 
@@ -48,10 +54,10 @@ public class NoticiaController {
 
                     System.out.println("***********************************");
 
-                   //_noticiaRepository.save(noticia);
                     noticias.add(noticia);
                 }
-                return noticias;
+                List<Noticia> noticiaList = _noticiaRepository.saveAll(noticias);
+                return noticiaList;
             }
         }  catch (Exception e) {
             e.printStackTrace();
@@ -65,6 +71,6 @@ public class NoticiaController {
         if (noticias.isEmpty()){
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(204).build();
+        return ResponseEntity.status(200).body(noticias);
     }
 }
