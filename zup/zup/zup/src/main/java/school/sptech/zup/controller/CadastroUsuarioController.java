@@ -8,35 +8,21 @@ import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.UsuarioPostRequestBody;
 import school.sptech.zup.dto.UsuarioPutRequestBody;
-import school.sptech.zup.service.CadastroService;
+import school.sptech.zup.service.CadastroUsuarioService;
 import school.sptech.zup.util.DateUtil;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/cadastro")
 @Log4j2
 @RequiredArgsConstructor
-public class CadastroController {
+public class CadastroUsuarioController {
 
     @Autowired
     private final DateUtil dateUtil;
-    private final CadastroService _cadastroService;
-
-    @GetMapping
-    public ResponseEntity<List<Usuario>> usuarios() {
-        var retorno = _cadastroService.TodosOsUsers();
-        return retorno;
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Usuario> findById(@PathVariable Long id) {
-        var retorno = _cadastroService.buscaPorId(id);
-        return retorno;
-    }
+    private final CadastroUsuarioService _cadastroService;
 
     @PostMapping
-    public ResponseEntity<Usuario> saveComum(@RequestBody UsuarioPostRequestBody usuario) {
+    public ResponseEntity<Usuario> save(@RequestBody UsuarioPostRequestBody usuario) {
         var retorno = _cadastroService.save(usuario);
         return retorno;
     }

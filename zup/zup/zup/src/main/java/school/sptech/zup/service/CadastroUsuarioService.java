@@ -8,23 +8,13 @@ import school.sptech.zup.dto.UsuarioPostRequestBody;
 import school.sptech.zup.dto.UsuarioPutRequestBody;
 import school.sptech.zup.repository.UsuarioRerpository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CadastroService {
+public class CadastroUsuarioService {
 
     private final UsuarioRerpository _usuarioRepository;
-
-
-    public ResponseEntity<List<Usuario>> TodosOsUsers() {
-        var consulta = _usuarioRepository.findAll();
-        if (consulta.isEmpty()){
-            return ResponseEntity.status(204).build();
-        }
-        return ResponseEntity.status(200).body(consulta);
-    }
 
     public ResponseEntity<Usuario> buscaPorId(Long id) {
         Optional<Usuario> usuarioConsulta = _usuarioRepository.findById(id);

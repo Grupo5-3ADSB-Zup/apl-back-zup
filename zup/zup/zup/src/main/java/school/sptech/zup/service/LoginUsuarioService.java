@@ -1,7 +1,6 @@
 package school.sptech.zup.service;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import school.sptech.zup.domain.Usuario;
@@ -9,9 +8,9 @@ import school.sptech.zup.repository.UsuarioRerpository;
 
 @Service
 @RequiredArgsConstructor
-public class LoginService {
+public class LoginUsuarioService {
     //@Autowired
-    private final CadastroService _cadastroService;
+    private final CadastroUsuarioService _cadastroService;
     private final UsuarioRerpository _usuarioRepository;
 
     public ResponseEntity<Usuario> getId(Long id) {

@@ -6,21 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.domain.Usuario;
-import school.sptech.zup.service.LoginService;
+import school.sptech.zup.service.LoginUsuarioService;
 import school.sptech.zup.util.DateUtil;
 
 @RestController
 @RequestMapping("/login")
 @Log4j2
 @RequiredArgsConstructor
-public class LoginController {
+public class LoginUsuarioController {
     @Autowired
     private final DateUtil dateUtil;
     @Autowired
-    private final LoginService _loginService;
+    private final LoginUsuarioService _loginService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> get(@PathVariable Long id) {
+    public ResponseEntity<Usuario> getUsuario(@PathVariable Long id) {
         var retorno = _loginService.getId(id);
         return retorno;
     }
