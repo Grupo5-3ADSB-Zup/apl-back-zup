@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import school.sptech.zup.domain.Gpt;
 import school.sptech.zup.domain.Noticia;
 import school.sptech.zup.repository.NoticiaRepository;
 import school.sptech.zup.service.GptService;
@@ -50,11 +51,11 @@ public class NoticiaController {
         return ResponseEntity.status(200).body(noticias);
     }
 
-    @GetMapping("/rss/info")
-    public ResponseEntity<List<CompletionChoice>> InserirNoticiasGPT(){
+    @PostMapping("/rss/info")
+    public ResponseEntity<List<CompletionChoice>> InserirNoticiasGPT(@RequestBody Gpt gpt){
         var consulta = getNoticias();
         if (consulta.getStatusCodeValue() == 200){
-            var retorno = _gptService.gptNoticia(consulta.getBody());
+            var retorno = _gptService.gptNoticia(consulta.getBody(), gpt);
             return ResponseEntity.status(200).body(retorno);
         }
         return ResponseEntity.status(404).build();
