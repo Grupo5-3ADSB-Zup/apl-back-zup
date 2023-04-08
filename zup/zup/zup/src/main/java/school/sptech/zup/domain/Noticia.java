@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Data
@@ -27,5 +28,5 @@ public class Noticia {
 
     private String emissora;
 
-    private LocalTime dtNoticia;
+    private LocalDateTime dtNoticia;
 }

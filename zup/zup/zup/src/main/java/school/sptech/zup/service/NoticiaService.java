@@ -14,6 +14,7 @@ import school.sptech.zup.util.DateUtil;
 
 import java.net.URL;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NoticiaService {
     private final NoticiaRepository _noticiaRepository;
+    private DateUtil _dateUtil;
 
     public ResponseEntity<List<Noticia>>  getXmlUOL(){
         try {
@@ -41,12 +43,12 @@ public class NoticiaService {
                     noticia.setDescricao(entry.getDescription().getValue());
                     noticia.setLink(entry.getLink());
                     noticia.setEmissora("UOL");
-                    noticia.setDtNoticia(LocalTime.now());
+                    noticia.setDtNoticia(LocalDateTime.now());
 
                     noticias.add(noticia);
                 }
-                List<Noticia> noticiaList = _noticiaRepository.saveAll(noticias);
-                return ResponseEntity.status(200).body(noticiaList);
+                //List<Noticia> noticiaList = _noticiaRepository.saveAll(noticias);
+                return ResponseEntity.status(200).body(noticias);
             }
         }  catch (Exception e) {
             e.printStackTrace();
@@ -70,12 +72,12 @@ public class NoticiaService {
                     noticia.setDescricao(entry.getDescription().getValue());
                     noticia.setLink(entry.getLink());
                     noticia.setEmissora("Gazeta");
-                    noticia.setDtNoticia(LocalTime.now());
+                    noticia.setDtNoticia(LocalDateTime.now());
 
                     noticias.add(noticia);
                 }
-                List<Noticia> noticiaList = _noticiaRepository.saveAll(noticias);
-                return ResponseEntity.status(200).body(noticiaList);
+                //List<Noticia> noticiaList = _noticiaRepository.saveAll(noticias);
+                return ResponseEntity.status(200).body(noticias);
             }
         }  catch (Exception e) {
             e.printStackTrace();
