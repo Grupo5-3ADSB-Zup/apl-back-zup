@@ -5,9 +5,11 @@ import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
+import school.sptech.zup.domain.Gpt;
 import school.sptech.zup.domain.Noticia;
 import school.sptech.zup.repository.NoticiaRepository;
 import school.sptech.zup.util.DateUtil;
@@ -81,6 +83,18 @@ public class NoticiaService {
             }
         }  catch (Exception e) {
             e.printStackTrace();
+        }
+        return ResponseEntity.status(404).build();
+    }
+
+    public ResponseEntity<Integer> procuraPorNome(Gpt gpt){
+        List<Noticia> noticias = _noticiaRepository.findAll();
+
+        for (int i = 0; i < noticias.size(); i++) {
+            if (noticias.get(i).getTitulo().equals(gpt.getTitulo())){
+                gpt.setId(i);
+                return ResponseEntity.status(200).body(noticias.get(i).getId());
+            }
         }
         return ResponseEntity.status(404).build();
     }

@@ -17,7 +17,7 @@ import java.time.LocalTime;
 public class Noticia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
     private String titulo;
 
     @Lob
