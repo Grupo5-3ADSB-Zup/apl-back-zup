@@ -6,8 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.domain.Usuario;
-import school.sptech.zup.dto.UsuarioPostRequestBody;
-import school.sptech.zup.dto.UsuarioPutRequestBody;
+import school.sptech.zup.dto.*;
 import school.sptech.zup.service.CadastroUsuarioService;
 import school.sptech.zup.util.DateUtil;
 
@@ -21,9 +20,15 @@ public class CadastroUsuarioController {
     private final DateUtil dateUtil;
     private final CadastroUsuarioService _cadastroService;
 
-    @PostMapping
-    public ResponseEntity<Usuario> save(@RequestBody UsuarioPostRequestBody usuario) {
-        var retorno = _cadastroService.save(usuario);
+    @PostMapping("/user/comum")
+    public ResponseEntity<Usuario> saveUserComum(@RequestBody UsuarioComumRequestBody usuario) {
+        var retorno = _cadastroService.saveUserComum(usuario);
+        return retorno;
+    }
+
+    @PostMapping("/user/empresa")
+    public ResponseEntity<Usuario> saveUserEmpresa(@RequestBody UsuarioEmpresaRequestBody usuario) {
+        var retorno = _cadastroService.saveUserEmpresa(usuario);
         return retorno;
     }
 
@@ -33,9 +38,15 @@ public class CadastroUsuarioController {
         return retorno;
     }
 
-    @PutMapping
-    public ResponseEntity<Usuario> atualizarUser(@RequestBody UsuarioPutRequestBody usuarioPutRequestBody) {
-        var retorno = _cadastroService.atualizarUsuario(usuarioPutRequestBody);
+    @PutMapping("/user/comum")
+    public ResponseEntity<Usuario> atualizarUserComum(@RequestBody UsuarioComumPutRequestBody usuarioPutRequestBody) {
+        var retorno = _cadastroService.atualizarUsuarioComum(usuarioPutRequestBody);
+        return retorno;
+    }
+
+    @PutMapping("user/empresa")
+    public ResponseEntity<Usuario> atualizarUserEmpresa(@RequestBody UsuarioEmpresaPutRequestBody usuarioPutRequestBody) {
+        var retorno = _cadastroService.atualizarUsuarioEmpresa(usuarioPutRequestBody);
         return retorno;
     }
 }

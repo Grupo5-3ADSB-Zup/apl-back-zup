@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.w3c.dom.Text;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 
 @Data
 @AllArgsConstructor
@@ -26,4 +26,6 @@ public class Noticia {
     private String link;
 
     private String emissora;
+
+    private LocalTime dtNoticia;
 }

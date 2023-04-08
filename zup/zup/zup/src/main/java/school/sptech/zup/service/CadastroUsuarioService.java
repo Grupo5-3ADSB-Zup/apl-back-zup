@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import school.sptech.zup.domain.Usuario;
-import school.sptech.zup.dto.UsuarioPostRequestBody;
-import school.sptech.zup.dto.UsuarioPutRequestBody;
+import school.sptech.zup.dto.*;
 import school.sptech.zup.repository.UsuarioRerpository;
 
 import java.util.Optional;
@@ -24,7 +23,7 @@ public class CadastroUsuarioService {
         return ResponseEntity.status(404).build();
     }
 
-    public ResponseEntity<Usuario> save(UsuarioPostRequestBody usuarioPostRequestBody) {
+    public ResponseEntity<Usuario> saveUserComum(UsuarioComumRequestBody usuarioPostRequestBody) {
         var retorno = autenticar(usuarioPostRequestBody);
         if (retorno == true){
             Usuario usuario = Usuario.builder()
@@ -36,12 +35,32 @@ public class CadastroUsuarioService {
                     .influencer(usuarioPostRequestBody.isInfluencer())
                     .logado(usuarioPostRequestBody.isLogado())
                     .cpf(usuarioPostRequestBody.getCpf())
-                    .cnpj(usuarioPostRequestBody.getCnpj())
+                    .cnpj(null)
                     .build();
             _usuarioRepository.save(usuario);
             return ResponseEntity.status(200).body(usuario);
         }
          return ResponseEntity.status(401).build();
+    }
+
+    public ResponseEntity<Usuario> saveUserEmpresa(UsuarioEmpresaRequestBody usuarioPostRequestBody) {
+        var retorno = autenticar(usuarioPostRequestBody);
+        if (retorno == true){
+            Usuario usuario = Usuario.builder()
+                    .nome(usuarioPostRequestBody.getNome())
+                    .email(usuarioPostRequestBody.getEmail())
+                    .username(usuarioPostRequestBody.getUsername())
+                    .senha(usuarioPostRequestBody.getSenha())
+                    .autenticado(usuarioPostRequestBody.getAutenticado())
+                    .influencer(usuarioPostRequestBody.isInfluencer())
+                    .logado(usuarioPostRequestBody.isLogado())
+                    .cnpj(usuarioPostRequestBody.getCnpj())
+                    .cpf(null)
+                    .build();
+            _usuarioRepository.save(usuario);
+            return ResponseEntity.status(200).body(usuario);
+        }
+        return ResponseEntity.status(401).build();
     }
 
     public ResponseEntity<Usuario> deleteUser(long id) {
@@ -54,7 +73,7 @@ public class CadastroUsuarioService {
     }
 
 
-    public ResponseEntity<Usuario> atualizarUsuario(UsuarioPutRequestBody usuarioPutRequestBody) {
+    public ResponseEntity<Usuario> atualizarUsuarioComum(UsuarioComumPutRequestBody usuarioPutRequestBody) {
         var consulta = buscaPorId(usuarioPutRequestBody.getId());
 
         if (consulta.getStatusCodeValue() == 200){
@@ -68,7 +87,30 @@ public class CadastroUsuarioService {
                     .influencer(usuarioPutRequestBody.isInfluencer())
                     .logado(usuarioPutRequestBody.isLogado())
                     .cpf(usuarioPutRequestBody.getCpf())
+                    .cnpj(null)
+                    .build();
+            _usuarioRepository.save(usuario);
+
+            return ResponseEntity.status(200).body(usuario);
+        }
+        return ResponseEntity.status(404).build();
+    }
+
+    public ResponseEntity<Usuario> atualizarUsuarioEmpresa(UsuarioEmpresaPutRequestBody usuarioPutRequestBody) {
+        var consulta = buscaPorId(usuarioPutRequestBody.getId());
+
+        if (consulta.getStatusCodeValue() == 200){
+            Usuario usuario = Usuario.builder()
+                    .id(consulta.getBody().getId())
+                    .nome(usuarioPutRequestBody.getNome())
+                    .email(usuarioPutRequestBody.getEmail())
+                    .username(usuarioPutRequestBody.getUsername())
+                    .senha(usuarioPutRequestBody.getSenha())
+                    .autenticado(usuarioPutRequestBody.getAutenticado())
+                    .influencer(usuarioPutRequestBody.isInfluencer())
+                    .logado(usuarioPutRequestBody.isLogado())
                     .cnpj(usuarioPutRequestBody.getCnpj())
+                    .cpf(null)
                     .build();
             _usuarioRepository.save(usuario);
 

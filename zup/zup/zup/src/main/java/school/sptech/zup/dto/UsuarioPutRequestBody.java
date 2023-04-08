@@ -1,9 +1,10 @@
 package school.sptech.zup.dto;
 
+
 import lombok.Data;
 
 @Data
-public class UsuarioPutRequestBody {
+public abstract class UsuarioPutRequestBody {
 
     private Long id;
 
@@ -20,9 +21,4 @@ public class UsuarioPutRequestBody {
     private Boolean autenticado;
 
     private boolean logado;
-
-    private String cpf;
-
-    private String cnpj;
-
 }

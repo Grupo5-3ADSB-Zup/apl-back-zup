@@ -10,8 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import school.sptech.zup.domain.Noticia;
 import school.sptech.zup.repository.NoticiaRepository;
+import school.sptech.zup.util.DateUtil;
 
 import java.net.URL;
+import java.sql.Date;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +41,7 @@ public class NoticiaService {
                     noticia.setDescricao(entry.getDescription().getValue());
                     noticia.setLink(entry.getLink());
                     noticia.setEmissora("UOL");
+                    noticia.setDtNoticia(LocalTime.now());
 
                     noticias.add(noticia);
                 }
@@ -65,6 +70,7 @@ public class NoticiaService {
                     noticia.setDescricao(entry.getDescription().getValue());
                     noticia.setLink(entry.getLink());
                     noticia.setEmissora("Gazeta");
+                    noticia.setDtNoticia(LocalTime.now());
 
                     noticias.add(noticia);
                 }
