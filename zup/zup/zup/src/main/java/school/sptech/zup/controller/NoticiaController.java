@@ -1,11 +1,13 @@
 package school.sptech.zup.controller;
 
+import com.theokanning.openai.completion.CompletionChoice;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.domain.Noticia;
 import school.sptech.zup.repository.NoticiaRepository;
+import school.sptech.zup.service.GptService;
 import school.sptech.zup.service.NoticiaService;
 
 import java.util.List;
@@ -18,6 +20,8 @@ public class NoticiaController {
     private NoticiaRepository _noticiaRepository;
     @Autowired
     private NoticiaService _noticiaService;
+    @Autowired
+    private GptService _gptService;
 
     @GetMapping("/rss/uol")
     public ResponseEntity<List<Noticia>> getRssUOL(){
@@ -44,6 +48,16 @@ public class NoticiaController {
             return ResponseEntity.status(204).build();
         }
         return ResponseEntity.status(200).body(noticias);
+    }
+
+    @GetMapping("/rss/info")
+    public ResponseEntity<List<CompletionChoice>> InserirNoticiasGPT(){
+        var consulta = getNoticias();
+        if (consulta.getStatusCodeValue() == 200){
+            var retorno = _gptService.gptNoticia(consulta.getBody());
+            return ResponseEntity.status(200).body(retorno);
+        }
+        return ResponseEntity.status(404).build();
     }
 
     @DeleteMapping
