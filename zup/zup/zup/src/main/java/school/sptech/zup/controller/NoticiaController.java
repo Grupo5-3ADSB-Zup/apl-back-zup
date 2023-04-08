@@ -11,7 +11,7 @@ import school.sptech.zup.service.NoticiaService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rss")
+@RequestMapping("/noticia")
 @RequiredArgsConstructor
 public class NoticiaController {
     @Autowired
@@ -19,16 +19,25 @@ public class NoticiaController {
     @Autowired
     private NoticiaService _noticiaService;
 
-
-    @GetMapping
-    public ResponseEntity<List<Noticia>> getRss(){
-        var retorno = _noticiaService.getXml();
+    @GetMapping("/rss/uol")
+    public ResponseEntity<List<Noticia>> getRssUOL(){
+        var retorno = _noticiaService.getXmlUOL();
         if (retorno.getStatusCodeValue() == 200){
             return retorno;
         }
         return retorno;
     }
-    @GetMapping("/todos")
+
+    @GetMapping("/rss/gazeta")
+    public ResponseEntity<List<Noticia>> getRssGazeta(){
+        var retorno = _noticiaService.getXmlGAZETA();
+        if (retorno.getStatusCodeValue() == 200){
+            return retorno;
+        }
+        return retorno;
+    }
+
+    @GetMapping("/rss")
     public ResponseEntity<List<Noticia>> getNoticias(){
         List<Noticia> noticias = _noticiaRepository.findAll();
         if (noticias.isEmpty()){

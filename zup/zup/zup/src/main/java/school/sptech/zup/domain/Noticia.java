@@ -24,4 +24,6 @@ public class Noticia {
     private String descricao;
 
     private String link;
+
+    private String emissora;
 }

@@ -20,7 +20,7 @@ import java.util.List;
 public class NoticiaService {
     private final NoticiaRepository _noticiaRepository;
 
-    public ResponseEntity<List<Noticia>>  getXml(){
+    public ResponseEntity<List<Noticia>>  getXmlUOL(){
         try {
 
             List<Noticia> noticias = new ArrayList<>();
@@ -30,22 +30,41 @@ public class NoticiaService {
 
             try (XmlReader reader = new XmlReader(new URL(url))) {
                 SyndFeed feed = new SyndFeedInput().build(reader);
-                System.out.println(feed.getTitle());
-                System.out.println("***********************************");
 
                 for (SyndEntry entry : feed.getEntries()) {
                     Noticia noticia = new Noticia();
-
-                    System.out.println("Titulo: \n" + entry.getTitleEx().getValue() + "\n");
                     noticia.setTitulo(entry.getTitleEx().getValue());
-
-                    System.out.println("Imagem e Descrição: \n" + entry.getDescription().getValue() + "\n");
                     noticia.setDescricao(entry.getDescription().getValue());
-
-                    System.out.println("Link: \n" + entry.getLink() + "\n");
                     noticia.setLink(entry.getLink());
+                    noticia.setEmissora("UOL");
 
-                    System.out.println("***********************************");
+                    noticias.add(noticia);
+                }
+                List<Noticia> noticiaList = _noticiaRepository.saveAll(noticias);
+                return ResponseEntity.status(200).body(noticiaList);
+            }
+        }  catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(404).build();
+    }
+
+    public ResponseEntity<List<Noticia>>  getXmlGAZETA(){
+        try {
+            List<Noticia> noticias = new ArrayList<>();
+
+
+            String url = "https://www.gazetadopovo.com.br/feed/rss/economia.xml";
+
+            try (XmlReader reader = new XmlReader(new URL(url))) {
+                SyndFeed feed = new SyndFeedInput().build(reader);
+
+                for (SyndEntry entry : feed.getEntries()) {
+                    Noticia noticia = new Noticia();
+                    noticia.setTitulo(entry.getTitleEx().getValue());
+                    noticia.setDescricao(entry.getDescription().getValue());
+                    noticia.setLink(entry.getLink());
+                    noticia.setEmissora("Gazeta");
 
                     noticias.add(noticia);
                 }
