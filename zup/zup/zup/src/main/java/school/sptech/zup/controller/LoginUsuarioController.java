@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import school.sptech.zup.domain.Login;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.service.LoginUsuarioService;
 import school.sptech.zup.util.DateUtil;
@@ -19,21 +20,21 @@ public class LoginUsuarioController {
     @Autowired
     private final LoginUsuarioService _loginService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Usuario> getUsuario(@PathVariable Long id) {
-        var retorno = _loginService.getId(id);
+    @GetMapping("/{username}")
+    public ResponseEntity<Usuario> getUsuario(@PathVariable String username) {
+        var retorno = _loginService.buscaPorUsername(username);
         return retorno;
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<Usuario> logarUser(@PathVariable Long id){
-        var retorno = _loginService.logar(id);
+    @PostMapping
+    public ResponseEntity<Usuario> logarUser(@RequestBody Login login){
+        var retorno = _loginService.logar(login);
         return retorno;
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Usuario> Deslogar(@PathVariable Long id){
-        var retorno = _loginService.deslogar(id);
+    @PutMapping("/{username}")
+    public ResponseEntity<Usuario> Deslogar(@PathVariable String username){
+        var retorno = _loginService.deslogar(username);
         return retorno;
     }
 }
