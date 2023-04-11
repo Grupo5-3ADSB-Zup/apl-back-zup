@@ -1,7 +1,9 @@
 package school.sptech.zup.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.*;
@@ -14,6 +16,9 @@ import java.util.Optional;
 public class CadastroUsuarioService {
 
     private final UsuarioRerpository _usuarioRepository;
+
+    @Autowired
+    private PasswordEncoder _passwordEncoder;
 
     public ResponseEntity<Usuario> buscaPorId(Long id) {
         Optional<Usuario> usuarioConsulta = _usuarioRepository.findById(id);
