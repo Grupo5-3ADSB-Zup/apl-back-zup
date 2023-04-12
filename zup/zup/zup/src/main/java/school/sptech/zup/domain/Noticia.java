@@ -4,9 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.w3c.dom.Text;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Data
 @AllArgsConstructor
@@ -16,7 +17,7 @@ import javax.persistence.*;
 public class Noticia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
     private String titulo;
 
     @Lob
@@ -24,4 +25,8 @@ public class Noticia {
     private String descricao;
 
     private String link;
+
+    private String emissora;
+
+    private LocalDateTime dtNoticia;
 }
