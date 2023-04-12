@@ -49,8 +49,8 @@ public class NoticiaService {
 
                     noticias.add(noticia);
                 }
-                //List<Noticia> noticiaList = _noticiaRepository.saveAll(noticias);
-                return ResponseEntity.status(200).body(noticias);
+                List<Noticia> noticiaList = _noticiaRepository.saveAll(noticias);
+                return ResponseEntity.status(200).body(noticiaList);
             }
         }  catch (Exception e) {
             e.printStackTrace();
@@ -78,8 +78,8 @@ public class NoticiaService {
 
                     noticias.add(noticia);
                 }
-                //List<Noticia> noticiaList = _noticiaRepository.saveAll(noticias);
-                return ResponseEntity.status(200).body(noticias);
+                List<Noticia> noticiaList = _noticiaRepository.saveAll(noticias);
+                return ResponseEntity.status(200).body(noticiaList);
             }
         }  catch (Exception e) {
             e.printStackTrace();
