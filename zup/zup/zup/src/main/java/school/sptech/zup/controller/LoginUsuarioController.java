@@ -7,6 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.domain.Login;
 import school.sptech.zup.domain.Usuario;
+import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
+import school.sptech.zup.service.AutenticacaoJWT.UsuarioTokenDto;
+import school.sptech.zup.service.CadastroUsuarioService;
 import school.sptech.zup.service.LoginUsuarioService;
 import school.sptech.zup.util.DateUtil;
 
@@ -19,6 +22,8 @@ public class LoginUsuarioController {
     private final DateUtil dateUtil;
     @Autowired
     private final LoginUsuarioService _loginService;
+    @Autowired
+    private final CadastroUsuarioService _cadastroUsuarioService;
 
     @GetMapping("/{username}")
     public ResponseEntity<Usuario> getUsuario(@PathVariable String username) {
@@ -27,9 +32,10 @@ public class LoginUsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> logarUser(@RequestBody Login login){
-        var retorno = _loginService.logar(login);
-        return retorno;
+    public ResponseEntity<UsuarioTokenDto> logarUser(@RequestBody UsuarioLoginDto loginDto){
+        //var retorno = _loginService.logar(loginDto);
+        UsuarioTokenDto usuarioTokenDto = this._cadastroUsuarioService.autenticar(loginDto);
+        return ResponseEntity.status(200).body(usuarioTokenDto);
     }
 
     @PutMapping("/{username}")

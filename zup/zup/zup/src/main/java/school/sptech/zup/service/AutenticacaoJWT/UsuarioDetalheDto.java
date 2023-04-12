@@ -2,6 +2,7 @@ package school.sptech.zup.service.AutenticacaoJWT;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 import school.sptech.zup.domain.Usuario;
 
 import java.util.Collection;

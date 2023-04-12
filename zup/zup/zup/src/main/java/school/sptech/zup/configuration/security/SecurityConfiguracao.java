@@ -50,7 +50,9 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/actuador/*"),
             new AntPathRequestMatcher("/swagger-ui/**"),
             new AntPathRequestMatcher("/usuarios/login/**"),
-            new AntPathRequestMatcher("/h2-console")
+            new AntPathRequestMatcher("/noticia/**"),
+            new AntPathRequestMatcher("/h2-console"),
+            new AntPathRequestMatcher("jdbc:mysql://localhost:3306/zup?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true")
     };
 
     @Bean

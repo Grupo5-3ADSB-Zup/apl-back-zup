@@ -3,22 +3,33 @@ package school.sptech.zup.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+import school.sptech.zup.configuration.security.jwt.GerenciadorTokenJwt;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.*;
 import school.sptech.zup.repository.UsuarioRerpository;
+import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
+import school.sptech.zup.service.AutenticacaoJWT.UsuarioTokenDto;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CadastroUsuarioService {
-
+    @Autowired
     private final UsuarioRerpository _usuarioRepository;
-
     @Autowired
     private PasswordEncoder _passwordEncoder;
+    @Autowired
+    private GerenciadorTokenJwt _gerenciadorTokenJwt;
+    @Autowired
+    private AuthenticationManager _authenticationManager;
 
     public ResponseEntity<Usuario> buscaPorId(Long id) {
         Optional<Usuario> usuarioConsulta = _usuarioRepository.findById(id);
@@ -42,6 +53,10 @@ public class CadastroUsuarioService {
                     .cpf(usuarioPostRequestBody.getCpf())
                     .cnpj(null)
                     .build();
+
+            String senhaCriptografada = _passwordEncoder.encode(usuario.getSenha());
+            usuario.setSenha(senhaCriptografada);
+
             _usuarioRepository.save(usuario);
             return ResponseEntity.status(200).body(usuario);
         }
@@ -123,12 +138,29 @@ public class CadastroUsuarioService {
         }
         return ResponseEntity.status(404).build();
     }
-
     private boolean autenticar(UsuarioPostRequestBody user){
         if (user.getAutenticado() == false && user.isLogado() == false){
                 user.setAutenticado(true);
                 return true;
             }
         return false;
+    }
+
+    public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto){
+        final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
+                usuarioLoginDto.getUsername(), usuarioLoginDto.getSenha());
+
+        final Authentication authentication = this._authenticationManager.authenticate(credentials);
+
+        Usuario usuarioAutenticado =
+                _usuarioRepository.findByUsername(usuarioLoginDto.getUsername())
+                        .orElseThrow(
+                                () -> new ResponseStatusException(404, "Usarname do Usuário não cadastrado", null)
+                        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        final String token = _gerenciadorTokenJwt.generateToken(authentication);
+
+        return MapperJWT.of(usuarioAutenticado, token);
     }
 }

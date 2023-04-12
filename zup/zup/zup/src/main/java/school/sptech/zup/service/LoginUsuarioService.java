@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import school.sptech.zup.domain.Login;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.repository.UsuarioRerpository;
+import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,22 +18,20 @@ public class LoginUsuarioService {
     private final CadastroUsuarioService _cadastroService;
     private final UsuarioRerpository _usuarioRepository;
 
-    public ResponseEntity<Usuario> getUsername(Login login) {
-        var consulta = buscaPorUsername(login.getUsername());
-        if (consulta.getStatusCodeValue() == 200 &&
-                consulta.getBody().getEmail().equals(login.getEmail())
-                && consulta.getBody().getSenha().equals(login.getSenha())){
+    public ResponseEntity<Usuario> getUsername(UsuarioLoginDto loginDto) {
+        var consulta = buscaPorUsername(loginDto.getUsername());
+        if (consulta.getStatusCodeValue() == 200
+                && consulta.getBody().getSenha().equals(loginDto.getSenha())){
 
             return ResponseEntity.status(200).body(consulta.getBody());
         }
         return consulta;
     }
 
-    public ResponseEntity<Usuario> logar(Login login){
-        var consulta = getUsername(login);
-        if (consulta.getStatusCodeValue() == 200 && consulta.getBody().isLogado() == false &&
-                consulta.getBody().getEmail().equals(login.getEmail())
-                && consulta.getBody().getSenha().equals(login.getSenha())){
+    public ResponseEntity<Usuario> logar(UsuarioLoginDto loginDto){
+        var consulta = getUsername(loginDto);
+        if (consulta.getStatusCodeValue() == 200 && consulta.getBody().isLogado() == false
+                && consulta.getBody().getSenha().equals(loginDto.getSenha())){
 
             consulta.getBody().setLogado(true);
             _usuarioRepository.save(consulta.getBody());
