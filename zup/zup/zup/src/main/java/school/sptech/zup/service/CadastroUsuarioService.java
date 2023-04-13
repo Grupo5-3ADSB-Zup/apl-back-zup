@@ -1,6 +1,5 @@
 package school.sptech.zup.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,16 +19,18 @@ import school.sptech.zup.service.AutenticacaoJWT.UsuarioTokenDto;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class CadastroUsuarioService {
-    @Autowired
     private final UsuarioRerpository _usuarioRepository;
+    private final PasswordEncoder _passwordEncoder;
+    private final GerenciadorTokenJwt _gerenciadorTokenJwt;
+    private final AuthenticationManager _authenticationManager;
     @Autowired
-    private PasswordEncoder _passwordEncoder;
-    @Autowired
-    private GerenciadorTokenJwt _gerenciadorTokenJwt;
-    @Autowired
-    private AuthenticationManager _authenticationManager;
+    public CadastroUsuarioService(UsuarioRerpository usuarioRepository, PasswordEncoder passwordEncoder, GerenciadorTokenJwt gerenciadorTokenJwt, AuthenticationManager authenticationManager) {
+        _usuarioRepository = usuarioRepository;
+        _passwordEncoder = passwordEncoder;
+        _gerenciadorTokenJwt = gerenciadorTokenJwt;
+        _authenticationManager = authenticationManager;
+    }
 
     public ResponseEntity<Usuario> buscaPorId(Long id) {
         Optional<Usuario> usuarioConsulta = _usuarioRepository.findById(id);

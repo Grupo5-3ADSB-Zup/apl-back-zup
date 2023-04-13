@@ -42,7 +42,7 @@ public class AutenticacaoFilter extends OncePerRequestFilter {
             jwtToken = requestTokenHeader.substring(7);
 
             try {
-                username = jwtTokenManager.getUserNameFromToken(jwtToken);
+                username = jwtTokenManager.getUsernameFromToken(jwtToken);
             }catch (ExpiredJwtException exception){
                 LOGGER.info("[FALHA DE AUTENTICAÇÃO] - Token expirado, usuário : {} - {}",
                         exception.getClaims().getSubject(), exception.getMessage());

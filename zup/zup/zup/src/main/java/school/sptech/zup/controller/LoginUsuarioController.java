@@ -25,8 +25,8 @@ public class LoginUsuarioController {
     @Autowired
     private final CadastroUsuarioService _cadastroUsuarioService;
 
-    @GetMapping("/{username}")
-    public ResponseEntity<Usuario> getUsuario(@PathVariable String username) {
+    @GetMapping
+    public ResponseEntity<Usuario> getUsuario(@RequestParam String username) {
         var retorno = _loginService.buscaPorUsername(username);
         return retorno;
     }
