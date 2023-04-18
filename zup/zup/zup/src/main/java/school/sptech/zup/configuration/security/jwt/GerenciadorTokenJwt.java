@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.sql.Date;
+import java.util.Date;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -27,7 +27,7 @@ public class GerenciadorTokenJwt {
     }
 
     public Date getExpirationDateFromToken(String token) {
-        return (Date) getClaimForToken(token, Claims::getExpiration);
+        return getClaimForToken(token, Claims::getExpiration);
     }
 
     public String generateToken(final Authentication authentication) {

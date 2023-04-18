@@ -1,5 +1,6 @@
 package school.sptech.zup.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class LoginUsuarioController {
     private final CadastroUsuarioService _cadastroUsuarioService;
 
     @GetMapping
+    @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Usuario> getUsuario(@RequestParam String username) {
         var retorno = _loginService.buscaPorUsername(username);
         return retorno;

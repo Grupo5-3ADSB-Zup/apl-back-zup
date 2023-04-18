@@ -54,12 +54,12 @@ public class AutenticacaoFilter extends OncePerRequestFilter {
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            addUserNameInContext((HttpServletResponse) request, username, jwtToken);
+            addUserNameInContext(request, username, jwtToken);
         }
         filterChain.doFilter(request, response);
     }
 
-    private void addUserNameInContext(HttpServletResponse request, String username, String jwtToken){
+    private void addUserNameInContext(HttpServletRequest request, String username, String jwtToken){
         UserDetails userDetails = autenticacaoService.loadUserByUsername(username);
         if (jwtTokenManager.validateToken(jwtToken, userDetails)){
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new

@@ -54,6 +54,7 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/cadastro/**"),
             new AntPathRequestMatcher("/login"),
             new AntPathRequestMatcher("/h2-console"),
+            new AntPathRequestMatcher("/error/**"),
             new AntPathRequestMatcher("jdbc:mysql://localhost:3306/zup?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true")
     };
 
