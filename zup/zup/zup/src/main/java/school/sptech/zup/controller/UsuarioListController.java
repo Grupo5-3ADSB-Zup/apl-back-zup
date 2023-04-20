@@ -1,5 +1,6 @@
 package school.sptech.zup.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/list-usuario")
 @Log4j2
+@RequiredArgsConstructor
 public class UsuarioListController {
 
 
@@ -36,15 +38,7 @@ public class UsuarioListController {
         private Usuario[] vetor;
         private int nroElem;
 
-        public UsuarioListController(UsuarioService usuarioService) {
-            _usuarioService = usuarioService;
-            int tamanhoVet = getUsuario().getStatusCodeValue() == 200 ? getUsuario().getBody().size() : null;
-            vetor = (Usuario []) new Object[tamanhoVet];
-            nroElem = 0;
-            adicionaListNoVet(getUsuario().getBody());
-        }
-
-        public void adicionaListNoVet(List<Usuario> usuarios) {
+    public void adicionaListNoVet(List<Usuario> usuarios) {
             for (Usuario usu: usuarios) {
                 adiciona(usu);
             }
