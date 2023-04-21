@@ -11,13 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 import school.sptech.zup.dto.obj.UsuarioObj;
 import school.sptech.zup.service.UsuarioService;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/list-usuario")
 @Log4j2
 @RequiredArgsConstructor
-public class ListControllerTeste {
+public class ListController {
     @Autowired
     private final UsuarioService _usuarioService;
 
@@ -29,6 +27,7 @@ public class ListControllerTeste {
         var retorno = _usuarioService.getListUsuario();
         if (retorno.getStatusCodeValue() == 200){
              _usuarioService.gravarArquivoCsv(retorno.getBody(), nomeArquivo);
+             return ResponseEntity.status(201).build();
         }
         return ResponseEntity.status(404).build();
     }
