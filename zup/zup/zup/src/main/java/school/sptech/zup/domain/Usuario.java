@@ -1,14 +1,12 @@
 package school.sptech.zup.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @AllArgsConstructor
@@ -37,4 +35,8 @@ public class Usuario {
     private String cpf;
 
     private String cnpj;
+
+    @JsonIgnore
+    @Column(length = 50 * 1024 * 1024)
+    private byte[] foto;
 }

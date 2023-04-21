@@ -26,6 +26,9 @@ public class UsuarioListController {
     @Autowired
     private final UsuarioService _usuarioService;
 
+    private Usuario[] vetor;
+    private int nroElem;
+
     @GetMapping
     public ResponseEntity<List<Usuario>> getUsuario() {
         var retorno = _usuarioService.getListUsuario();
@@ -34,9 +37,6 @@ public class UsuarioListController {
         }
         return retorno;
     }
-
-        private Usuario[] vetor;
-        private int nroElem;
 
     public void adicionaListNoVet(List<Usuario> usuarios) {
             for (Usuario usu: usuarios) {
@@ -53,49 +53,6 @@ public class UsuarioListController {
             }
         }
 
-
-//        public void exibe() {
-//            if (nroElem == 0) {
-//                System.out.println("\nA lista está vazia.");
-//            }
-//            else {
-//                System.out.println("\nElementos da lista:");
-//                for (int i = 0; i < nroElem; i++) {
-//                    System.out.println(vetor[i]);
-//                }
-//            }
-//        }
-//        public int busca(Usuario elementoBuscado) {
-//            for (int i = 0; i < nroElem; i++) {
-//                if (vetor[i].equals(elementoBuscado)) {   // se encontrou
-//                    return i;                        // retorna seu indice
-//                }
-//            }
-//            return -1;                               // nao encontrou, retorna -1
-//        }
-
-
-//        public boolean removePeloIndice (int indice) {
-//            if (indice < 0 || indice >= nroElem) {
-//                System.out.println("\nIndice invalido!");
-//                return false;
-//            }
-//            // Loop para "deslocar para a esquerda" os elementos do vetor
-//            // sobrescrevendo o elemento removido
-//            for (int i = indice; i < nroElem-1; i++) {
-//                vetor[i] = vetor[i+1];
-//            }
-//
-//            nroElem--;          // decrementa nroElem
-//            return true;
-//        }
-
-
-//        public boolean removeElemento(Usuario elementoARemover) {
-//            return removePeloIndice(busca(elementoARemover));
-//        }
-
-        /* getTamanho()  - retorna o tamanho da lista */
         public int getTamanho() {
             return nroElem;
         }
@@ -110,18 +67,10 @@ public class UsuarioListController {
             }
         }
 
-        /* limpa() - limpa a lista */
         public void limpa() {
             nroElem = 0;
         }
 
-//    ListaObj<Cachorro> listDog = new ListaObj<>(7);
-//    listDog.exibe();
-//    gravaArquivoCsv(listDog, "dogs");
-//    leArquivoCsv("dogs");
-
-
-//        public static void gravaArquivoCsv(UsuarioListController listUsuario, String nomeArq){
     @GetMapping("arquivo-csv/{nome}")
     public Formatter gravaArquivoCsv(String nome){
 
