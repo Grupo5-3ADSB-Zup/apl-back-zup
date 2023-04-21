@@ -4,7 +4,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import school.sptech.zup.domain.Usuario;
+import school.sptech.zup.dto.obj.ListaObj;
+import school.sptech.zup.dto.obj.UsuarioObj;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Formatter;
+import java.util.FormatterClosedException;
 import java.util.List;
 @Service
 public class UsuarioService {
@@ -14,14 +20,78 @@ public class UsuarioService {
         _usuarioRepository = usuarioRepository;
     }
 
-    public ResponseEntity<List<Usuario>> getListUsuario(){
+    public ResponseEntity<ListaObj> getListUsuario(){
         List<Usuario> usuarioConsulta = _usuarioRepository.findAll();
 
         if (usuarioConsulta.isEmpty()){
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(200).body(usuarioConsulta);
+        ListaObj<UsuarioObj> listaUsuario = new ListaObj(usuarioConsulta.size());
+        for (int i = 0; i < usuarioConsulta.size(); i++){
+            UsuarioObj usuarioObj = new UsuarioObj();
+
+            usuarioObj.setId(usuarioConsulta.get(i).getId());
+            usuarioObj.setNome(usuarioConsulta.get(i).getNome());
+            usuarioObj.setEmail(usuarioConsulta.get(i).getEmail());
+            usuarioObj.setUsername(usuarioConsulta.get(i).getUsername());
+            usuarioObj.setSenha(usuarioConsulta.get(i).getSenha());
+            usuarioObj.setInfluencer(usuarioConsulta.get(i).isInfluencer());
+            usuarioObj.setAutenticado(usuarioConsulta.get(i).getAutenticado());
+            usuarioObj.setLogado(usuarioConsulta.get(i).isLogado());
+            usuarioObj.setCpf(usuarioConsulta.get(i).getCpf());
+            usuarioObj.setCnpj(usuarioConsulta.get(i).getCnpj());
+
+            listaUsuario.adiciona(usuarioObj);
+        }
+        return ResponseEntity.status(200).body(listaUsuario);
     }
+
+    public static void gravarArquivoCsv(ListaObj<UsuarioObj> listaUsuarioObj, String nomeArquivo){
+        FileWriter arq = null;
+        Formatter saida = null;
+        Boolean deuRuim = false;
+
+        nomeArquivo += ".csv";
+
+        // Bloco Try-catch para abrir o arquivo
+
+        try {
+            arq = new FileWriter(nomeArquivo); //Se colocar , true ele acrescenta no arquivo
+            saida = new Formatter(arq);
+        }
+        catch (IOException erro){
+            System.out.println("Erro ao abrir o arquivo");
+            System.exit(1);
+        }
+
+        // Bloco try-catch para gravar no arquivo
+
+        try {
+            for (int i =0; i < listaUsuarioObj.getTamanho(); i++){
+                UsuarioObj user = listaUsuarioObj.getElemento(i);
+                saida.format("%d;%s;%s;%s;%s;%s;%s;%s;%s;%s\n",
+                        user.getId(), user.getNome(), user.getEmail(), user.getUsername(),
+                        user.getSenha(), user.isInfluencer(), user.getAutenticado(), user.isLogado(), user.getCpf(),
+                        user.getCnpj());
+            }
+        }
+        catch (FormatterClosedException erro){
+            System.out.println("Erro ao gravar o arquivo");
+            deuRuim = true;
+        } finally {
+            saida.close();
+            try {
+                arq.close();
+            }catch (IOException erro){
+                System.out.println("Erro ao fechar o arquivo");
+                deuRuim = true;
+            }
+            if (deuRuim){
+                System.exit(1);
+            }
+        }
+    }
+
     public ResponseEntity<byte[]> BuscarImagemPorId(@PathVariable Long idFoto){
         var consulta = _usuarioRepository.findAll();
         for (int i = 0; i < consulta.size(); i++){
