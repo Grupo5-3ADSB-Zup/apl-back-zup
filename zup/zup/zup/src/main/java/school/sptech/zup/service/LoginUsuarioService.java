@@ -3,20 +3,18 @@ package school.sptech.zup.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import school.sptech.zup.domain.Login;
 import school.sptech.zup.domain.Usuario;
-import school.sptech.zup.repository.UsuarioRerpository;
+import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class LoginUsuarioService {
     //@Autowired
     private final CadastroUsuarioService _cadastroService;
-    private final UsuarioRerpository _usuarioRepository;
+    private final UsuarioRepository _usuarioRepository;
 
     public ResponseEntity<Usuario> getUsername(UsuarioLoginDto loginDto) {
         var consulta = buscaPorUsername(loginDto.getUsername());

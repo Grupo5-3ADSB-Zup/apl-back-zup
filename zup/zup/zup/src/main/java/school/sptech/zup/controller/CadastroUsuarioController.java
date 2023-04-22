@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.*;
-import school.sptech.zup.repository.UsuarioRerpository;
+import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.service.CadastroUsuarioService;
 import school.sptech.zup.service.UsuarioService;
 import school.sptech.zup.util.DateUtil;
@@ -21,7 +21,7 @@ public class CadastroUsuarioController {
     @Autowired
     private final DateUtil dateUtil;
     private final CadastroUsuarioService _cadastroService;
-    private final UsuarioRerpository _usuarioRepository;
+    private final UsuarioRepository _usuarioRepository;
 
     private final UsuarioService _usuarioService;
 

@@ -6,13 +6,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import school.sptech.zup.domain.Usuario;
-import school.sptech.zup.repository.UsuarioRerpository;
+import school.sptech.zup.repository.UsuarioRepository;
 
 import java.util.Optional;
 @Service
 public class AutenticacaoService implements UserDetailsService {
     @Autowired
-    private UsuarioRerpository _usuarioRepository;
+    private UsuarioRepository _usuarioRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Usuario> UsuarioOpt = _usuarioRepository.findByUsername(username);

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.obj.ListaObj;
 import school.sptech.zup.dto.obj.UsuarioObj;
+import school.sptech.zup.repository.UsuarioRepository;
 
 import java.io.FileWriter;
 import java.io.IOException;
