@@ -52,9 +52,10 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/usuarios/login/**"),
             new AntPathRequestMatcher("/noticia/**"),
             new AntPathRequestMatcher("/cadastro/**"),
-            new AntPathRequestMatcher("/login"),
+            new AntPathRequestMatcher("/login/logar"),
             new AntPathRequestMatcher("/h2-console"),
             new AntPathRequestMatcher("/error/**"),
+            new AntPathRequestMatcher("/list-usuario/**"),
             new AntPathRequestMatcher("jdbc:mysql://localhost:3306/zup?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true")
     };
 

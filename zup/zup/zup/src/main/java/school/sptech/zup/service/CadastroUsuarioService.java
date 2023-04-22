@@ -12,7 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 import school.sptech.zup.configuration.security.jwt.GerenciadorTokenJwt;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.*;
-import school.sptech.zup.repository.UsuarioRerpository;
+import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
 import school.sptech.zup.service.AutenticacaoJWT.UsuarioTokenDto;
 
@@ -20,12 +20,12 @@ import java.util.Optional;
 
 @Service
 public class CadastroUsuarioService {
-    private final UsuarioRerpository _usuarioRepository;
+    private final UsuarioRepository _usuarioRepository;
     private final PasswordEncoder _passwordEncoder;
     private final GerenciadorTokenJwt _gerenciadorTokenJwt;
     private final AuthenticationManager _authenticationManager;
     @Autowired
-    public CadastroUsuarioService(UsuarioRerpository usuarioRepository, PasswordEncoder passwordEncoder, GerenciadorTokenJwt gerenciadorTokenJwt, AuthenticationManager authenticationManager) {
+    public CadastroUsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, GerenciadorTokenJwt gerenciadorTokenJwt, AuthenticationManager authenticationManager) {
         _usuarioRepository = usuarioRepository;
         _passwordEncoder = passwordEncoder;
         _gerenciadorTokenJwt = gerenciadorTokenJwt;
