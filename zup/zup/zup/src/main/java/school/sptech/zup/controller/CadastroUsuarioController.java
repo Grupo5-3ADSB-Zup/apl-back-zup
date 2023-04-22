@@ -57,8 +57,12 @@ public class CadastroUsuarioController {
 
     @PatchMapping(value = "/foto/{idFoto}")
     public ResponseEntity<Void> adicionarImagem(@PathVariable Long idFoto, @RequestBody byte[] foto){
-        _usuarioRepository.setFoto(idFoto, foto);
-        return ResponseEntity.status(200).build();
+        var retorno = _cadastroService.buscaPorId(idFoto);
+        if (retorno.getStatusCodeValue() == 200){
+            _usuarioRepository.setFoto(idFoto, foto);
+            return ResponseEntity.status(200).build();
+        }
+        return ResponseEntity.status(404).build();
     }
 
     @GetMapping(value = "/foto/{idFoto}")
