@@ -10,7 +10,7 @@ public abstract class UsuarioPostRequestBody {
     private String nome;
     @Schema(name = "email", description = "Seu Email", example = "Carlos@gmail.com")
     private String email;
-    @Schema(name = "username", description = "Crie o seu nome no Site", example = "Carlow")
+    @Schema(name = "username", description = "Crie o seu usuário no site", example = "Carlow")
     private String username;
     @Schema(name = "senha", description = "Crie uma senha de acesso", example = "Carlos1994")
     private String senha;

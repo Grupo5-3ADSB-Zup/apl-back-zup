@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.Formatter;
 import java.util.FormatterClosedException;
 import java.util.List;
+import java.util.Objects;
+
 @Service
 public class UsuarioService {
     private final UsuarioRepository _usuarioRepository;
