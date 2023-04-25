@@ -84,6 +84,27 @@ public class CadastroUsuarioService {
         return ResponseEntity.status(401).build();
     }
 
+    public ResponseEntity<Usuario> saveUserAdmin(UsuarioAdminPostRequest usuarioPostRequestBody) {
+        var retorno = autenticar(usuarioPostRequestBody);
+        if (retorno == true){
+            Usuario usuario = Usuario.builder()
+                    .nome(usuarioPostRequestBody.getNome())
+                    .email(usuarioPostRequestBody.getEmail())
+                    .username(usuarioPostRequestBody.getUsername())
+                    .senha(usuarioPostRequestBody.getSenha())
+                    .autenticado(null)
+                    .influencer(usuarioPostRequestBody.isInfluencer())
+                    .logado(usuarioPostRequestBody.isLogado())
+                    .cnpj(null)
+                    .cpf(null)
+                    .Admin(usuarioPostRequestBody.isAdmin())
+                    .build();
+            _usuarioRepository.save(usuario);
+            return ResponseEntity.status(200).body(usuario);
+        }
+        return ResponseEntity.status(401).build();
+    }
+
     public ResponseEntity<Usuario> deleteUser(long id) {
         var retorno = buscaPorId(id);
         if (retorno.getStatusCodeValue() == 200){
@@ -132,6 +153,30 @@ public class CadastroUsuarioService {
                     .logado(usuarioPutRequestBody.isLogado())
                     .cnpj(usuarioPutRequestBody.getCnpj())
                     .cpf(null)
+                    .build();
+            _usuarioRepository.save(usuario);
+
+            return ResponseEntity.status(200).body(usuario);
+        }
+        return ResponseEntity.status(404).build();
+    }
+
+    public ResponseEntity<Usuario> atualizarUsuarioAdmin(UsuarioAdminPutRequest usuarioPutRequestBody) {
+        var consulta = buscaPorId(usuarioPutRequestBody.getId());
+
+        if (consulta.getStatusCodeValue() == 200){
+            Usuario usuario = Usuario.builder()
+                    .id(consulta.getBody().getId())
+                    .nome(usuarioPutRequestBody.getNome())
+                    .email(usuarioPutRequestBody.getEmail())
+                    .username(usuarioPutRequestBody.getUsername())
+                    .senha(usuarioPutRequestBody.getSenha())
+                    .autenticado(null)
+                    .influencer(usuarioPutRequestBody.isInfluencer())
+                    .logado(usuarioPutRequestBody.isLogado())
+                    .cnpj(null)
+                    .cpf(null)
+                    .Admin(usuarioPutRequestBody.isAdmin())
                     .build();
             _usuarioRepository.save(usuario);
 

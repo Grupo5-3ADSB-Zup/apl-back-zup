@@ -37,6 +37,8 @@ public class Usuario {
     @Schema(name = "cnpj", description = "CNPJ da sua empresa", example = "12345678987654")
     private String cnpj;
 
+    private boolean Admin;
+
     @JsonIgnore
     @Column(length = 50 * 1024 * 1024)
     private byte[] foto;

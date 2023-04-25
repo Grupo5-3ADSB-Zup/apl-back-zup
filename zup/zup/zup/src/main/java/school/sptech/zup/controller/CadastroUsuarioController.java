@@ -37,6 +37,12 @@ public class CadastroUsuarioController {
         return retorno;
     }
 
+    @PostMapping("/user/admin")
+    public ResponseEntity<Usuario> saveUserAdmin(@RequestBody UsuarioAdminPostRequest usuario) {
+        var retorno = _cadastroService.saveUserAdmin(usuario);
+        return retorno;
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Usuario> deleteUser(@PathVariable long id) {
         var retorno = _cadastroService.deleteUser(id);
@@ -50,6 +56,12 @@ public class CadastroUsuarioController {
     }
 
     @PutMapping("user/empresa")
+    public ResponseEntity<Usuario> atualizarUserEmpresa(@RequestBody UsuarioAdminPutRequest usuarioPutRequestBody) {
+        var retorno = _cadastroService.atualizarUsuarioAdmin(usuarioPutRequestBody);
+        return retorno;
+    }
+
+    @PutMapping("user/admin")
     public ResponseEntity<Usuario> atualizarUserEmpresa(@RequestBody UsuarioEmpresaPutRequestBody usuarioPutRequestBody) {
         var retorno = _cadastroService.atualizarUsuarioEmpresa(usuarioPutRequestBody);
         return retorno;
