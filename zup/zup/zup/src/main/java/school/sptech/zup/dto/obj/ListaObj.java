@@ -101,5 +101,11 @@ public class ListaObj<T> {
     public void limpa() {
         nroElem = 0;
     }
+
+    public void setElemento(int indice, UsuarioObj usuarioObj){
+        if (indice > 0 || indice <= nroElem) {   // se indice invalido
+            vetor[indice] = (T) usuarioObj;     // entao retorna null
+        }
+    }
 }
 

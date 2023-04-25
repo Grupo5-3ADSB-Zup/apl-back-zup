@@ -46,6 +46,19 @@ public class UsuarioService {
 
             listaUsuario.adiciona(usuarioObj);
         }
+        UsuarioObj aux = new UsuarioObj();
+        for (int a = 0; a < listaUsuario.getTamanho(); a++){
+            for (int b = 1; b < listaUsuario.getTamanho(); b++){
+
+                var comparacao = listaUsuario.getElemento(a).getNome().compareToIgnoreCase(listaUsuario.getElemento(b).getNome());
+                if (comparacao > 0){
+                    aux = listaUsuario.getElemento(a);
+                    listaUsuario.setElemento(a, listaUsuario.getElemento(b));
+                    listaUsuario.setElemento(b, aux);
+                }
+            }
+        }
+
         return ResponseEntity.status(200).body(listaUsuario);
     }
 
