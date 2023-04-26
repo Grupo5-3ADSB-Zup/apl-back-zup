@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class UsuarioAdminPostRequest extends UsuarioPostRequestBody{
-    private boolean admin;
+    private int admin;
 }

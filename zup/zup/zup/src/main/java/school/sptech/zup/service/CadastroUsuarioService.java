@@ -100,7 +100,7 @@ public class CadastroUsuarioService {
                     .logado(usuarioPostRequestBody.isLogado())
                     .cnpj(null)
                     .cpf(null)
-                    .Admin(usuarioPostRequestBody.isAdmin())
+                    .Admin(usuarioPostRequestBody.getAdmin())
                     .build();
             _usuarioRepository.save(usuario);
             return ResponseEntity.status(200).body(usuario);
@@ -179,7 +179,7 @@ public class CadastroUsuarioService {
                     .logado(usuarioPutRequestBody.isLogado())
                     .cnpj(null)
                     .cpf(null)
-                    .Admin(usuarioPutRequestBody.isAdmin())
+                    .Admin(usuarioPutRequestBody.getAdmin())
                     .build();
             _usuarioRepository.save(usuario);
 

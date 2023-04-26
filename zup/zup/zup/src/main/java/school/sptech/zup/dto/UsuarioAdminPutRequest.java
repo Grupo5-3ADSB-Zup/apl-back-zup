@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class UsuarioAdminPutRequest extends UsuarioPutRequestBody{
-    private boolean admin;
+    private int admin;
 }
