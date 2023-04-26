@@ -25,7 +25,10 @@ public class CadastroUsuarioService {
     private final GerenciadorTokenJwt _gerenciadorTokenJwt;
     private final AuthenticationManager _authenticationManager;
     @Autowired
-    public CadastroUsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, GerenciadorTokenJwt gerenciadorTokenJwt, AuthenticationManager authenticationManager) {
+    public CadastroUsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder,
+                                  GerenciadorTokenJwt gerenciadorTokenJwt,
+                                        AuthenticationManager authenticationManager) {
+
         _usuarioRepository = usuarioRepository;
         _passwordEncoder = passwordEncoder;
         _gerenciadorTokenJwt = gerenciadorTokenJwt;

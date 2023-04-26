@@ -48,7 +48,7 @@ public class UsuarioService {
         }
         UsuarioObj aux = new UsuarioObj();
         for (int a = 0; a < listaUsuario.getTamanho(); a++){
-            for (int b = 1; b < listaUsuario.getTamanho(); b++){
+            for (int b = a + 1; b < listaUsuario.getTamanho(); b++){
 
                 var comparacao = listaUsuario.getElemento(a).getNome().compareToIgnoreCase(listaUsuario.getElemento(b).getNome());
                 if (comparacao > 0){
