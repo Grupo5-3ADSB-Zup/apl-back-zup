@@ -1,12 +1,14 @@
 package school.sptech.zup.domain;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.w3c.dom.Text;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Data
 @AllArgsConstructor
@@ -16,12 +18,19 @@ import javax.persistence.*;
 public class Noticia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
+    @Schema(name = "titulo", description = "Titulo da notícia", example = "Petrobrás Caiu")
     private String titulo;
 
     @Lob
     @Column(name="CONTENT", length=2048)
+    @Schema(name = "descricao", description = "Descrição da notícia", example = "Petrobrás Caiu ontem...")
     private String descricao;
 
+    @Schema(name = "link", description = "Link da notícia original", example = "https://...")
     private String link;
+    @Schema(name = "emissora", description = "Emissora da notícia", example = "UOL")
+    private String emissora;
+    @Schema(name = "dtNoticia", description = "Data da notícia", example = "20/04/2022")
+    private LocalDateTime dtNoticia;
 }
