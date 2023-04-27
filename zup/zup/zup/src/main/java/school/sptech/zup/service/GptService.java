@@ -12,7 +12,7 @@ import java.util.concurrent.CompletionService;
 
 @Service
 public class GptService {
-    private static final String API_KEY = "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";
+    private static final String API_KEY = "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";
 
     public List<CompletionChoice> gptNoticia(List<Noticia> noticias, Gpt gpt) {
         OpenAiService service = new OpenAiService(API_KEY);
