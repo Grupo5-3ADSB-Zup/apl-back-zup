@@ -23,7 +23,7 @@ public class UsuarioService {
         _usuarioRepository = usuarioRepository;
     }
 
-    public ResponseEntity<ListaObj> getListUsuario(){
+    public ResponseEntity<ListaObj<UsuarioObj>> getListUsuario(){
         List<Usuario> usuarioConsulta = _usuarioRepository.findAll();
 
         if (usuarioConsulta.isEmpty()){
@@ -117,4 +117,33 @@ public class UsuarioService {
         }
         return ResponseEntity.status(404).build();
     }
+
+
+    public ResponseEntity<UsuarioObj> pesquisaBinaria(String x) {
+
+        ResponseEntity<ListaObj<UsuarioObj>> consulta = getListUsuario();
+
+        if (consulta.getStatusCodeValue() == 200){
+            int esquerda = 0;
+
+            int direita =  consulta.getBody().getTamanho() -1;
+
+            for (; esquerda <= direita;){
+                    int meio = (esquerda + direita) / 2;
+
+                   int comparacao = consulta.getBody().getElemento(meio).getNome().compareToIgnoreCase(x);
+                    if ( comparacao == 0) {
+
+                        return ResponseEntity.status(200).body(consulta.getBody().getElemento(meio));
+
+                    } else if (comparacao > 0) {
+                        direita = meio - 1;
+                    } else {
+                        esquerda = meio + 1;
+                    }
+            }
+        }
+        return ResponseEntity.status(404).build();
+    }
+
 }

@@ -28,4 +28,9 @@ public class ListController {
         }
         return ResponseEntity.status(404).build();
     }
+
+    @GetMapping("/{indice}")
+    public ResponseEntity<UsuarioObj>  pesquisaBinaria(@PathVariable String indice) {
+        return _usuarioService.pesquisaBinaria(indice);
+    }
 }
