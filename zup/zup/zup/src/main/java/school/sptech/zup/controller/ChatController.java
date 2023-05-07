@@ -13,6 +13,7 @@ import school.sptech.zup.util.DateUtil;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/chat")
 @Log4j2

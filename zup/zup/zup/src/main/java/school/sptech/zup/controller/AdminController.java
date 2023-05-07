@@ -7,12 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.dto.obj.UsuarioObj;
 import school.sptech.zup.service.UsuarioService;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/list-usuario")
 @Log4j2
 @RequiredArgsConstructor
-public class ListController {
+public class AdminController {
     @Autowired
     private final UsuarioService _usuarioService;
 

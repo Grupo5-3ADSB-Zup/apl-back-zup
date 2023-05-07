@@ -14,6 +14,7 @@ import school.sptech.zup.service.CadastroUsuarioService;
 import school.sptech.zup.service.LoginUsuarioService;
 import school.sptech.zup.util.DateUtil;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/login")
 @Log4j2
