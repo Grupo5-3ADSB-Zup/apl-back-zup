@@ -7,6 +7,7 @@ import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.obj.ListaObj;
 import school.sptech.zup.dto.obj.UsuarioObj;
 import school.sptech.zup.repository.UsuarioRepository;
+import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -60,6 +61,27 @@ public class UsuarioService {
         }
 
         return ResponseEntity.status(200).body(listaUsuario);
+    }
+
+    public ResponseEntity<Usuario> getUsername(UsuarioLoginDto loginDto) {
+        var consulta = buscaPorUsername(loginDto.getUsername());
+        if (consulta.getStatusCodeValue() == 200
+                && consulta.getBody().getSenha().equals(loginDto.getSenha())){
+
+            return ResponseEntity.status(200).body(consulta.getBody());
+        }
+        return consulta;
+    }
+
+    public ResponseEntity<Usuario> buscaPorUsername(String username){
+        List<Usuario> usuarioConsulta = _usuarioRepository.findAll();
+
+        for (int i = 0; i < usuarioConsulta.size(); i++) {
+            if (usuarioConsulta.get(i).getUsername().equals(username)){
+                return ResponseEntity.status(200).body(usuarioConsulta.get(i));
+            }
+        }
+        return ResponseEntity.status(404).build();
     }
 
     public static void gravarArquivoCsv(ListaObj<UsuarioObj> listaUsuarioObj, String nomeArquivo){

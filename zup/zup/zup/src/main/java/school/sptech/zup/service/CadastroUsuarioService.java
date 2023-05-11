@@ -117,7 +117,6 @@ public class CadastroUsuarioService {
         return retorno;
     }
 
-
     public ResponseEntity<Usuario> atualizarUsuarioComum(UsuarioComumPutRequestBody usuarioPutRequestBody) {
         var consulta = buscaPorId(usuarioPutRequestBody.getId());
 

@@ -15,19 +15,11 @@ public class LoginUsuarioService {
     //@Autowired
     private final CadastroUsuarioService _cadastroService;
     private final UsuarioRepository _usuarioRepository;
+    private final UsuarioService usuarioService;
 
-    public ResponseEntity<Usuario> getUsername(UsuarioLoginDto loginDto) {
-        var consulta = buscaPorUsername(loginDto.getUsername());
-        if (consulta.getStatusCodeValue() == 200
-                && consulta.getBody().getSenha().equals(loginDto.getSenha())){
-
-            return ResponseEntity.status(200).body(consulta.getBody());
-        }
-        return consulta;
-    }
 
     public ResponseEntity<Usuario> logar(UsuarioLoginDto loginDto){
-        var consulta = getUsername(loginDto);
+        var consulta = usuarioService.getUsername(loginDto);
         if (consulta.getStatusCodeValue() == 200 && consulta.getBody().isLogado() == false
                 && consulta.getBody().getSenha().equals(loginDto.getSenha())){
 
@@ -39,7 +31,7 @@ public class LoginUsuarioService {
     }
 
     public ResponseEntity<Usuario> deslogar(String username){
-        var consulta = buscaPorUsername(username);
+        var consulta = usuarioService.buscaPorUsername(username);
         if (consulta.getStatusCodeValue() == 200 && consulta.getBody().isLogado() == true){
             consulta.getBody().setLogado(false);
             _usuarioRepository.save(consulta.getBody());
@@ -48,14 +40,5 @@ public class LoginUsuarioService {
         return consulta;
     }
 
-    public ResponseEntity<Usuario> buscaPorUsername(String username){
-        List<Usuario> usuarioConsulta = _usuarioRepository.findAll();
 
-        for (int i = 0; i < usuarioConsulta.size(); i++) {
-            if (usuarioConsulta.get(i).getUsername().equals(username)){
-                return ResponseEntity.status(200).body(usuarioConsulta.get(i));
-            }
-        }
-        return ResponseEntity.status(404).build();
-    }
 }
