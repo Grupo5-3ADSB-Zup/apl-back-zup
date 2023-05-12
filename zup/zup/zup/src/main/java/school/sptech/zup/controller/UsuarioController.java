@@ -38,7 +38,7 @@ public class UsuarioController {
 
 
     //fazer validação para somente usuario administrador acessar
-    @PostMapping("/{nomeArquivo}")
+    @GetMapping("/gerar-arquivo/{nomeArquivo}")
     public ResponseEntity<Object>  gravarArquivoCsv(@PathVariable String nomeArquivo) {
         var retorno = usuarioService.getListUsuario();
         if (retorno.getStatusCodeValue() == 200){
