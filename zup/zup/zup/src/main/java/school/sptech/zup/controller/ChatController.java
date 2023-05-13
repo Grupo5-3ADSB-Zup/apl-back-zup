@@ -13,7 +13,7 @@ import school.sptech.zup.util.DateUtil;
 
 import java.util.List;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/chat")
 @Log4j2

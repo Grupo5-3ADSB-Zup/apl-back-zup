@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.dto.obj.UsuarioObj;
 import school.sptech.zup.service.UsuarioService;
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/list-usuario")
 @Log4j2
