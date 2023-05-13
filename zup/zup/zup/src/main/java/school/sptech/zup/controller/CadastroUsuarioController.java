@@ -12,7 +12,7 @@ import school.sptech.zup.service.CadastroUsuarioService;
 import school.sptech.zup.service.UsuarioService;
 import school.sptech.zup.util.DateUtil;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/cadastro")
 @Log4j2

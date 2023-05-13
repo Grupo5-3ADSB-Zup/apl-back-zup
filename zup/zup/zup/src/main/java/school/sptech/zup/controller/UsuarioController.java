@@ -17,7 +17,7 @@ import school.sptech.zup.util.DateUtil;
 
 import java.util.Optional;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/usuario")
 @Log4j2
@@ -35,30 +35,11 @@ public class UsuarioController {
     private UsuarioObj[] vetor;
     private int nroElem;
 
-
-
-    //fazer validação para somente usuario administrador acessar
-    @GetMapping("/gerar-arquivo/{nomeArquivo}")
-    public ResponseEntity<Object>  gravarArquivoCsv(@PathVariable String nomeArquivo) {
-        var retorno = usuarioService.getListUsuario();
-        if (retorno.getStatusCodeValue() == 200){
-            usuarioService.gravarArquivoCsv(retorno.getBody(), nomeArquivo);
-            return ResponseEntity.status(201).build();
-        }
-        return ResponseEntity.status(404).build();
-    }
-
     @GetMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Usuario> getUsuario(@RequestParam String username) {
         var retorno = usuarioService.buscaPorUsername(username);
         return retorno;
-    }
-
-    //fazer validação para somente usuario administrador acessar
-    @GetMapping("/{indice}")
-    public ResponseEntity<UsuarioObj>  pesquisaBinaria(@PathVariable String indice) {
-        return usuarioService.pesquisaBinaria(indice);
     }
 
     @GetMapping(value = "/foto/{idFoto}")
