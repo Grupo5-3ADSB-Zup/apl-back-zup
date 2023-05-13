@@ -50,6 +50,7 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/actuador/*"),
             new AntPathRequestMatcher("/swagger-ui/**"),
             new AntPathRequestMatcher("/usuarios/login/**"),
+            new AntPathRequestMatcher("/usuario/gerar-arquivo/lista"),
             new AntPathRequestMatcher("/noticia/**"),
             new AntPathRequestMatcher("/cadastro/**"),
             new AntPathRequestMatcher("/login/logar"),

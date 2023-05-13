@@ -1,12 +1,10 @@
 package school.sptech.zup.controller;
 
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import school.sptech.zup.domain.Login;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
 import school.sptech.zup.service.AutenticacaoJWT.UsuarioTokenDto;
@@ -14,6 +12,7 @@ import school.sptech.zup.service.CadastroUsuarioService;
 import school.sptech.zup.service.LoginUsuarioService;
 import school.sptech.zup.util.DateUtil;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/login")
 @Log4j2
@@ -26,14 +25,7 @@ public class LoginUsuarioController {
     @Autowired
     private final CadastroUsuarioService _cadastroUsuarioService;
 
-    @GetMapping
-    @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Usuario> getUsuario(@RequestParam String username) {
-        var retorno = _loginService.buscaPorUsername(username);
-        return retorno;
-    }
-
-    @PostMapping("/logar")
+   @PostMapping("/logar")
     public ResponseEntity<UsuarioTokenDto> logarUser(@RequestBody UsuarioLoginDto loginDto){
         //var retorno = _loginService.logar(loginDto);
         UsuarioTokenDto usuarioTokenDto = this._cadastroUsuarioService.autenticar(loginDto);
@@ -45,4 +37,5 @@ public class LoginUsuarioController {
         var retorno = _loginService.deslogar(username);
         return retorno;
     }
+
 }

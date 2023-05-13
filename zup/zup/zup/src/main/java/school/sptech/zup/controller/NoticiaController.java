@@ -16,6 +16,7 @@ import school.sptech.zup.util.DateUtil;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/noticia")
 @RequiredArgsConstructor
