@@ -12,8 +12,9 @@ import school.sptech.zup.dto.obj.UsuarioObj;
 import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -68,6 +69,154 @@ public class UsuarioService {
                 System.exit(1);
             }
         }
+    }
+
+
+    public static void gravarRegistro(String registro, String nomeArq){
+        BufferedWriter saida = null;
+
+        // bloco para abrir o arquivo
+        try {
+            saida = new BufferedWriter(new FileWriter(nomeArq, true));
+        }
+        catch (IOException e){
+            System.out.println("Erro ao abrir o arquivo");
+            System.exit(1);
+        }
+
+        try {
+            saida.append(registro + "\n");
+            saida.close();
+        }
+        catch (IOException erro){
+            System.out.println("Erro ao gravar o arquivo");
+        }
+    }
+
+    public static void gravarArquivoTxt(List<UsuarioObj> lista, String nomeArq){
+        int contadorRegistroDadosGravados = 0;
+
+        // Monta o registro de header
+        String header = "00NOTA20321";
+        header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+        header += "01";
+
+        // grava o registro de header
+
+        gravarRegistro(header, nomeArq);
+
+        // Monta e grava os registros de dados ou registros de body
+
+        String corpo;
+        for (int i = 0; i < lista.size(); i++){
+            UsuarioObj a = lista.get(i);
+            corpo = "02";
+            corpo += String.format("%-5.5s", a.getId());
+            corpo += String.format("%-8.8s", a.getNome());
+            corpo += String.format("%-50.50s", a.getEmail());
+            corpo += String.format("%-40.40s", a.getUsername());
+            corpo += String.format("%05.2f", a.getCpf());
+            corpo += String.format("%03d", a.getCnpj());
+            corpo += String.format("%03d", a.getAutenticado());
+            corpo += String.format("%03d", a.getSenha());
+            gravarRegistro(corpo, nomeArq);
+            contadorRegistroDadosGravados++;
+        }
+
+        // Monta e grava o registro de Trailer
+        String trailer = "01";
+        trailer += String.format("%010d", contadorRegistroDadosGravados++);
+        gravarRegistro(trailer, nomeArq);
+        System.out.println("Cheguei até aqui");
+
+    }
+
+    public static void lerArquivoTxt(String nomeArq){
+        BufferedReader entrada = null;
+        String registro, tipoRegistro;
+        String curso, ra, nome, disciplina;
+        Double media;
+        int qtdFalta;
+        int contaRegistroDadosLidos = 0;
+        int qtdRegistroDadosGravados;
+
+        List<UsuarioObj> listaLida = new ArrayList<>();
+
+        // bloco abrir arquivo
+        try {
+            entrada = new BufferedReader(new FileReader(nomeArq));
+        }
+        catch (IOException erro){
+            System.out.println("Erro ao abrir o arquivo");
+            System.exit(1);
+        }
+
+        // ler o arquivo e fechar
+
+        try {
+            registro = entrada.readLine();
+            while (registro != null){
+                tipoRegistro = registro.substring(0,2);
+                if (tipoRegistro.equals("00")){
+                    System.out.println("É um registro de header");
+                    System.out.println("Tipo do arquivo: " + registro.substring(2,6));
+                    System.out.println("Ano e Semestre: " + registro.substring(6,11));
+                    System.out.println("Data e hora de gravação do arquivo: " + registro.substring(11,30));
+                    System.out.println("Versão do documento: " + registro.substring(30,32));
+                } else if (tipoRegistro.equals("01")) {
+                    System.out.println("É um registro de trailer");
+                    qtdRegistroDadosGravados = Integer.parseInt(registro.substring(2, 12));
+                    if (qtdRegistroDadosGravados == contaRegistroDadosLidos){
+                        System.out.println("Quantidade de registros de dados gravados compatíveis com quantidade de " +
+                                "registros de dados lidos");
+                    }
+                    else {
+                        System.out.println("Quantidade de registros de dados gravados imcompatíveis com quantidade de " +
+                                "registros de dados lidos");
+                    }
+                    // AQUI TBM
+                } else if (tipoRegistro.equals("02")) {
+                    System.out.println("É um registro de dados ou corpo");
+                    curso = registro.substring(2,7).trim();
+                    ra = registro.substring(7,15).trim();
+                    nome = registro.substring(15,65).trim();
+                    disciplina = registro.substring(65,105).trim();
+                    media = Double.parseDouble(registro.substring(105,110).replace(',' , '.'));
+                    qtdFalta = Integer.parseInt(registro.substring(110,113));
+                    //UsuarioObj a = new UsuarioObj(ra, nome, curso, disciplina, media, qtdFalta);
+                    contaRegistroDadosLidos++;
+
+                    // Para importar essa informação ao banco de dados:
+
+                    //repository.save(a);
+
+                    // Por n estar conectado ao banco de dados, add numa lista msm
+
+                    //MEXER AQUIII
+                    //listaLida.add(a);
+                }
+                else {
+                    System.out.println("É um registro inválido");
+                }
+                // Lê o próximo registro
+                registro = entrada.readLine();
+            }
+            entrada.close();
+        }
+        catch(IOException erro){
+            System.out.println("Erro ao ler arquivo");
+            System.exit(1);
+        }
+
+        // Exibe a lista lida
+        System.out.println("\n lista contendo os dados lidos do arquivo: ");
+        for (UsuarioObj a: listaLida){
+            System.out.println(a);
+        }
+
+        // Se quiser importar a lista toda de uma vez para o banco:
+
+        //repository.saveAll(listalida);
     }
 
     public ResponseEntity<ListaObj<UsuarioObj>> getListUsuario(){
