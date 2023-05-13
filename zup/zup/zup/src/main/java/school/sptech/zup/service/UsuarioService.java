@@ -93,7 +93,7 @@ public class UsuarioService {
         }
     }
 
-    public static void gravarArquivoTxt(List<UsuarioObj> lista, String nomeArq){
+    public static void gravarArquivoTxt(ListaObj<UsuarioObj> lista, String nomeArq){
         int contadorRegistroDadosGravados = 0;
 
         // Monta o registro de header
@@ -108,8 +108,8 @@ public class UsuarioService {
         // Monta e grava os registros de dados ou registros de body
 
         String corpo;
-        for (int i = 0; i < lista.size(); i++){
-            UsuarioObj a = lista.get(i);
+        for (int i = 0; i < lista.getTamanho(); i++){
+            UsuarioObj a = lista.getElemento(i);
             corpo = "02";
             corpo += String.format("%-5.5s", a.getId());
             corpo += String.format("%-8.8s", a.getNome());

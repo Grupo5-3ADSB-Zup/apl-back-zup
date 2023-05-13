@@ -19,7 +19,7 @@ public class AdminController {
     private UsuarioObj[] vetor;
     private int nroElem;
 
-    @PostMapping("/{nomeArquivo}")
+    @PostMapping("/csv/{nomeArquivo}")
     public ResponseEntity<Object>  gravarArquivoCsv(@PathVariable String nomeArquivo) {
         var retorno = _usuarioService.getListUsuario();
         if (retorno.getStatusCodeValue() == 200){
@@ -32,5 +32,16 @@ public class AdminController {
     @GetMapping("/{indice}")
     public ResponseEntity<UsuarioObj>  pesquisaBinaria(@PathVariable String indice) {
         return _usuarioService.pesquisaBinaria(indice);
+    }
+
+
+    @PostMapping("/txt/{nomeArquivo}")
+    public ResponseEntity<Object>  gravarArquivoTXT(@PathVariable String nomeArquivo) {
+        var retorno = _usuarioService.getListUsuario();
+        if (retorno.getStatusCodeValue() == 200){
+            _usuarioService.gravarArquivoTxt(retorno.getBody(), nomeArquivo);
+            return ResponseEntity.status(201).build();
+        }
+        return ResponseEntity.status(404).build();
     }
 }
