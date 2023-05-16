@@ -51,14 +51,16 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/swagger-ui/**"),
             new AntPathRequestMatcher("/usuarios/login/**"),
             new AntPathRequestMatcher("/usuario/**"),
-            new AntPathRequestMatcher("/noticia/**"),
+            new AntPathRequestMatcher("/noticia/rss"),
             new AntPathRequestMatcher("/cadastro/**"),
             new AntPathRequestMatcher("/login/logar"),
             new AntPathRequestMatcher("/h2-console"),
             new AntPathRequestMatcher("/error/**"),
             new AntPathRequestMatcher("/list-usuario/**"),
             new AntPathRequestMatcher("jdbc:mysql://localhost:3306/zup?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true"),
-            new AntPathRequestMatcher("jdbc:sqlserver://projeto-zup.database.windows.net:1433;database=bd-projeto-zup;user=admin-zup@projeto-zup;password=#Gfgrupo5;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30")
+            new AntPathRequestMatcher("jdbc:sqlserver://projeto-zup.database.windows.net:1433;database=bd-projeto-zup;user=admin-zup@projeto-zup;password=#Gfgrupo5;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30"),
+            new AntPathRequestMatcher("/3001/**"),
+            new AntPathRequestMatcher("/3000/**")
     };
 
     @Bean

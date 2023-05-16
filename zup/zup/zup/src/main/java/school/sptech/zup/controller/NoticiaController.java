@@ -16,7 +16,7 @@ import school.sptech.zup.util.DateUtil;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/noticia")
 @RequiredArgsConstructor
