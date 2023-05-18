@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -42,4 +43,5 @@ public class Usuario {
     @JsonIgnore
     @Column(length = 50 * 1024 * 1024)
     private byte[] foto;
+
 }
