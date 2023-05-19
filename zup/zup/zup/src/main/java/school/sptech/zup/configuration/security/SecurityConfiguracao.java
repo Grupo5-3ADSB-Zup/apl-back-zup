@@ -56,7 +56,7 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/login/logar"),
             new AntPathRequestMatcher("/h2-console"),
             new AntPathRequestMatcher("/error/**"),
-            new AntPathRequestMatcher("/list-usuario/**"),
+            new AntPathRequestMatcher("/admin/**"),
             new AntPathRequestMatcher("jdbc:mysql://localhost:3306/zup?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true"),
             new AntPathRequestMatcher("jdbc:sqlserver://projeto-zup.database.windows.net:1433;database=bd-projeto-zup;user=admin-zup@projeto-zup;password=#Gfgrupo5;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30"),
             new AntPathRequestMatcher("/3001/**"),

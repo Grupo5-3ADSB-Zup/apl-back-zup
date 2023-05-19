@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.UsuarioAdminPutRequest;
+import school.sptech.zup.dto.UsuarioComumPutRequestBody;
+import school.sptech.zup.dto.UsuarioComumRequestBody;
 import school.sptech.zup.dto.UsuarioEmpresaPutRequestBody;
 import school.sptech.zup.dto.obj.UsuarioObj;
 import school.sptech.zup.repository.UsuarioRepository;
@@ -59,6 +61,12 @@ public class UsuarioController {
             return ResponseEntity.status(200).build();
         }
         return ResponseEntity.status(404).build();
+    }
+
+    @PutMapping("user/comum")
+    public ResponseEntity<Usuario> atualizarUserEmpresa(@RequestBody UsuarioComumPutRequestBody usuarioPutRequestBody) {
+        var retorno = usuarioService.atualizarUsuarioComum(usuarioPutRequestBody);
+        return retorno;
     }
 
     @PutMapping("user/empresa")
