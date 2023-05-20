@@ -106,7 +106,7 @@ public class AdminService {
         }
         return ResponseEntity.status(404).build();
     }
-    public void gravarRegistro(String registro, String nomeArq){
+    public BufferedWriter gravarRegistro(String registro, String nomeArq){
         BufferedWriter saida = null;
 
         // bloco para abrir o arquivo
@@ -121,13 +121,15 @@ public class AdminService {
         try {
             saida.append(registro + "\n");
             saida.close();
+
         }
         catch (IOException erro){
             System.out.println("Erro ao gravar o arquivo");
         }
+        return saida;
     }
 
-    public void gravarArquivoTxt(ListaObj<UsuarioObj> lista, String nomeArq){
+    public BufferedWriter gravarArquivoTxt(ListaObj<UsuarioObj> lista, String nomeArq){
         int contadorRegistroDadosGravados = 0;
 
         nomeArq += ".txt";
@@ -159,10 +161,8 @@ public class AdminService {
         // Monta e grava o registro de Trailer
         String trailer = "01";
         trailer += String.format("%010d", contadorRegistroDadosGravados++);
-        gravarRegistro(trailer, nomeArq);
 
-        lerArquivoTxt(nomeArq);
-
+        return (gravarRegistro(trailer, nomeArq));
     }
 
     public void lerArquivoTxt(String nomeArq){

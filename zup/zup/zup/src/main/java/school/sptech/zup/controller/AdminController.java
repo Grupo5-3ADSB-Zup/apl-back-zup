@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.dto.obj.UsuarioObj;
 import school.sptech.zup.service.AdminService;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/admin")
@@ -37,14 +40,20 @@ public class AdminController {
     }
 
 
-    @PostMapping("/txt/{nomeArquivo}")
-    public ResponseEntity<Object>  gravarArquivoTXT(@PathVariable String nomeArquivo) {
+    @PostMapping("/exportacao/txt/{nomeArquivo}")
+    public ResponseEntity<BufferedWriter> gravarArquivoTXT(@PathVariable String nomeArquivo) {
         var retorno = _adminService.getListUsuario();
         if (retorno.getStatusCodeValue() == 200){
-            _adminService.gravarArquivoTxt(retorno.getBody(), nomeArquivo);
+             var gerar = _adminService.gravarArquivoTxt(retorno.getBody(), nomeArquivo);
             return ResponseEntity.status(201).build();
         }
         return ResponseEntity.status(404).build();
+    }
+
+    @PatchMapping(value = "/importacao/txt")
+    public ResponseEntity<BufferedReader>  importarArquivoTXT(@RequestParam String nomeArquivo) {
+             _adminService.lerArquivoTxt(nomeArquivo);
+            return ResponseEntity.status(201).build();
     }
 
     @GetMapping("/filaPilha/noticias")
