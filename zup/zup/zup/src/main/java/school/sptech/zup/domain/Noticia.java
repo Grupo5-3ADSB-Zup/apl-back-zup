@@ -31,6 +31,10 @@ public class Noticia {
     private String link;
     @Schema(name = "emissora", description = "Emissora da notícia", example = "UOL")
     private String emissora;
+    @Schema(name = "likes", description = "Curtidas da notícia", example = "30")
+    private Integer likes;
+    @Schema(name = "comentario", description = "comentários da notícia", example = "Muito interessante a analise feita")
+    private String comentario;
     @Schema(name = "dtNoticia", description = "Data da notícia", example = "20/04/2022")
     private LocalDateTime dtNoticia;
 }

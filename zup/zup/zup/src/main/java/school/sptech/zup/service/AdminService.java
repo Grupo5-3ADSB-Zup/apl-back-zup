@@ -165,7 +165,7 @@ public class AdminService {
         return (gravarRegistro(trailer, nomeArq));
     }
 
-    public void lerArquivoTxt(String nomeArq){
+    public ResponseEntity lerArquivoTxt(String nomeArq){
         BufferedReader entrada = null;
         String registro, tipoRegistro;
         String nome, email, corretora, perfil, patrimonio;
@@ -270,6 +270,9 @@ public class AdminService {
         // Se quiser importar a lista toda de uma vez para o banco:
 
         //repository.saveAll(listalida);
+
+        return ResponseEntity.status(201).build();
+
     }
 
     public ResponseEntity<ListaObj<UsuarioObj>> getListUsuario(){

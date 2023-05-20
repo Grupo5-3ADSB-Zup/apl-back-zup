@@ -40,11 +40,13 @@ public class AdminController {
     }
 
 
-    @PostMapping("/exportacao/txt/{nomeArquivo}")
+    @PostMapping(value = "/exportacao/txt/{nomeArquivo}")
+
     public ResponseEntity<BufferedWriter> gravarArquivoTXT(@PathVariable String nomeArquivo) {
         var retorno = _adminService.getListUsuario();
         if (retorno.getStatusCodeValue() == 200){
              var gerar = _adminService.gravarArquivoTxt(retorno.getBody(), nomeArquivo);
+
             return ResponseEntity.status(201).build();
         }
         return ResponseEntity.status(404).build();
@@ -52,8 +54,11 @@ public class AdminController {
 
     @PatchMapping(value = "/importacao/txt")
     public ResponseEntity<BufferedReader>  importarArquivoTXT(@RequestParam String nomeArquivo) {
-             _adminService.lerArquivoTxt(nomeArquivo);
-            return ResponseEntity.status(201).build();
+           var retorno = _adminService.lerArquivoTxt(nomeArquivo);
+           if (retorno.getStatusCodeValue() == 201){
+               return retorno;
+           }
+            return ResponseEntity.status(404).build();
     }
 
     @GetMapping("/filaPilha/noticias")
