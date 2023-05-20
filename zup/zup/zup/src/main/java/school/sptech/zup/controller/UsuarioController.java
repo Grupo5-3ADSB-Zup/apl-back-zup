@@ -64,7 +64,7 @@ public class UsuarioController {
     }
 
     @PutMapping("user/comum")
-    public ResponseEntity<Usuario> atualizarUserEmpresa(@RequestBody UsuarioComumPutRequestBody usuarioPutRequestBody) {
+    public ResponseEntity<Usuario> atualizarUserComum(@RequestBody UsuarioComumPutRequestBody usuarioPutRequestBody) {
         var retorno = usuarioService.atualizarUsuarioComum(usuarioPutRequestBody);
         return retorno;
     }
@@ -76,7 +76,7 @@ public class UsuarioController {
     }
 
     @PutMapping("user/admin")
-    public ResponseEntity<Usuario> atualizarUserEmpresa(@RequestBody UsuarioEmpresaPutRequestBody usuarioPutRequestBody) {
+    public ResponseEntity<Usuario> atualizarUserAdmin(@RequestBody UsuarioEmpresaPutRequestBody usuarioPutRequestBody) {
         var retorno = usuarioService.atualizarUsuarioEmpresa(usuarioPutRequestBody);
         return retorno;
     }

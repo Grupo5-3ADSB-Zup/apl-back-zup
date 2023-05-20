@@ -17,7 +17,7 @@ public class Carteira {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String corretora;
-    private Double patrimonio;
+    private String patrimonio;
     private String perfil;
 
    @ManyToOne

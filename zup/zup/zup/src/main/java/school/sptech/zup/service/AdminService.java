@@ -1,11 +1,14 @@
 package school.sptech.zup.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import school.sptech.zup.controller.NoticiaController;
-import school.sptech.zup.domain.Noticia;
+import school.sptech.zup.controller.UsuarioController;
+import school.sptech.zup.domain.Carteira;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.obj.*;
+import school.sptech.zup.repository.CarteiraRepository;
 import school.sptech.zup.repository.UsuarioRepository;
 
 import java.io.*;
@@ -18,16 +21,20 @@ import java.util.List;
 
 @Service
 public class AdminService {
-
     private final UsuarioRepository _usuarioRepository;
     private final NoticiaController _noticiaController;
 
-    public AdminService(UsuarioRepository _usuarioRepository, NoticiaController _noticiaController) {
+    private final UsuarioController _usuarioController;
+    private final CarteiraRepository _carteiraRepository;
+
+    public AdminService(UsuarioRepository _usuarioRepository, NoticiaController _noticiaController, UsuarioController _usuarioController, CarteiraRepository _carteiraRepository) {
         this._usuarioRepository = _usuarioRepository;
         this._noticiaController = _noticiaController;
+        this._usuarioController = _usuarioController;
+        this._carteiraRepository = _carteiraRepository;
     }
 
-    public static void gravarArquivoCsv(ListaObj<UsuarioObj> listaUsuarioObj, String nomeArquivo){
+    public void gravarArquivoCsv(ListaObj<UsuarioObj> listaUsuarioObj, String nomeArquivo){
         FileWriter arq = null;
         Formatter saida = null;
         Boolean deuRuim = false;
@@ -99,7 +106,7 @@ public class AdminService {
         }
         return ResponseEntity.status(404).build();
     }
-    public static void gravarRegistro(String registro, String nomeArq){
+    public void gravarRegistro(String registro, String nomeArq){
         BufferedWriter saida = null;
 
         // bloco para abrir o arquivo
@@ -120,13 +127,15 @@ public class AdminService {
         }
     }
 
-    public static void gravarArquivoTxt(ListaObj<UsuarioObj> lista, String nomeArq){
+    public void gravarArquivoTxt(ListaObj<UsuarioObj> lista, String nomeArq){
         int contadorRegistroDadosGravados = 0;
 
+        nomeArq += ".txt";
+
         // Monta o registro de header
-        String header = "00NOTA20321";
+        String header = "00USUARIO";
         header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
-        header += "01";
+        header += "11";
 
         // grava o registro de header
 
@@ -138,14 +147,11 @@ public class AdminService {
         for (int i = 0; i < lista.getTamanho(); i++){
             UsuarioObj a = lista.getElemento(i);
             corpo = "02";
-            corpo += String.format("%-5.5s", a.getId());
-            corpo += String.format("%-8.8s", a.getNome());
-            corpo += String.format("%-50.50s", a.getEmail());
-            corpo += String.format("%-40.40s", a.getUsername());
-            corpo += String.format("%05.2f", a.getCpf());
-            corpo += String.format("%03d", a.getCnpj());
-            corpo += String.format("%03d", a.getAutenticado());
-            corpo += String.format("%03d", a.getSenha());
+            corpo += String.format("%-49.49s", a.getNome());
+            corpo += String.format("%-49.49s", a.getEmail());
+            corpo += String.format("%-10.10s", a.getUsername());
+            corpo += String.format("%-11.11s", a.getCpf());
+            corpo += String.format("%-14.14s", a.getCnpj());
             gravarRegistro(corpo, nomeArq);
             contadorRegistroDadosGravados++;
         }
@@ -154,16 +160,18 @@ public class AdminService {
         String trailer = "01";
         trailer += String.format("%010d", contadorRegistroDadosGravados++);
         gravarRegistro(trailer, nomeArq);
-        System.out.println("Cheguei até aqui");
+
+        lerArquivoTxt(nomeArq);
 
     }
 
-    public static void lerArquivoTxt(String nomeArq){
+    public void lerArquivoTxt(String nomeArq){
         BufferedReader entrada = null;
         String registro, tipoRegistro;
-        String curso, ra, nome, disciplina;
-        Double media;
-        int qtdFalta;
+        String nome, email, corretora, perfil, patrimonio;
+        String username = null;
+        //Usuario user;
+
         int contaRegistroDadosLidos = 0;
         int qtdRegistroDadosGravados;
 
@@ -186,10 +194,9 @@ public class AdminService {
                 tipoRegistro = registro.substring(0,2);
                 if (tipoRegistro.equals("00")){
                     System.out.println("É um registro de header");
-                    System.out.println("Tipo do arquivo: " + registro.substring(2,6));
-                    System.out.println("Ano e Semestre: " + registro.substring(6,11));
-                    System.out.println("Data e hora de gravação do arquivo: " + registro.substring(11,30));
-                    System.out.println("Versão do documento: " + registro.substring(30,32));
+                    System.out.println("Usuário: " + registro.substring(3,10));
+                    System.out.println("Data e hora de gravação do arquivo: " + registro.substring(11,27));
+                    System.out.println("Versão do documento: " + registro.substring(28,30));
                 } else if (tipoRegistro.equals("01")) {
                     System.out.println("É um registro de trailer");
                     qtdRegistroDadosGravados = Integer.parseInt(registro.substring(2, 12));
@@ -204,13 +211,9 @@ public class AdminService {
                     // AQUI TBM
                 } else if (tipoRegistro.equals("02")) {
                     System.out.println("É um registro de dados ou corpo");
-                    curso = registro.substring(2,7).trim();
-                    ra = registro.substring(7,15).trim();
-                    nome = registro.substring(15,65).trim();
-                    disciplina = registro.substring(65,105).trim();
-                    media = Double.parseDouble(registro.substring(105,110).replace(',' , '.'));
-                    qtdFalta = Integer.parseInt(registro.substring(110,113));
-                    //UsuarioObj a = new UsuarioObj(ra, nome, curso, disciplina, media, qtdFalta);
+                    nome = registro.substring(2,51).trim();
+                    email = registro.substring(51,100).trim();
+                    username = registro.substring(100,110).trim();
                     contaRegistroDadosLidos++;
 
                     // Para importar essa informação ao banco de dados:
@@ -221,8 +224,31 @@ public class AdminService {
 
                     //MEXER AQUIII
                     //listaLida.add(a);
-                }
-                else {
+
+                } else if (tipoRegistro.equals("03")) {
+                    System.out.println("É um registro de dados ou corpo");
+                    corretora = registro.substring(2,51).trim();
+                    perfil = registro.substring(51,100).trim();
+                    patrimonio = registro.substring(100,114).trim();
+                    contaRegistroDadosLidos++;
+
+                   var consulta = _usuarioRepository.findByUsername(username);
+
+                   if (consulta.isPresent()){
+
+                       Carteira carteira = new Carteira().builder()
+                               .corretora(corretora)
+                               .perfil(perfil)
+                               .patrimonio(patrimonio)
+                               .usuario(consulta.get())
+                               .build();
+
+                       // fazer tratativa de exceção
+
+                       _carteiraRepository.save(carteira);
+                   }
+
+                } else {
                     System.out.println("É um registro inválido");
                 }
                 // Lê o próximo registro
