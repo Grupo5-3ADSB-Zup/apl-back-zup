@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import school.sptech.zup.configuration.security.jwt.GerenciadorTokenJwt;
 import school.sptech.zup.service.AutenticacaoJWT.AutenticacaoService;
 

@@ -52,7 +52,9 @@ public class AdminController {
         return ResponseEntity.status(404).build();
     }
 
-    @PatchMapping(value = "/importacao/txt")
+    @PatchMapping(value = "/importacao/txt", consumes =
+            "text/plain")
+
     public ResponseEntity<BufferedReader>  importarArquivoTXT(@RequestParam String nomeArquivo) {
            var retorno = _adminService.lerArquivoTxt(nomeArquivo);
            if (retorno.getStatusCodeValue() == 201){
