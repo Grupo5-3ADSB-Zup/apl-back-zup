@@ -23,7 +23,7 @@ public class Noticia {
     private String titulo;
 
     @Lob
-    @Column(name="CONTENT", length=2048)
+    @Column(name="descricao", length=2048)
     @Schema(name = "descricao", description = "Descrição da notícia", example = "Petrobrás Caiu ontem...")
     private String descricao;
 
