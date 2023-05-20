@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import school.sptech.zup.util.enumerador.EnumUsuario;
 
 import javax.persistence.*;
 
@@ -26,18 +27,21 @@ public class Usuario {
     private String username;
     @Schema(name = "senha", description = "Crie uma senha de acesso", example = "Carlos1994")
     private String senha;
-    @Schema(name = "Influencer", description = "Você é um influenciador ?", example = "@PrimoRico")
-    private boolean influencer;
+//    @Schema(name = "Influencer", description = "Você é um influenciador ?", example = "@PrimoRico")
+//    private boolean influencer;
 
-    private Boolean autenticado;
+    @Schema(name = "tipoUsuario", description = "Seu tipo de usuario", example = "Comum")
+    private String tipoUsuario;
 
-    private boolean logado;
+//    private Boolean autenticado;
+//
+//    private boolean logado;
     @Schema(name = "cpf", description = "Seu CPF", example = "123456764532")
     private String cpf;
     @Schema(name = "cnpj", description = "CNPJ da sua empresa", example = "12345678987654")
     private String cnpj;
 
-    private int Admin;
+//    private int Admin;
 
     @JsonIgnore
     @Column(length = 50 * 1024 * 1024)

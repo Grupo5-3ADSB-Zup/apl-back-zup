@@ -4,17 +4,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import school.sptech.zup.domain.Usuario;
-import school.sptech.zup.dto.UsuarioAdminPutRequest;
 import school.sptech.zup.dto.UsuarioComumPutRequestBody;
 import school.sptech.zup.dto.UsuarioEmpresaPutRequestBody;
 import school.sptech.zup.dto.obj.ListaObj;
 import school.sptech.zup.dto.obj.UsuarioObj;
 import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
+import school.sptech.zup.util.enumerador.EnumUsuario;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UsuarioService {
@@ -45,11 +50,26 @@ public class UsuarioService {
         // Bloco try-catch para gravar no arquivo
 
         try {
+            saida.format("%s;%s;%s;%s;%s;%s;%s;%s\n",
+                    "Id",
+                    "Nome",
+                    "Email",
+                    "User name",
+                    "Senha",
+                    "Tipo Usuario",
+                    "CPF ",
+                    "CNPJ");
+
             for (int i =0; i < listaUsuarioObj.getTamanho(); i++){
                 UsuarioObj user = listaUsuarioObj.getElemento(i);
-                saida.format("%d;%s;%s;%s;%s;%s;%s;%s;%s;%s\n",
-                        user.getId(), user.getNome(), user.getEmail(), user.getUsername(),
-                        user.getSenha(), user.isInfluencer(), user.getAutenticado(), user.isLogado(), user.getCpf(),
+                saida.format("%d;%s;%s;%s;%s;%s;%s;%s\n",
+                        user.getId(),
+                        user.getNome(),
+                        user.getEmail(),
+                        user.getUsername(),
+                        user.getSenha(),
+                        user.getEnumUsuario(),
+                        user.getCpf(),
                         user.getCnpj());
             }
         }
@@ -70,6 +90,56 @@ public class UsuarioService {
         }
     }
 
+    public static void gravaRegistro (String registro, String nomeArq) {
+        BufferedWriter saida = null;
+
+        try {
+            saida = new BufferedWriter(new FileWriter(nomeArq, true));
+        }
+        catch (IOException erro) {
+            System.out.println("Erro ao abrir o arquivo");
+            System.exit(1);
+        }
+        try {
+            saida.append(registro + "\n");
+            saida.close();
+        }
+        catch (IOException erro) {
+            System.out.println("Erro ao gravar no arquivo");
+        }
+    }
+    public static void gravaArquivoTxt(ListaObj<UsuarioObj> lista, String nomeArq) {
+        int contaRegDadosGravados = 0;
+
+        String header = "00";
+        header += "USUARIO";
+        header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+        header += "01";
+        gravaRegistro(header, nomeArq);
+
+        String corpo;
+        for (int i = 0; i < lista.getTamanho(); i++) {
+            UsuarioObj a = lista.getElemento(i);
+            corpo = "02";
+            corpo += String.format("-100.100s", a.getNome());
+            corpo += String.format("-50.50s", a.getEmail());
+            corpo += String.format("-10.10s", a.getUsername());
+            corpo += String.format("-1.1s", a.getEnumUsuario().equals(EnumUsuario.COMUM) ? "S" : "N");
+            corpo += String.format("-1.1s", a.getEnumUsuario().equals(EnumUsuario.INFLUENCER) ? "S" : "N");
+            corpo += String.format("-11.11s", a.getCpf());
+            corpo += String.format("-1.1s", a.getEnumUsuario().equals(EnumUsuario.EMPRESA) ? "S" : "N");
+            corpo += String.format("-14.14s", a.getCnpj());
+
+            gravaRegistro(corpo, nomeArq);
+            contaRegDadosGravados++;
+        }
+        String trailer = "01";
+        trailer += String.format("%010d", contaRegDadosGravados);
+        gravaRegistro(trailer, nomeArq);
+
+    }
+
+
     public ResponseEntity<ListaObj<UsuarioObj>> getListUsuario(){
         List<Usuario> usuarioConsulta = _usuarioRepository.findAll();
 
@@ -85,9 +155,9 @@ public class UsuarioService {
             usuarioObj.setEmail(usuarioConsulta.get(i).getEmail());
             usuarioObj.setUsername(usuarioConsulta.get(i).getUsername());
             usuarioObj.setSenha(usuarioConsulta.get(i).getSenha());
-            usuarioObj.setInfluencer(usuarioConsulta.get(i).isInfluencer());
-            usuarioObj.setAutenticado(usuarioConsulta.get(i).getAutenticado());
-            usuarioObj.setLogado(usuarioConsulta.get(i).isLogado());
+            usuarioObj.setEnumUsuario(usuarioConsulta.get(i).getTipoUsuario());
+//            usuarioObj.setAutenticado(usuarioConsulta.get(i).getAutenticado());
+//            usuarioObj.setLogado(usuarioConsulta.get(i).isLogado());
             usuarioObj.setCpf(usuarioConsulta.get(i).getCpf());
             usuarioObj.setCnpj(usuarioConsulta.get(i).getCnpj());
 
@@ -184,9 +254,7 @@ public class UsuarioService {
                     .email(usuarioPutRequestBody.getEmail())
                     .username(usuarioPutRequestBody.getUsername())
                     .senha(usuarioPutRequestBody.getSenha())
-                    .autenticado(usuarioPutRequestBody.getAutenticado())
-                    .influencer(usuarioPutRequestBody.isInfluencer())
-                    .logado(usuarioPutRequestBody.isLogado())
+                    .tipoUsuario(usuarioPutRequestBody.getEnumUsuario())
                     .cpf(usuarioPutRequestBody.getCpf())
                     .cnpj(null)
                     .build();
@@ -207,9 +275,9 @@ public class UsuarioService {
                     .email(usuarioPutRequestBody.getEmail())
                     .username(usuarioPutRequestBody.getUsername())
                     .senha(usuarioPutRequestBody.getSenha())
-                    .autenticado(usuarioPutRequestBody.getAutenticado())
-                    .influencer(usuarioPutRequestBody.isInfluencer())
-                    .logado(usuarioPutRequestBody.isLogado())
+//                    .autenticado(usuarioPutRequestBody.getAutenticado())
+                    .tipoUsuario(usuarioPutRequestBody.getEnumUsuario())
+//                    .logado(usuarioPutRequestBody.isLogado())
                     .cnpj(usuarioPutRequestBody.getCnpj())
                     .cpf(null)
                     .build();
@@ -220,29 +288,29 @@ public class UsuarioService {
         return ResponseEntity.status(404).build();
     }
 
-    public ResponseEntity<Usuario> atualizarUsuarioAdmin(UsuarioAdminPutRequest usuarioPutRequestBody) {
-        var consulta = buscaPorId(usuarioPutRequestBody.getId());
-
-        if (consulta.getStatusCodeValue() == 200){
-            Usuario usuario = Usuario.builder()
-                    .id(consulta.getBody().getId())
-                    .nome(usuarioPutRequestBody.getNome())
-                    .email(usuarioPutRequestBody.getEmail())
-                    .username(usuarioPutRequestBody.getUsername())
-                    .senha(usuarioPutRequestBody.getSenha())
-                    .autenticado(null)
-                    .influencer(usuarioPutRequestBody.isInfluencer())
-                    .logado(usuarioPutRequestBody.isLogado())
-                    .cnpj(null)
-                    .cpf(null)
-                    .Admin(usuarioPutRequestBody.getAdmin())
-                    .build();
-            _usuarioRepository.save(usuario);
-
-            return ResponseEntity.status(200).body(usuario);
-        }
-        return ResponseEntity.status(404).build();
-    }
+//    public ResponseEntity<Usuario> atualizarUsuarioAdmin(UsuarioAdminPutRequest usuarioPutRequestBody) {
+//        var consulta = buscaPorId(usuarioPutRequestBody.getId());
+//
+//        if (consulta.getStatusCodeValue() == 200){
+//            Usuario usuario = Usuario.builder()
+//                    .id(consulta.getBody().getId())
+//                    .nome(usuarioPutRequestBody.getNome())
+//                    .email(usuarioPutRequestBody.getEmail())
+//                    .username(usuarioPutRequestBody.getUsername())
+//                    .senha(usuarioPutRequestBody.getSenha())
+//                    .autenticado(null)
+//                    .influencer(usuarioPutRequestBody.isInfluencer())
+//                    .logado(usuarioPutRequestBody.isLogado())
+//                    .cnpj(null)
+//                    .cpf(null)
+//                    .Admin(usuarioPutRequestBody.getAdmin())
+//                    .build();
+//            _usuarioRepository.save(usuario);
+//
+//            return ResponseEntity.status(200).body(usuario);
+//        }
+//        return ResponseEntity.status(404).build();
+//    }
 
     public ResponseEntity<Usuario> deleteUser(long id) {
         var retorno = buscaPorId(id);

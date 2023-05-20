@@ -14,8 +14,10 @@ public abstract class UsuarioPostRequestBody {
     private String username;
     @Schema(name = "senha", description = "Crie uma senha de acesso", example = "Carlos1994")
     private String senha;
-    @Schema(name = "Influencer", description = "Você é um influenciador ?", example = "@PrimoRico")
-    private boolean influencer;
-    private Boolean autenticado;
-    private boolean logado;
+//    @Schema(name = "Influencer", description = "Você é um influenciador ?", example = "@PrimoRico")
+//    private boolean influencer;
+//    private Boolean autenticado;
+//    private boolean logado;
+
+    private String EnumUsuario;
 }

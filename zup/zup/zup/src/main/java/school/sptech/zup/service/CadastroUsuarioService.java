@@ -15,8 +15,7 @@ import school.sptech.zup.dto.*;
 import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
 import school.sptech.zup.service.AutenticacaoJWT.UsuarioTokenDto;
-
-import java.util.Optional;
+import school.sptech.zup.util.enumerador.EnumUsuario;
 
 @Service
 public class CadastroUsuarioService {
@@ -37,16 +36,14 @@ public class CadastroUsuarioService {
 
 
     public ResponseEntity<Usuario> saveUserComum(UsuarioComumRequestBody usuarioPostRequestBody) {
-        var retorno = autenticar(usuarioPostRequestBody);
-        if (retorno == true){
             Usuario usuario = Usuario.builder()
                     .nome(usuarioPostRequestBody.getNome())
                     .email(usuarioPostRequestBody.getEmail())
                     .username(usuarioPostRequestBody.getUsername())
                     .senha(usuarioPostRequestBody.getSenha())
-                    .autenticado(usuarioPostRequestBody.getAutenticado())
-                    .influencer(usuarioPostRequestBody.isInfluencer())
-                    .logado(usuarioPostRequestBody.isLogado())
+//                    .autenticado(usuarioPostRequestBody.getAutenticado())
+                    .tipoUsuario(EnumUsuario.COMUM.getDescricao())
+//                    .logado(usuarioPostRequestBody.isLogado())
                     .cpf(usuarioPostRequestBody.getCpf())
                     .cnpj(null)
                     .build();
@@ -56,58 +53,54 @@ public class CadastroUsuarioService {
 
             _usuarioRepository.save(usuario);
             return ResponseEntity.status(200).body(usuario);
-        }
-         return ResponseEntity.status(401).build();
+
     }
 
     public ResponseEntity<Usuario> saveUserEmpresa(UsuarioEmpresaRequestBody usuarioPostRequestBody) {
-        var retorno = autenticar(usuarioPostRequestBody);
-        if (retorno == true){
             Usuario usuario = Usuario.builder()
                     .nome(usuarioPostRequestBody.getNome())
                     .email(usuarioPostRequestBody.getEmail())
                     .username(usuarioPostRequestBody.getUsername())
                     .senha(usuarioPostRequestBody.getSenha())
-                    .autenticado(usuarioPostRequestBody.getAutenticado())
-                    .influencer(usuarioPostRequestBody.isInfluencer())
-                    .logado(usuarioPostRequestBody.isLogado())
+//                    .autenticado(usuarioPostRequestBody.getAutenticado())
+                    .tipoUsuario(EnumUsuario.EMPRESA.getDescricao())
+//                    .logado(usuarioPostRequestBody.isLogado())
                     .cnpj(usuarioPostRequestBody.getCnpj())
                     .cpf(null)
                     .build();
             _usuarioRepository.save(usuario);
-            return ResponseEntity.status(200).body(usuario);
-        }
-        return ResponseEntity.status(401).build();
+            return ResponseEntity.status(201).body(usuario);
+
     }
 
-    public ResponseEntity<Usuario> saveUserAdmin(UsuarioAdminPostRequest usuarioPostRequestBody) {
-        var retorno = autenticar(usuarioPostRequestBody);
-        if (retorno == true){
-            Usuario usuario = Usuario.builder()
-                    .nome(usuarioPostRequestBody.getNome())
-                    .email(usuarioPostRequestBody.getEmail())
-                    .username(usuarioPostRequestBody.getUsername())
-                    .senha(usuarioPostRequestBody.getSenha())
-                    .autenticado(null)
-                    .influencer(usuarioPostRequestBody.isInfluencer())
-                    .logado(usuarioPostRequestBody.isLogado())
-                    .cnpj(null)
-                    .cpf(null)
-                    .Admin(usuarioPostRequestBody.getAdmin())
-                    .build();
-            _usuarioRepository.save(usuario);
-            return ResponseEntity.status(200).body(usuario);
-        }
-        return ResponseEntity.status(401).build();
-    }
+//    public ResponseEntity<Usuario> saveUserAdmin(UsuarioAdminPostRequest usuarioPostRequestBody) {
+//        var retorno = autenticar(usuarioPostRequestBody);
+//        if (retorno == true){
+//            Usuario usuario = Usuario.builder()
+//                    .nome(usuarioPostRequestBody.getNome())
+//                    .email(usuarioPostRequestBody.getEmail())
+//                    .username(usuarioPostRequestBody.getUsername())
+//                    .senha(usuarioPostRequestBody.getSenha())
+//                    .autenticado(null)
+//                    .influencer(usuarioPostRequestBody.isInfluencer())
+//                    .logado(usuarioPostRequestBody.isLogado())
+//                    .cnpj(null)
+//                    .cpf(null)
+//                    .Admin(usuarioPostRequestBody.getAdmin())
+//                    .build();
+//            _usuarioRepository.save(usuario);
+//            return ResponseEntity.status(200).body(usuario);
+//        }
+//        return ResponseEntity.status(401).build();
+//    }
 
-       private boolean autenticar(UsuarioPostRequestBody user){
-        if (user.getAutenticado() == false && user.isLogado() == false){
-                user.setAutenticado(true);
-                return true;
-            }
-        return false;
-    }
+//       private boolean autenticar(UsuarioPostRequestBody user){
+//        if (user.getAutenticado() == false && user.isLogado() == false){
+//                user.setAutenticado(true);
+//                return true;
+//            }
+//        return false;
+//    }
 
     public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto){
         final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(

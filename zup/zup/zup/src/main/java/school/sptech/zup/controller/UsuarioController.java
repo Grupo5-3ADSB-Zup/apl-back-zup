@@ -61,13 +61,13 @@ public class UsuarioController {
         return ResponseEntity.status(404).build();
     }
 
-    @PutMapping("user/empresa")
-    public ResponseEntity<Usuario> atualizarUserEmpresa(@RequestBody UsuarioAdminPutRequest usuarioPutRequestBody) {
-        var retorno = usuarioService.atualizarUsuarioAdmin(usuarioPutRequestBody);
-        return retorno;
-    }
+//    @PutMapping("user/empresa")
+//    public ResponseEntity<Usuario> atualizarUserEmpresa(@RequestBody UsuarioAdminPutRequest usuarioPutRequestBody) {
+//        var retorno = usuarioService.atualizarUsuarioAdmin(usuarioPutRequestBody);
+//        return retorno;
+//    }
 
-    @PutMapping("user/admin")
+    @PutMapping("user/empresa")
     public ResponseEntity<Usuario> atualizarUserEmpresa(@RequestBody UsuarioEmpresaPutRequestBody usuarioPutRequestBody) {
         var retorno = usuarioService.atualizarUsuarioEmpresa(usuarioPutRequestBody);
         return retorno;

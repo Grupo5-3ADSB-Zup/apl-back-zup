@@ -38,9 +38,9 @@ public class CadastroUsuarioController {
         return retorno;
     }
 
-    @PostMapping("/user/admin")
-    public ResponseEntity<Usuario> saveUserAdmin(@RequestBody UsuarioAdminPostRequest usuario) {
-        var retorno = _cadastroService.saveUserAdmin(usuario);
-        return retorno;
-    }
+//    @PostMapping("/user/admin")
+//    public ResponseEntity<Usuario> saveUserAdmin(@RequestBody UsuarioAdminPostRequest usuario) {
+//        var retorno = _cadastroService.saveUserAdmin(usuario);
+//        return retorno;
+//    }
 }
