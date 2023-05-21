@@ -328,6 +328,8 @@ public class AdminService {
             noticiaObj.setLink(consulta.getBody().get(i).getLink());
             noticiaObj.setEmissora(consulta.getBody().get(i).getEmissora());
             noticiaObj.setDtNoticia(consulta.getBody().get(i).getDtNoticia());
+            noticiaObj.setLikes(consulta.getBody().get(i).getLikes());
+            noticiaObj.setComentario(consulta.getBody().get(i).getComentario());
 
             filaNoticias.insert(noticiaObj);
         }

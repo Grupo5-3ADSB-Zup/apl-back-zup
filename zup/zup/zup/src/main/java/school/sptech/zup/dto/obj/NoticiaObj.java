@@ -14,14 +14,18 @@ public class NoticiaObj {
     private String link;
     private String emissora;
     private LocalDateTime dtNoticia;
+    private Integer likes;
+    private String comentario;
 
-    public NoticiaObj(int id, String titulo, String descricao, String link, String emissora, LocalDateTime dtNoticia) {
+    public NoticiaObj(int id, String titulo, String descricao, String link, String emissora, LocalDateTime dtNoticia, Integer likes, String comentario) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
         this.link = link;
         this.emissora = emissora;
         this.dtNoticia = dtNoticia;
+        this.likes = likes;
+        this.comentario = comentario;
     }
 
     public NoticiaObj() {
@@ -73,5 +77,21 @@ public class NoticiaObj {
 
     public void setDtNoticia(LocalDateTime dtNoticia) {
         this.dtNoticia = dtNoticia;
+    }
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Integer likes) {
+        this.likes = likes;
+    }
+
+    public String getComentario() {
+        return comentario;
+    }
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
     }
 }
