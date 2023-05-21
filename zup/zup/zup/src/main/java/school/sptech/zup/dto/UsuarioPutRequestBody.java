@@ -23,4 +23,15 @@ public abstract class UsuarioPutRequestBody {
     private Boolean autenticado;
 
     private boolean logado;
+
+    public UsuarioPutRequestBody(Long id, String nome, String email, String username, String senha, boolean influencer, Boolean autenticado, boolean logado) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.username = username;
+        this.senha = senha;
+        this.influencer = influencer;
+        this.autenticado = autenticado;
+        this.logado = logado;
+    }
 }

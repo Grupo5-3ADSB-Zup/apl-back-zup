@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -44,4 +43,17 @@ public class Usuario {
     @Column(length = 50 * 1024 * 1024)
     private byte[] foto;
 
+    public Usuario(Long id, String nome, String email, String username, String senha, boolean influencer, Boolean autenticado, boolean logado, String cpf, String cnpj, int admin) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.username = username;
+        this.senha = senha;
+        this.influencer = influencer;
+        this.autenticado = autenticado;
+        this.logado = logado;
+        this.cpf = cpf;
+        this.cnpj = cnpj;
+        Admin = admin;
+    }
 }
