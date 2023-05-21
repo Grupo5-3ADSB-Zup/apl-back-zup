@@ -4,11 +4,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import school.sptech.zup.dto.obj.NoticiaObj;
+import school.sptech.zup.dto.obj.PilhaObj;
 import school.sptech.zup.dto.obj.UsuarioObj;
 import school.sptech.zup.service.AdminService;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -64,11 +67,11 @@ public class AdminController {
     }
 
     @GetMapping("/filaPilha/noticias")
-    public ResponseEntity<Object> retornarFilaPilhaObj(){
+    public ResponseEntity<List<NoticiaObj>> retornarFilaPilhaObj(){
             var retorno = _adminService.getNoticiasFilaPilha();
-            if (retorno.getStatusCodeValue() == 200){
-                return ResponseEntity.status(200).body(retorno);
+            if (retorno.isEmpty()){
+                return ResponseEntity.status(404).build();
             }
-          return ResponseEntity.status(404).build();
+            return ResponseEntity.status(200).body(retorno);
     }
 }

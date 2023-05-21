@@ -1,6 +1,5 @@
 package school.sptech.zup.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import school.sptech.zup.controller.NoticiaController;
@@ -9,6 +8,7 @@ import school.sptech.zup.domain.Carteira;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.obj.*;
 import school.sptech.zup.repository.CarteiraRepository;
+import school.sptech.zup.repository.NoticiaRepository;
 import school.sptech.zup.repository.UsuarioRepository;
 
 import java.io.*;
@@ -314,9 +314,9 @@ public class AdminService {
         return ResponseEntity.status(200).body(listaUsuario);
     }
 
-    public ResponseEntity<PilhaObj<NoticiaObj>> getNoticiasFilaPilha(){
+    public List<NoticiaObj> getNoticiasFilaPilha(){
 
-        var consulta = _noticiaController.getNoticias();
+        var consulta = _noticiaController.getNoticia();
 
         FilaObj<NoticiaObj> filaNoticias = new FilaObj(consulta.getBody().size());
         for (int i = 0; i < consulta.getBody().size(); i++){
@@ -332,9 +332,18 @@ public class AdminService {
             filaNoticias.insert(noticiaObj);
         }
         PilhaObj<NoticiaObj> noticiaPilha = new PilhaObj(filaNoticias.getTamanho());
-        for (int a = 0; a < filaNoticias.getTamanho(); a++){
+        int tamanhoFila = filaNoticias.getTamanho();
+
+        for (int a = 0; a < tamanhoFila; a++){
             noticiaPilha.push(filaNoticias.poll());
         }
-        return ResponseEntity.status(200).body(noticiaPilha);
+
+        List<NoticiaObj> noticiasObj = new ArrayList(noticiaPilha.getTopo());
+        int tamanhoPilha = noticiaPilha.getTopo();
+
+        for (int i = 0; i < tamanhoPilha; i++){
+            noticiasObj.add(noticiaPilha.pop());
+        }
+        return noticiasObj;
     }
 }

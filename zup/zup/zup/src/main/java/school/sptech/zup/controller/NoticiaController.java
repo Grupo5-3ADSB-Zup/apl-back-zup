@@ -3,17 +3,15 @@ package school.sptech.zup.controller;
 import com.theokanning.openai.completion.CompletionChoice;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.domain.Gpt;
 import school.sptech.zup.domain.Noticia;
+import school.sptech.zup.dto.obj.NoticiaObj;
 import school.sptech.zup.repository.NoticiaRepository;
 import school.sptech.zup.service.GptService;
 import school.sptech.zup.service.NoticiaService;
-import school.sptech.zup.util.DateUtil;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -22,12 +20,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Log4j2
 public class NoticiaController {
-    @Autowired
-    private NoticiaRepository _noticiaRepository;
-    @Autowired
-    private NoticiaService _noticiaService;
-    @Autowired
-    private GptService _gptService;
+    private final NoticiaRepository _noticiaRepository;
+    private final NoticiaService _noticiaService;
+    private final GptService _gptService;
 
     @GetMapping("/rss/uol")
     public ResponseEntity<List<Noticia>> getRssUOL(){
@@ -48,17 +43,17 @@ public class NoticiaController {
     }
 
     @GetMapping("/rss")
-    public ResponseEntity<List<Noticia>> getNoticias(){
-        List<Noticia> noticias = _noticiaRepository.findAll();
-        if (noticias.isEmpty()){
+    public ResponseEntity<List<Noticia>> getNoticia(){
+        var consulta = _noticiaRepository.findAll();
+        if (consulta.isEmpty()){
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(200).body(noticias);
+        return ResponseEntity.status(200).body(consulta);
     }
 
     @PostMapping("/rss/info")
     public ResponseEntity<List<CompletionChoice>> InserirNoticiasGPT(@RequestBody Gpt gpt){
-        var consulta = getNoticias();
+        var consulta = getNoticia();
         var consultaTituloNoticia = _noticiaService.procuraPorNome(gpt);
 
         if (consulta.getStatusCodeValue() == 200 && consultaTituloNoticia.getStatusCodeValue() == 200){
