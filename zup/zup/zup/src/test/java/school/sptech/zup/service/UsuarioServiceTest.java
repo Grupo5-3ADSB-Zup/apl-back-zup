@@ -1,15 +1,43 @@
-package school.sptech.zup.domain.builder;
+package school.sptech.zup.service;
 
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
 import school.sptech.zup.domain.Usuario;
-import school.sptech.zup.dto.*;
+import school.sptech.zup.domain.builder.UsuarioBuilder;
+import school.sptech.zup.dto.UsuarioComumPutRequestBody;
+import school.sptech.zup.dto.UsuarioComumRequestBody;
+import school.sptech.zup.dto.UsuarioEmpresaPutRequestBody;
+import school.sptech.zup.dto.UsuarioEmpresaRequestBody;
+import school.sptech.zup.dto.obj.ListaObj;
+import school.sptech.zup.dto.obj.UsuarioObj;
+import school.sptech.zup.repository.UsuarioRepository;
+import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
 
 import java.util.List;
 
-public class UsuarioBuilder {
-    private UsuarioBuilder(){
-        throw new IllegalStateException("Classe Utilitária");
+public class UsuarioServiceTest {
+
+    @InjectMocks
+    private UsuarioService usuarioService;
+
+
+    @Test
+    void getUsernameTest(){
+
+//        usuarioService = new UsuarioService();
+        UsuarioLoginDto loginDto = new UsuarioLoginDto("userTeste", "1234");
+        Usuario usuario = criarUsuarioComum();
+
+        Mockito.when(this.usuarioService.getUsername(loginDto)).thenReturn(ResponseEntity.ok().body(usuario));
+
     }
 
+
+
+    //metodos para mockar usuario
     //criação
     public static Usuario criarUsuarioComum(){
         return new Usuario(1L, "usuario 1", "usuario@usuario", "usuario user", "senhaUsuario",false, false, false , "12345678912", "", 1);
@@ -26,6 +54,10 @@ public class UsuarioBuilder {
     //criar consulto DTO
     public static UsuarioComumPutRequestBody criarUsuarioConsultaComumDto(){
         return new UsuarioComumPutRequestBody(1L, "usuario 1", "usuario@usuario", "usuario user", "senhaUsuario",false, false, false , "12345678912");
+    }
+
+    public static UsuarioObj criarUsuarioConsultaComumObj(){
+        return new UsuarioObj(1L, "usuario 1", "usuario@usuario", "usuario user", "senhaUsuario",false, false, false , "12345678912", "");
     }
 
     public static UsuarioEmpresaPutRequestBody criarUsuarioConsultaEmpresaDto(){
@@ -59,6 +91,7 @@ public class UsuarioBuilder {
         );
     }
 
+
     public static List<Usuario> criarListaUsuarioEmpresa(){
         return List.of(
                 criarUsuarioEmpresa(),
@@ -84,6 +117,14 @@ public class UsuarioBuilder {
         );
     }
 
+    public static List<UsuarioObj> criarListaUsuarioComumObj(){
+        return List.of(
+                criarUsuarioConsultaComumObj(),
+                criarUsuarioConsultaComumObj(),
+                criarUsuarioConsultaComumObj()
+        );
+    }
+
     public static List<UsuarioEmpresaPutRequestBody> criarListaUsuarioEmpresaDto(){
         return List.of(
                 criarUsuarioConsultaEmpresaDto(),
@@ -99,9 +140,4 @@ public class UsuarioBuilder {
                 criarUsuarioConsultaInfluencerDto()
         );
     }
-
-
-
-
-
 }

@@ -15,4 +15,9 @@ public class UsuarioLoginDto{
     private String username;
     @Schema(name = "senha", description = "Seu senha", example = "3395")
     private String senha;
+
+    public UsuarioLoginDto(String username, String senha) {
+        this.username = username;
+        this.senha = senha;
+    }
 }

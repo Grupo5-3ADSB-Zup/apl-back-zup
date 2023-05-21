@@ -34,6 +34,19 @@ public class UsuarioObj {
         this.cnpj = cnpj;
     }
 
+    public UsuarioObj(Long id, String nome, String email, String username, String senha, boolean influencer, Boolean autenticado, boolean logado, String cpf, String cnpj) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.username = username;
+        this.senha = senha;
+        this.influencer = influencer;
+        this.autenticado = autenticado;
+        this.logado = logado;
+        this.cpf = cpf;
+        this.cnpj = cnpj;
+    }
+
     public Long getId() {
         return id;
     }
