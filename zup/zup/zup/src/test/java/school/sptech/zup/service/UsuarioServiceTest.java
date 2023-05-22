@@ -1,11 +1,18 @@
 package school.sptech.zup.service;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
 
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import school.sptech.zup.builder.UsuarioBuilder;
 import school.sptech.zup.domain.Usuario;
@@ -21,6 +28,7 @@ import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
 import java.util.List;
 import java.util.Optional;
 
+@ExtendWith(MockitoExtension.class)
 public class UsuarioServiceTest {
 
     @Mock
@@ -33,11 +41,11 @@ public class UsuarioServiceTest {
 
 
     @Test
-    void getUsernameTest(){
+    void findAllUsuariosTest(){
         int numero = 3;
-        List<Usuario> usuarioos = UsuarioBuilder.criarListaUsuarioComum();
+        List<Usuario> usuarios = UsuarioBuilder.criarListaUsuarioComum();
 
-        Mockito.when(usuarioRepository.findAll()).thenReturn(usuarioos);
+        Mockito.when(usuarioRepository.findAll()).thenReturn(usuarios);
 
         ListaObj<UsuarioObj> resultado = adminService.getListUsuario().getBody();
         assertEquals(numero, resultado.getTamanho());
@@ -60,6 +68,17 @@ public class UsuarioServiceTest {
 //        Mockito.when(usuarioRepository.findByUsername(usuarioEsperado.getUsername())).thenReturn(Optional.of(usuario));
 //
 //        assertEquals(usuarioEsperado, retorno);
+
+    }
+
+    @Test
+    void getUsernameTest(){
+
+//        usuarioService = new UsuarioService();
+        UsuarioLoginDto loginDto = new UsuarioLoginDto("userTeste", "1234");
+        Usuario usuario = UsuarioBuilder.criarUsuarioComum();
+
+        Mockito.when(this.usuarioService.getUsername(loginDto)).thenReturn(ResponseEntity.ok().body(usuario));
 
     }
 
