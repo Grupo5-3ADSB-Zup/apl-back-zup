@@ -6,6 +6,7 @@ import com.theokanning.openai.completion.CompletionRequest;
 import org.springframework.stereotype.Service;
 import school.sptech.zup.domain.Gpt;
 import school.sptech.zup.domain.Noticia;
+import school.sptech.zup.dto.response.GptResponse;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,10 +14,11 @@ import java.util.concurrent.CompletionService;
 
 @Service
 public class GptService {
-    private static final String API_KEY = "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";
+    private static final String API_KEY = "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";
 
-    public List<CompletionChoice> gptNoticia(List<Noticia> noticias, Gpt gpt) {
+    public GptResponse gptNoticia(List<Noticia> noticias, Gpt gpt) {
         OpenAiService service = new OpenAiService(API_KEY);
+        GptResponse gptResponse = new GptResponse();
 
         CompletionRequest request = CompletionRequest.builder()
                 .model("text-davinci-003")
@@ -24,7 +26,8 @@ public class GptService {
                 .maxTokens(1000)
                 .build();
 
+        gptResponse.setResposta(service.createCompletion(request).getChoices().get(0).getText());
 
-        return service.createCompletion(request).getChoices();
+        return gptResponse;
     }
 }

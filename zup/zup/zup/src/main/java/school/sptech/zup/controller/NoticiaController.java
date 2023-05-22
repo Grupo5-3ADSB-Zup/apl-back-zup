@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.domain.Gpt;
 import school.sptech.zup.domain.Noticia;
 import school.sptech.zup.dto.obj.NoticiaObj;
+import school.sptech.zup.dto.response.GptResponse;
 import school.sptech.zup.repository.NoticiaRepository;
 import school.sptech.zup.service.GptService;
 import school.sptech.zup.service.NoticiaService;
@@ -52,7 +53,7 @@ public class NoticiaController {
     }
 
     @PostMapping("/rss/info")
-    public ResponseEntity<List<CompletionChoice>> InserirNoticiasGPT(@RequestBody Gpt gpt){
+    public ResponseEntity<GptResponse> InserirNoticiasGPT(@RequestBody Gpt gpt){
         var consulta = getNoticia();
         var consultaTituloNoticia = _noticiaService.procuraPorNome(gpt);
 
