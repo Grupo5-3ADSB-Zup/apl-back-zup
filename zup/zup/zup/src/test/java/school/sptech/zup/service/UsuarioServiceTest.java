@@ -2,11 +2,13 @@ package school.sptech.zup.service;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.http.ResponseEntity;
+import school.sptech.zup.builder.UsuarioBuilder;
 import school.sptech.zup.domain.Usuario;
-import school.sptech.zup.domain.builder.UsuarioBuilder;
 import school.sptech.zup.dto.UsuarioComumPutRequestBody;
 import school.sptech.zup.dto.UsuarioComumRequestBody;
 import school.sptech.zup.dto.UsuarioEmpresaPutRequestBody;
@@ -17,127 +19,51 @@ import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public class UsuarioServiceTest {
 
+    @Mock
+    private UsuarioRepository usuarioRepository;
     @InjectMocks
     private UsuarioService usuarioService;
+
+    @InjectMocks
+    private AdminService adminService;
 
 
     @Test
     void getUsernameTest(){
+        int numero = 3;
+        List<Usuario> usuarioos = UsuarioBuilder.criarListaUsuarioComum();
 
-//        usuarioService = new UsuarioService();
-        UsuarioLoginDto loginDto = new UsuarioLoginDto("userTeste", "1234");
-        Usuario usuario = criarUsuarioComum();
+        Mockito.when(usuarioRepository.findAll()).thenReturn(usuarioos);
 
-        Mockito.when(this.usuarioService.getUsername(loginDto)).thenReturn(ResponseEntity.ok().body(usuario));
+        ListaObj<UsuarioObj> resultado = adminService.getListUsuario().getBody();
+        assertEquals(numero, resultado.getTamanho());
+
+//        Usuario usuarioEsperado = new Usuario(1L, "usuario 1", "usuario@usuario", "usuario user", "senhaUsuario",false, false, false , "12345678912", "", 1);
+//
+//        UsuarioLoginDto loginDto = new UsuarioLoginDto("userTeste", "1234");
+//
+//        Usuario usuario = UsuarioBuilder.criarUsuarioComum();
+//        Mockito.when(usuarioRepository.findByUsername(Mockito.any())).thenReturn(Optional.of(usuario));
+//
+//        ResponseEntity<Usuario> usuarioResposta = usuarioService.getUsername(loginDto.getUsername());
+//
+//        assertEquals(usuarioEsperado, usuarioResposta.getBody());
+
+//        UsuarioLoginDto loginDto = new UsuarioLoginDto("userTeste", "1234");
+//
+//        Usuario retorno = this.usuarioService.getUsername(loginDto).getBody();
+//
+//        Mockito.when(usuarioRepository.findByUsername(usuarioEsperado.getUsername())).thenReturn(Optional.of(usuario));
+//
+//        assertEquals(usuarioEsperado, retorno);
 
     }
 
 
 
-    //metodos para mockar usuario
-    //criação
-    public static Usuario criarUsuarioComum(){
-        return new Usuario(1L, "usuario 1", "usuario@usuario", "usuario user", "senhaUsuario",false, false, false , "12345678912", "", 1);
-    }
 
-    public static Usuario criarUsuarioEmpresa(){
-        return new Usuario(1L, "usuario 1", "usuario@usuario", "usuario user", "senhaUsuario",false, false, false , "", "12345678912", 1);
-    }
-
-    public static Usuario criarUsuarioInfluencer(){
-        return new Usuario(1L, "usuario 1", "usuario@usuario", "usuario user", "senhaUsuario",true, false, false , "12345678912", "", 1);
-    }
-
-    //criar consulto DTO
-    public static UsuarioComumPutRequestBody criarUsuarioConsultaComumDto(){
-        return new UsuarioComumPutRequestBody(1L, "usuario 1", "usuario@usuario", "usuario user", "senhaUsuario",false, false, false , "12345678912");
-    }
-
-    public static UsuarioObj criarUsuarioConsultaComumObj(){
-        return new UsuarioObj(1L, "usuario 1", "usuario@usuario", "usuario user", "senhaUsuario",false, false, false , "12345678912", "");
-    }
-
-    public static UsuarioEmpresaPutRequestBody criarUsuarioConsultaEmpresaDto(){
-        return new UsuarioEmpresaPutRequestBody(1L, "usuario 1", "usuario@usuario", "usuario user", "senhaUsuario",false, false, false , "12345678912");
-    }
-
-    public static UsuarioComumPutRequestBody criarUsuarioConsultaInfluencerDto(){
-        return new UsuarioComumPutRequestBody(1L, "usuario 1", "usuario@usuario", "usuario user", "senhaUsuario",true, false, false, "12345678912");
-    }
-
-    //criar criacação e atualizacao dto
-
-    public static UsuarioComumRequestBody criarUsuarioCriacaoComumDto(){
-        return new UsuarioComumRequestBody( "usuario 1", "usuario@usuario", "usuario user", "senhaUsuario",false, false, false , "12345678912");
-    }
-
-    public static UsuarioEmpresaRequestBody criarUsuarioCriacaoEmpresaDto(){
-        return new UsuarioEmpresaRequestBody( "usuario 1", "usuario@usuario", "usuario user", "senhaUsuario",false, false, false , "12345678912");
-    }
-
-    public static UsuarioComumRequestBody criarUsuarioCriacaoInfluencerDto(){
-        return new UsuarioComumRequestBody( "usuario 1", "usuario@usuario", "usuario user", "senhaUsuario",true, false, false, "12345678912");
-    }
-
-    //listas
-    public static List<Usuario> criarListaUsuarioComum(){
-        return List.of(
-                criarUsuarioComum(),
-                criarUsuarioComum(),
-                criarUsuarioComum()
-        );
-    }
-
-
-    public static List<Usuario> criarListaUsuarioEmpresa(){
-        return List.of(
-                criarUsuarioEmpresa(),
-                criarUsuarioEmpresa(),
-                criarUsuarioEmpresa()
-        );
-    }
-
-    public static List<Usuario> criarListaUsuarioInfluencer(){
-        return List.of(
-                criarUsuarioInfluencer(),
-                criarUsuarioInfluencer(),
-                criarUsuarioInfluencer()
-        );
-    }
-
-    //listas dtos consulta
-    public static List<UsuarioComumPutRequestBody> criarListaUsuarioComumDto(){
-        return List.of(
-                criarUsuarioConsultaComumDto(),
-                criarUsuarioConsultaComumDto(),
-                criarUsuarioConsultaComumDto()
-        );
-    }
-
-    public static List<UsuarioObj> criarListaUsuarioComumObj(){
-        return List.of(
-                criarUsuarioConsultaComumObj(),
-                criarUsuarioConsultaComumObj(),
-                criarUsuarioConsultaComumObj()
-        );
-    }
-
-    public static List<UsuarioEmpresaPutRequestBody> criarListaUsuarioEmpresaDto(){
-        return List.of(
-                criarUsuarioConsultaEmpresaDto(),
-                criarUsuarioConsultaEmpresaDto(),
-                criarUsuarioConsultaEmpresaDto()
-        );
-    }
-
-    public static List<UsuarioComumPutRequestBody> criarListaUsuarioInfluencerDto(){
-        return List.of(
-                criarUsuarioConsultaInfluencerDto(),
-                criarUsuarioConsultaInfluencerDto(),
-                criarUsuarioConsultaInfluencerDto()
-        );
-    }
 }
