@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import school.sptech.zup.dto.obj.NoticiaObj;
 import school.sptech.zup.dto.obj.PilhaObj;
 import school.sptech.zup.dto.obj.UsuarioObj;
@@ -55,11 +56,10 @@ public class AdminController {
         return ResponseEntity.status(404).build();
     }
 
-    @PatchMapping(value = "/importacao/txt", consumes =
-            "text/plain")
+    @PatchMapping(value = "/importacao/txt")
 
-    public ResponseEntity<BufferedReader>  importarArquivoTXT(@RequestParam String nomeArquivo) {
-           var retorno = _adminService.lerArquivoTxt(nomeArquivo);
+    public ResponseEntity<BufferedReader>  importarArquivoTXT(@RequestParam MultipartFile arquivo) {
+           var retorno = _adminService.lerArquivoTxt(arquivo);
            if (retorno.getStatusCodeValue() == 201){
                return retorno;
            }

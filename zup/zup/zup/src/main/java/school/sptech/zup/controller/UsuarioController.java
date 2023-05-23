@@ -87,6 +87,4 @@ public class UsuarioController {
         var retorno = usuarioService.deleteUser(id);
         return retorno;
     }
-
-
 }
