@@ -17,6 +17,7 @@ public class NoticiaObj {
     private Integer likes;
     private String comentario;
 
+    @Column(length = 50 * 1024 * 1024)
     private byte[] foto;
 
     public NoticiaObj(int id, String titulo, String descricao, String link, String emissora, LocalDateTime dtNoticia, Integer likes, String comentario, byte[] foto) {

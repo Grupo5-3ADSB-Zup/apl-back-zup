@@ -37,6 +37,6 @@ public class Noticia {
     private String comentario;
     @Schema(name = "dtNoticia", description = "Data da notícia", example = "20/04/2022")
     private LocalDateTime dtNoticia;
-
+    @Column(length = 50 * 1024 * 1024)
     private byte[] foto;
 }
