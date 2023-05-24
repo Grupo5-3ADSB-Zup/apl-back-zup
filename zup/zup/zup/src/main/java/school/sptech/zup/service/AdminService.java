@@ -332,6 +332,7 @@ public class AdminService {
             noticiaObj.setLikes(consulta.getBody().get(i).getLikes());
             noticiaObj.setComentario(consulta.getBody().get(i).getComentario());
 
+
             filaNoticias.insert(noticiaObj);
         }
         PilhaObj<NoticiaObj> noticiaPilha = new PilhaObj(filaNoticias.getTamanho());
