@@ -44,6 +44,12 @@ public class UsuarioController {
         return retorno;
     }
 
+    @GetMapping("/id")
+    public ResponseEntity<Usuario> getUsuarioId(@RequestParam Long id) {
+        var retorno = usuarioService.buscaUsuarioPorId(id);
+        return retorno;
+    }
+
     @GetMapping(value = "/foto/{idFoto}")
     public ResponseEntity<byte[]> retornaImagem(@PathVariable Long idFoto){
         var retorno = usuarioService.BuscarImagemPorId(idFoto);
