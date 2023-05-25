@@ -13,6 +13,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import school.sptech.zup.builder.UsuarioBuilder;
 import school.sptech.zup.domain.Usuario;
@@ -25,6 +26,7 @@ import school.sptech.zup.dto.obj.UsuarioObj;
 import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,16 +73,31 @@ public class UsuarioServiceTest {
 
     }
 
-//    @Test
-//    void getUsernameTest(){
-//
-////        usuarioService = new UsuarioService();
-//        UsuarioLoginDto loginDto = new UsuarioLoginDto("userTeste", "1234");
-//        Usuario usuario = UsuarioBuilder.criarUsuarioComum();
-//
-//        Mockito.when(this.usuarioService.getUsername(loginDto)).thenReturn(ResponseEntity.ok().body(usuario));
-//
-//    }
+    @Test
+    void getUsernameTestOk(){
+
+        List<Usuario> usuarios = UsuarioBuilder.criarListaUsuarioComum();
+
+        Mockito.when(usuarioRepository.findAll()).thenReturn(usuarios);
+        Usuario usuario = UsuarioBuilder.criarUsuarioComum();
+
+//        Mockito.when(this.usuarioService.buscaPorUsername("usuario user")).thenReturn(ResponseEntity.ok().body(usuario));
+
+        HttpStatus re = usuarioService.buscaPorUsername("usuario user").getStatusCode();
+        assertEquals(HttpStatus.OK , re);
+    }
+
+    @Test
+    void getUsernameTestNotFound(){
+
+        List<Usuario> usuarios = new ArrayList<>();
+
+        Mockito.when(usuarioRepository.findAll()).thenReturn(usuarios);
+        Usuario usuario = UsuarioBuilder.criarUsuarioComum();
+
+        HttpStatus re = usuarioService.buscaPorUsername("usuario user").getStatusCode();
+        assertEquals(HttpStatus.NOT_FOUND , re);
+    }
 
 
 

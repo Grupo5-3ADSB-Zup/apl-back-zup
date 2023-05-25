@@ -9,15 +9,18 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import retrofit2.http.HTTP;
+import school.sptech.zup.builder.NoticiasBuilder;
 import school.sptech.zup.builder.UsuarioBuilder;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.obj.ListaObj;
+import school.sptech.zup.dto.obj.NoticiaObj;
 import school.sptech.zup.dto.obj.UsuarioObj;
 import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.service.AdminService;
 import school.sptech.zup.service.UsuarioService;
 import school.sptech.zup.util.DateUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -104,6 +107,31 @@ public class UsuarioControllerTest {
 
         String nomeArquivo = "teste";
         HttpStatus re = adminController.gravarArquivoTXT(nomeArquivo).getStatusCode();
+        assertEquals(HttpStatus.NOT_FOUND , re);
+    }
+
+
+    @Test
+    public void adminControllerRetornarFilaPilhaObj(){
+        AdminController adminController = new AdminController(adminService, noticiaController);
+
+        List<NoticiaObj> listaNoticias = NoticiasBuilder.criarListaObjNoticia();
+        Mockito.when(adminService.getNoticiasFilaPilha()).thenReturn(listaNoticias);
+
+
+        HttpStatus re = adminController.retornarFilaPilhaObj().getStatusCode();
+        assertEquals(HttpStatus.OK , re);
+    }
+
+    @Test
+    public void adminControllerRetornarFilaPilhaObjNotFound(){
+        AdminController adminController = new AdminController(adminService, noticiaController);
+
+        List<NoticiaObj> listaNoticias = new ArrayList<>();
+        Mockito.when(adminService.getNoticiasFilaPilha()).thenReturn(listaNoticias);
+
+
+        HttpStatus re = adminController.retornarFilaPilhaObj().getStatusCode();
         assertEquals(HttpStatus.NOT_FOUND , re);
     }
 }
