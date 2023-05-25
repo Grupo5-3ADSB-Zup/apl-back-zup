@@ -39,7 +39,7 @@ public class Usuario {
 
     private int Admin;
 
-    @JsonIgnore
+    //@JsonIgnore
     @Column(length = 50 * 1024 * 1024)
     private byte[] foto;
 

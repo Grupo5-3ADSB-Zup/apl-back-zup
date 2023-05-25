@@ -2,6 +2,7 @@ package school.sptech.zup.service;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import school.sptech.zup.controller.NoticiaController;
 import school.sptech.zup.controller.UsuarioController;
 import school.sptech.zup.domain.Carteira;
@@ -165,7 +166,7 @@ public class AdminService {
         return (gravarRegistro(trailer, nomeArq));
     }
 
-    public ResponseEntity lerArquivoTxt(String nomeArq){
+    public ResponseEntity lerArquivoTxt(MultipartFile nomeArq){
         BufferedReader entrada = null;
         String registro, tipoRegistro;
         String nome, email, corretora, perfil, patrimonio;
@@ -179,7 +180,7 @@ public class AdminService {
 
         // bloco abrir arquivo
         try {
-            entrada = new BufferedReader(new FileReader(nomeArq));
+            entrada = new BufferedReader(new InputStreamReader(nomeArq.getInputStream()));
         }
         catch (IOException erro){
             System.out.println("Erro ao abrir o arquivo");
@@ -330,6 +331,7 @@ public class AdminService {
             noticiaObj.setDtNoticia(consulta.getBody().get(i).getDtNoticia());
             noticiaObj.setLikes(consulta.getBody().get(i).getLikes());
             noticiaObj.setComentario(consulta.getBody().get(i).getComentario());
+
 
             filaNoticias.insert(noticiaObj);
         }
