@@ -120,6 +120,30 @@ public class UsuarioServiceTest {
         assertEquals(HttpStatus.NOT_FOUND , re);
     }
 
+    @Test
+    void buscarImagemPorIdOkTest(){
+
+        List<Usuario> usuarios = UsuarioBuilder.criarListaUsuarioComum();
+
+
+        Mockito.when(usuarioRepository.findAll()).thenReturn(usuarios);
+
+        HttpStatus re = usuarioService.BuscarImagemPorId(1L).getStatusCode();
+        assertEquals(HttpStatus.OK , re);
+    }
+
+    @Test
+    void buscarImagemPorIdNotFoundTest(){
+
+        List<Usuario> usuarios = UsuarioBuilder.criarListaUsuarioComum();
+
+
+        Mockito.when(usuarioRepository.findAll()).thenReturn(usuarios);
+
+        HttpStatus re = usuarioService.BuscarImagemPorId(5L).getStatusCode();
+        assertEquals(HttpStatus.NOT_FOUND, re);
+    }
+
 //    @Test
 //    void getUserNameOkTest(){
 ////        List<Usuario> usuarios = UsuarioBuilder.criarListaUsuarioComum();

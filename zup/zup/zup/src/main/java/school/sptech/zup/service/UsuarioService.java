@@ -93,6 +93,7 @@ public class UsuarioService {
         return ResponseEntity.status(404).build();
     }
 
+    //mudar nome variavel de idfoto para idUsuario
     public ResponseEntity<byte[]> BuscarImagemPorId(@PathVariable Long idFoto){
         var consulta = _usuarioRepository.findAll();
         for (int i = 0; i < consulta.size(); i++){
