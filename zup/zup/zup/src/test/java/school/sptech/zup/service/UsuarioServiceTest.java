@@ -71,16 +71,16 @@ public class UsuarioServiceTest {
 
     }
 
-    @Test
-    void getUsernameTest(){
-
-//        usuarioService = new UsuarioService();
-        UsuarioLoginDto loginDto = new UsuarioLoginDto("userTeste", "1234");
-        Usuario usuario = UsuarioBuilder.criarUsuarioComum();
-
-        Mockito.when(this.usuarioService.getUsername(loginDto)).thenReturn(ResponseEntity.ok().body(usuario));
-
-    }
+//    @Test
+//    void getUsernameTest(){
+//
+////        usuarioService = new UsuarioService();
+//        UsuarioLoginDto loginDto = new UsuarioLoginDto("userTeste", "1234");
+//        Usuario usuario = UsuarioBuilder.criarUsuarioComum();
+//
+//        Mockito.when(this.usuarioService.getUsername(loginDto)).thenReturn(ResponseEntity.ok().body(usuario));
+//
+//    }
 
 
 

@@ -5,6 +5,7 @@ import school.sptech.zup.dto.UsuarioComumPutRequestBody;
 import school.sptech.zup.dto.UsuarioComumRequestBody;
 import school.sptech.zup.dto.UsuarioEmpresaPutRequestBody;
 import school.sptech.zup.dto.UsuarioEmpresaRequestBody;
+import school.sptech.zup.dto.obj.ListaObj;
 import school.sptech.zup.dto.obj.UsuarioObj;
 
 import java.util.List;
@@ -100,6 +101,17 @@ public class UsuarioBuilder {
                 criarUsuarioConsultaComumObj(),
                 criarUsuarioConsultaComumObj()
         );
+    }
+
+    public static ListaObj<UsuarioObj> criarListaObjUsuarioComumObj(){
+        ListaObj<UsuarioObj> retorno = new ListaObj<>(3);
+
+        retorno.adiciona(criarUsuarioConsultaComumObj());
+        retorno.adiciona(criarUsuarioConsultaComumObj());
+        retorno.adiciona(criarUsuarioConsultaComumObj());
+
+        return retorno;
+
     }
 
     public static List<UsuarioEmpresaPutRequestBody> criarListaUsuarioEmpresaDto(){

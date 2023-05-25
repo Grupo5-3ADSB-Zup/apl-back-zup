@@ -44,7 +44,6 @@ public class AdminController {
 
 
     @PostMapping(value = "/exportacao/txt/{nomeArquivo}")
-
     public ResponseEntity<BufferedWriter> gravarArquivoTXT(@PathVariable String nomeArquivo) {
         var retorno = _adminService.getListUsuario();
         if (retorno.getStatusCodeValue() == 200){
