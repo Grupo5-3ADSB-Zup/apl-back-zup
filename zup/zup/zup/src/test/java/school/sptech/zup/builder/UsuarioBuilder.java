@@ -7,6 +7,7 @@ import school.sptech.zup.dto.UsuarioEmpresaPutRequestBody;
 import school.sptech.zup.dto.UsuarioEmpresaRequestBody;
 import school.sptech.zup.dto.obj.ListaObj;
 import school.sptech.zup.dto.obj.UsuarioObj;
+import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
 
 import java.util.List;
 
@@ -29,13 +30,17 @@ public class UsuarioBuilder {
         return new Usuario(1L, "usuario 1", "usuario@usuario", "usuario user", "senhaUsuario",true, false, false , "12345678912", "", 1);
     }
 
-    //criar consulto DTO
+    //criar consulta DTO
     public static UsuarioComumPutRequestBody criarUsuarioConsultaComumDto(){
         return new UsuarioComumPutRequestBody(1L, "usuario 1", "usuario@usuario", "usuario user", "senhaUsuario",false, false, false , "12345678912");
     }
 
     public static UsuarioObj criarUsuarioConsultaComumObj(){
         return new UsuarioObj(1L, "usuario 1", "usuario@usuario", "usuario user", "senhaUsuario",false, false, false , "12345678912", "");
+    }
+
+    public static UsuarioLoginDto criarUsuarioConsultaComumLoginObj(){
+        return new UsuarioLoginDto("usuario user", "senhaUsuario");
     }
 
     public static UsuarioEmpresaPutRequestBody criarUsuarioConsultaEmpresaDto(){
