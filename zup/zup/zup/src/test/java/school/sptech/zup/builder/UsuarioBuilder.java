@@ -1,10 +1,7 @@
 package school.sptech.zup.builder;
 
 import school.sptech.zup.domain.Usuario;
-import school.sptech.zup.dto.UsuarioComumPutRequestBody;
-import school.sptech.zup.dto.UsuarioComumRequestBody;
-import school.sptech.zup.dto.UsuarioEmpresaPutRequestBody;
-import school.sptech.zup.dto.UsuarioEmpresaRequestBody;
+import school.sptech.zup.dto.*;
 import school.sptech.zup.dto.obj.ListaObj;
 import school.sptech.zup.dto.obj.UsuarioObj;
 import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
@@ -49,6 +46,10 @@ public class UsuarioBuilder {
 
     public static UsuarioComumPutRequestBody criarUsuarioConsultaInfluencerDto(){
         return new UsuarioComumPutRequestBody(1L, "usuario 1", "usuario@usuario", "usuario user", "senhaUsuario",true, false, false, "12345678912");
+    }
+
+    public static UsuarioAdminPutRequest criarUsuarioConsultaAdminDto(){
+        return new UsuarioAdminPutRequest(1L, "usuario 1", "usuario@usuario", "usuario user", "senhaUsuario",true, false, false, 1);
     }
 
     //criar criacação e atualizacao dto

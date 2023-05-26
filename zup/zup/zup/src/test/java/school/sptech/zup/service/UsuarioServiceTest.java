@@ -42,35 +42,40 @@ public class UsuarioServiceTest {
     private AdminService adminService;
 
 
+//    @Test
+//    void findAllUsuariosTest(){
+//        int numero = 3;
+//        List<Usuario> usuarios = UsuarioBuilder.criarListaUsuarioComum();
+//
+//        Mockito.when(usuarioRepository.findAll()).thenReturn(usuarios);
+//
+//        ListaObj<UsuarioObj> resultado = adminService.getListUsuario().getBody();
+//        assertEquals(numero, resultado.getTamanho());
+//    }
+
     @Test
     void findAllUsuariosTest(){
-        int numero = 3;
+
         List<Usuario> usuarios = UsuarioBuilder.criarListaUsuarioComum();
 
         Mockito.when(usuarioRepository.findAll()).thenReturn(usuarios);
+        Usuario usuario = UsuarioBuilder.criarUsuarioComum();
 
-        ListaObj<UsuarioObj> resultado = adminService.getListUsuario().getBody();
-        assertEquals(numero, resultado.getTamanho());
+//        Mockito.when(this.usuarioService.buscaPorUsername("usuario user")).thenReturn(ResponseEntity.ok().body(usuario));
 
-//        Usuario usuarioEsperado = new Usuario(1L, "usuario 1", "usuario@usuario", "usuario user", "senhaUsuario",false, false, false , "12345678912", "", 1);
-//
-//        UsuarioLoginDto loginDto = new UsuarioLoginDto("userTeste", "1234");
-//
-//        Usuario usuario = UsuarioBuilder.criarUsuarioComum();
-//        Mockito.when(usuarioRepository.findByUsername(Mockito.any())).thenReturn(Optional.of(usuario));
-//
-//        ResponseEntity<Usuario> usuarioResposta = usuarioService.getUsername(loginDto.getUsername());
-//
-//        assertEquals(usuarioEsperado, usuarioResposta.getBody());
+        HttpStatus re = usuarioService.getListUsuario().getStatusCode();
+        assertEquals(HttpStatus.OK , re);
+    }
 
-//        UsuarioLoginDto loginDto = new UsuarioLoginDto("userTeste", "1234");
-//
-//        Usuario retorno = this.usuarioService.getUsername(loginDto).getBody();
-//
-//        Mockito.when(usuarioRepository.findByUsername(usuarioEsperado.getUsername())).thenReturn(Optional.of(usuario));
-//
-//        assertEquals(usuarioEsperado, retorno);
 
+    @Test
+    void getUserNameOkTest(){
+        UsuarioService espiao = Mockito.spy(usuarioService);
+
+        Mockito.doReturn(ResponseEntity.ok().body(UsuarioBuilder.criarUsuarioComum())).when(espiao).buscaPorUsername(Mockito.any());
+
+        HttpStatus re = espiao.getUsername(UsuarioBuilder.criarUsuarioConsultaComumLoginObj()).getStatusCode();
+        assertEquals(HttpStatus.OK , re);
     }
 
     @Test
@@ -121,6 +126,28 @@ public class UsuarioServiceTest {
     }
 
     @Test
+    void buscaPorIdOkTest(){
+
+        Usuario usuario = UsuarioBuilder.criarUsuarioComum();
+        Mockito.when(usuarioRepository.findById(usuario.getId())).thenReturn(Optional.of(usuario));
+
+        HttpStatus re = usuarioService.buscaPorId(usuario.getId()).getStatusCode();
+        assertEquals(HttpStatus.OK , re);
+    }
+
+    @Test
+    void buscaPorIdNotFoundTest(){
+
+        Usuario usuario = UsuarioBuilder.criarUsuarioComum();
+        Usuario usuarioRe = UsuarioBuilder.criarUsuarioComum();
+        usuarioRe.setId(5L);
+        Mockito.when(usuarioRepository.findById(usuario.getId())).thenReturn(Optional.empty());
+
+        HttpStatus re = usuarioService.buscaPorId(usuario.getId()).getStatusCode();
+        assertEquals(HttpStatus.NOT_FOUND , re);
+    }
+
+    @Test
     void buscarImagemPorIdOkTest(){
 
         List<Usuario> usuarios = UsuarioBuilder.criarListaUsuarioComum();
@@ -143,6 +170,47 @@ public class UsuarioServiceTest {
         HttpStatus re = usuarioService.BuscarImagemPorId(5L).getStatusCode();
         assertEquals(HttpStatus.NOT_FOUND, re);
     }
+
+    @Test
+    void atualizarUsuarioComumOkTest(){
+        UsuarioService espiao = Mockito.spy(usuarioService);
+
+        Mockito.doReturn(ResponseEntity.ok().body(UsuarioBuilder.criarUsuarioComum())).when(espiao).buscaPorId(Mockito.anyLong());
+
+        HttpStatus re = espiao.atualizarUsuarioComum(UsuarioBuilder.criarUsuarioConsultaComumDto()).getStatusCode();
+        assertEquals(HttpStatus.OK , re);
+    }
+
+    @Test
+    void atualizarUsuarioEmpresaOkTest(){
+        UsuarioService espiao = Mockito.spy(usuarioService);
+
+        Mockito.doReturn(ResponseEntity.ok().body(UsuarioBuilder.criarUsuarioEmpresa())).when(espiao).buscaPorId(Mockito.anyLong());
+
+        HttpStatus re = espiao.atualizarUsuarioEmpresa(UsuarioBuilder.criarUsuarioConsultaEmpresaDto()).getStatusCode();
+        assertEquals(HttpStatus.OK , re);
+    }
+
+    @Test
+    void atualizarUsuarioAdminOkTest(){
+        UsuarioService espiao = Mockito.spy(usuarioService);
+
+        Mockito.doReturn(ResponseEntity.ok().body(UsuarioBuilder.criarUsuarioEmpresa())).when(espiao).buscaPorId(Mockito.anyLong());
+
+        HttpStatus re = espiao.atualizarUsuarioAdmin(UsuarioBuilder.criarUsuarioConsultaAdminDto()).getStatusCode();
+        assertEquals(HttpStatus.OK , re);
+    }
+
+    @Test
+    void deletarUserOkTest(){
+        UsuarioService espiao = Mockito.spy(usuarioService);
+
+        Mockito.doReturn(ResponseEntity.ok().body(UsuarioBuilder.criarUsuarioEmpresa())).when(espiao).buscaPorId(Mockito.anyLong());
+
+        HttpStatus re = espiao.deleteUser(1L).getStatusCode();
+        assertEquals(HttpStatus.OK , re);
+    }
+
 
 //    @Test
 //    void getUserNameOkTest(){

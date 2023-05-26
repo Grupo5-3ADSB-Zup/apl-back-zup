@@ -85,6 +85,7 @@ public class UsuarioService {
         return ResponseEntity.status(404).build();
     }
 
+    //metodo redundante com buscar por id
     public ResponseEntity<Usuario> buscaUsuarioPorId(Long id){
         Optional<Usuario> usuarioConsulta  = _usuarioRepository.findById(id);
             if (usuarioConsulta.get().getId() == id){
