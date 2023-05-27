@@ -100,13 +100,13 @@ public class NoticiaService {
         return ResponseEntity.status(404).build();
     }
 
-    public ResponseEntity<Noticia> buscarNoticiaPorIdComentario(ComentarioRequest comentario, int id){
-        Optional<Noticia> noticias = _noticiaRepository.findById(id);
+    public ResponseEntity<Noticia> buscarNoticiaPorIdComentario(ComentarioRequest comentario, int idComentario){
+        Optional<Noticia> noticias = _noticiaRepository.findById(idComentario);
 
         if (noticias.isPresent()){
 
             Noticia noticia =new Noticia().builder()
-                    .id(id)
+                    .id(idComentario)
                     .titulo(noticias.get().getTitulo())
                     .descricao(noticias.get().getDescricao())
                     .link(noticias.get().getLink())

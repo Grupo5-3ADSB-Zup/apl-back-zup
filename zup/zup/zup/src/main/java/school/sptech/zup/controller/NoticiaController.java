@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.domain.Gpt;
 import school.sptech.zup.domain.Noticia;
+import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.obj.NoticiaObj;
 import school.sptech.zup.dto.request.ComentarioRequest;
 import school.sptech.zup.dto.request.LikesRequest;
@@ -14,6 +15,7 @@ import school.sptech.zup.dto.response.GptResponse;
 import school.sptech.zup.repository.NoticiaRepository;
 import school.sptech.zup.service.GptService;
 import school.sptech.zup.service.NoticiaService;
+import school.sptech.zup.service.UsuarioService;
 
 import java.util.List;
 
@@ -26,6 +28,7 @@ public class NoticiaController {
     private final NoticiaRepository _noticiaRepository;
     private final NoticiaService _noticiaService;
     private final GptService _gptService;
+    private final UsuarioService _usuarioService;
 
     @GetMapping("/rss/uol")
     public ResponseEntity<List<Noticia>> getRssUOL(){
@@ -66,11 +69,14 @@ public class NoticiaController {
         return ResponseEntity.status(404).build();
     }
 
-    @PutMapping("/comentarios/{id}")
-    public ResponseEntity<Noticia> salvarComentario(@RequestBody ComentarioRequest comentario, @PathVariable int id){
-        var consulta = _noticiaService.buscarNoticiaPorIdComentario(comentario, id);
-        if (consulta.getStatusCodeValue() == 200){
-            return ResponseEntity.status(200).body(consulta.getBody());
+    @PutMapping("/comentarios/{idUsuario}/{idComentario}")
+    public ResponseEntity<Noticia> salvarComentario(@RequestBody ComentarioRequest comentario,
+                                                    @PathVariable int idUsuario, @PathVariable int idComentario){
+
+        var consultaNoticia = _noticiaService.buscarNoticiaPorIdComentario(comentario, idComentario);
+        //var consultaUsuario = __usuarioService();
+        if (consultaNoticia.getStatusCodeValue() == 200){
+            return ResponseEntity.status(200).body(consultaNoticia.getBody());
         }
         return ResponseEntity.status(404).build();
     }
