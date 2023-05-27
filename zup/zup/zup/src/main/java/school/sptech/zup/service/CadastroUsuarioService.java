@@ -16,6 +16,7 @@ import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
 import school.sptech.zup.service.AutenticacaoJWT.UsuarioTokenDto;
 
+import java.util.Base64;
 import java.util.Optional;
 
 @Service
@@ -38,6 +39,9 @@ public class CadastroUsuarioService {
 
     public ResponseEntity<Usuario> saveUserComum(UsuarioComumRequestBody usuarioPostRequestBody) {
         var retorno = autenticar(usuarioPostRequestBody);
+
+        byte[] foto = Base64.getDecoder().decode(usuarioPostRequestBody.getFoto());
+
         if (retorno == true){
             Usuario usuario = Usuario.builder()
                     .nome(usuarioPostRequestBody.getNome())
@@ -48,7 +52,7 @@ public class CadastroUsuarioService {
                     .influencer(usuarioPostRequestBody.isInfluencer())
                     .logado(usuarioPostRequestBody.isLogado())
                     .cpf(usuarioPostRequestBody.getCpf())
-                    .foto(usuarioPostRequestBody.getFoto())
+                    .foto(foto)
                     .cnpj(null)
                     .build();
 
@@ -63,6 +67,9 @@ public class CadastroUsuarioService {
 
     public ResponseEntity<Usuario> saveUserEmpresa(UsuarioEmpresaRequestBody usuarioPostRequestBody) {
         var retorno = autenticar(usuarioPostRequestBody);
+
+        byte[] foto = Base64.getDecoder().decode(usuarioPostRequestBody.getFoto());
+
         if (retorno == true){
             Usuario usuario = Usuario.builder()
                     .nome(usuarioPostRequestBody.getNome())
@@ -73,7 +80,7 @@ public class CadastroUsuarioService {
                     .influencer(usuarioPostRequestBody.isInfluencer())
                     .logado(usuarioPostRequestBody.isLogado())
                     .cnpj(usuarioPostRequestBody.getCnpj())
-                    .foto(usuarioPostRequestBody.getFoto())
+                    .foto(foto)
                     .cpf(null)
                     .build();
             _usuarioRepository.save(usuario);
@@ -84,6 +91,9 @@ public class CadastroUsuarioService {
 
     public ResponseEntity<Usuario> saveUserAdmin(UsuarioAdminPostRequest usuarioPostRequestBody) {
         var retorno = autenticar(usuarioPostRequestBody);
+
+        byte[] foto = Base64.getDecoder().decode(usuarioPostRequestBody.getFoto());
+
         if (retorno == true){
             Usuario usuario = Usuario.builder()
                     .nome(usuarioPostRequestBody.getNome())
@@ -95,7 +105,7 @@ public class CadastroUsuarioService {
                     .logado(usuarioPostRequestBody.isLogado())
                     .cnpj(null)
                     .cpf(null)
-                    .foto(usuarioPostRequestBody.getFoto())
+                    .foto(foto)
                     .Admin(usuarioPostRequestBody.getAdmin())
                     .build();
             _usuarioRepository.save(usuario);
