@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.domain.Gpt;
 import school.sptech.zup.domain.Noticia;
 import school.sptech.zup.dto.obj.NoticiaObj;
+import school.sptech.zup.dto.request.ComentarioRequest;
+import school.sptech.zup.dto.request.LikesRequest;
 import school.sptech.zup.dto.response.GptResponse;
 import school.sptech.zup.repository.NoticiaRepository;
 import school.sptech.zup.service.GptService;
@@ -60,6 +62,24 @@ public class NoticiaController {
         if (consulta.getStatusCodeValue() == 200 && consultaTituloNoticia.getStatusCodeValue() == 200){
             var retorno = _gptService.gptNoticia(consulta.getBody(), gpt);
             return ResponseEntity.status(200).body(retorno);
+        }
+        return ResponseEntity.status(404).build();
+    }
+
+    @PutMapping("/comentarios/{id}")
+    public ResponseEntity<Noticia> salvarComentario(@RequestBody ComentarioRequest comentario, @PathVariable int id){
+        var consulta = _noticiaService.buscarNoticiaPorIdComentario(comentario, id);
+        if (consulta.getStatusCodeValue() == 200){
+            return ResponseEntity.status(200).body(consulta.getBody());
+        }
+        return ResponseEntity.status(404).build();
+    }
+
+    @PutMapping("/likes/{id}")
+    public ResponseEntity<Noticia> salvarLikes(@RequestBody LikesRequest likes, @PathVariable int id){
+        var consulta = _noticiaService.buscarNoticiaPorIdLikes(likes, id);
+        if (consulta.getStatusCodeValue() == 200){
+            return ResponseEntity.status(200).body(consulta.getBody());
         }
         return ResponseEntity.status(404).build();
     }
