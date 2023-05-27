@@ -27,6 +27,7 @@ public class GptService {
                 .build();
 
         gptResponse.setResposta(service.createCompletion(request).getChoices().get(0).getText());
+        gptResponse.setId(gpt.getId());
 
         return gptResponse;
     }

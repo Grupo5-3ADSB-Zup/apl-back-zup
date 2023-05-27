@@ -90,6 +90,8 @@ public class UsuarioService {
             if (usuarioConsulta.get().getId() == id){
                 return ResponseEntity.status(200).body(usuarioConsulta.get());
             }
+            if(usuarioConsulta.isEmpty()) return ResponseEntity.status(404).build();
+
         return ResponseEntity.status(404).build();
     }
 

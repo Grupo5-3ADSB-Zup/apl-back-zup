@@ -6,5 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class GptResponse {
+
+    private int id;
     private String resposta;
 }
