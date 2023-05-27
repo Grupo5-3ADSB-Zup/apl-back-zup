@@ -71,12 +71,17 @@ public class NoticiaController {
 
     @PutMapping("/comentarios/{idUsuario}/{idComentario}")
     public ResponseEntity<Noticia> salvarComentario(@RequestBody ComentarioRequest comentario,
-                                                    @PathVariable int idUsuario, @PathVariable int idComentario){
+                                                    @PathVariable Long idUsuario, @PathVariable int idNoticia){
 
-        var consultaNoticia = _noticiaService.buscarNoticiaPorIdComentario(comentario, idComentario);
-        //var consultaUsuario = __usuarioService();
-        if (consultaNoticia.getStatusCodeValue() == 200){
-            return ResponseEntity.status(200).body(consultaNoticia.getBody());
+        var consultaUsuario = _usuarioService.buscaUsuarioPorId(idUsuario);
+
+        if (consultaUsuario.getStatusCodeValue() == 200){
+            var consultaNoticia = _noticiaService.buscarNoticiaPorIdComentario(comentario, idNoticia,
+                    consultaUsuario.getBody());
+
+            if (consultaNoticia.getStatusCodeValue() == 200){
+                return ResponseEntity.status(200).body(consultaNoticia.getBody());
+            }
         }
         return ResponseEntity.status(404).build();
     }

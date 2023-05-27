@@ -7,10 +7,13 @@ import com.rometools.rome.io.XmlReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import school.sptech.zup.domain.Comentario;
 import school.sptech.zup.domain.Gpt;
 import school.sptech.zup.domain.Noticia;
+import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.request.ComentarioRequest;
 import school.sptech.zup.dto.request.LikesRequest;
+import school.sptech.zup.repository.ComentarioRepository;
 import school.sptech.zup.repository.NoticiaRepository;
 import school.sptech.zup.util.DateUtil;
 
@@ -25,6 +28,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class NoticiaService {
     private final NoticiaRepository _noticiaRepository;
+
+    private final ComentarioRepository _comentarioRepository;
     private DateUtil _dateUtil;
 
     public ResponseEntity<List<Noticia>>  getXmlUOL(){
@@ -100,13 +105,13 @@ public class NoticiaService {
         return ResponseEntity.status(404).build();
     }
 
-    public ResponseEntity<Noticia> buscarNoticiaPorIdComentario(ComentarioRequest comentario, int idComentario){
-        Optional<Noticia> noticias = _noticiaRepository.findById(idComentario);
+    public ResponseEntity<Noticia> buscarNoticiaPorIdComentario(ComentarioRequest comentario, int idNoticia, Usuario usuario){
+        Optional<Noticia> noticias = _noticiaRepository.findById(idNoticia);
 
         if (noticias.isPresent()){
 
             Noticia noticia =new Noticia().builder()
-                    .id(idComentario)
+                    .id(idNoticia)
                     .titulo(noticias.get().getTitulo())
                     .descricao(noticias.get().getDescricao())
                     .link(noticias.get().getLink())
@@ -118,6 +123,14 @@ public class NoticiaService {
                     .build();
 
             _noticiaRepository.save(noticia);
+
+            Comentario criarComentario = new Comentario().builder()
+                    .descricao(noticia.getComentario())
+                    .usuario(usuario)
+                    .noticias(noticia)
+                    .build();
+
+            _comentarioRepository.save(criarComentario);
 
             return ResponseEntity.status(200).body(noticia);
         }
