@@ -87,4 +87,10 @@ public class UsuarioController {
         var retorno = usuarioService.deleteUser(id);
         return retorno;
     }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Usuario> getUsuarioId(@PathVariable Long id) {
+        var retorno = usuarioService.buscaUsuarioPorId(id);
+        return retorno;
+    }
 }

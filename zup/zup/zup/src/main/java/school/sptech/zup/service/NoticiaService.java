@@ -13,6 +13,7 @@ import school.sptech.zup.domain.Noticia;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.request.ComentarioRequest;
 import school.sptech.zup.dto.request.LikesRequest;
+import school.sptech.zup.dto.response.ComentarioResponse;
 import school.sptech.zup.repository.ComentarioRepository;
 import school.sptech.zup.repository.NoticiaRepository;
 import school.sptech.zup.util.DateUtil;
@@ -21,6 +22,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -159,5 +161,37 @@ public class NoticiaService {
             return ResponseEntity.status(200).body(noticia);
         }
         return ResponseEntity.status(404).build();
+    }
+
+    public List<Comentario> comentarios(){
+        var retorno = _comentarioRepository.findAll();
+
+        if (retorno.isEmpty()){
+            return null;
+        }
+        return retorno;
+    }
+
+    public List<ComentarioResponse> getComentarioNoticiaPorId(Noticia noticia){
+        List<Comentario> comentarios = _comentarioRepository.findAll();
+
+        List<ComentarioResponse> listaComentariosResponse = new ArrayList();
+
+        if (!comentarios.isEmpty()){
+            for (int i = 0; i < comentarios.size(); i++){
+                if (comentarios.get(i).getNoticias().getId() == noticia.getId()){
+
+                    ComentarioResponse comentarioResposta = new ComentarioResponse();
+
+                    comentarioResposta.setNome(comentarios.get(i).getUsuario().getNome());
+                    comentarioResposta.setDescricao(comentarios.get(i).getDescricao());
+                    comentarioResposta.setFoto(comentarios.get(i).getUsuario().getFoto());
+
+                    listaComentariosResponse.add(comentarioResposta);
+                }
+            }
+            return listaComentariosResponse;
+        }
+        return null;
     }
 }

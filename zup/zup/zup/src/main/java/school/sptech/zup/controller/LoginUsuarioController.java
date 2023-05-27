@@ -37,10 +37,4 @@ public class LoginUsuarioController {
         var retorno = _loginService.deslogar(username);
         return retorno;
     }
-
-    @GetMapping("/usuario/{id}")
-    public ResponseEntity<Usuario> getUsuarioId(@RequestParam Long id) {
-        var retorno = _usuarioService.buscaUsuarioPorId(id);
-        return retorno;
-    }
 }

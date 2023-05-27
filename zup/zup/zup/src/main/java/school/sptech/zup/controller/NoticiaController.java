@@ -5,12 +5,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import school.sptech.zup.domain.Comentario;
 import school.sptech.zup.domain.Gpt;
 import school.sptech.zup.domain.Noticia;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.obj.NoticiaObj;
 import school.sptech.zup.dto.request.ComentarioRequest;
 import school.sptech.zup.dto.request.LikesRequest;
+import school.sptech.zup.dto.response.ComentarioResponse;
 import school.sptech.zup.dto.response.GptResponse;
 import school.sptech.zup.repository.NoticiaRepository;
 import school.sptech.zup.service.GptService;
@@ -18,6 +20,7 @@ import school.sptech.zup.service.NoticiaService;
 import school.sptech.zup.service.UsuarioService;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -57,6 +60,16 @@ public class NoticiaController {
         return ResponseEntity.status(200).body(consulta);
     }
 
+    @GetMapping("/rss/{id}")
+    public ResponseEntity<Noticia> getNoticiaId(Integer id){
+        Optional<Noticia> consulta = _noticiaRepository.findById(id);
+
+        if (consulta.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(200).body(consulta.get());
+    }
+
     @PostMapping("/rss/info")
     public ResponseEntity<GptResponse> InserirNoticiasGPT(@RequestBody Gpt gpt){
         var consulta = getNoticia();
@@ -69,7 +82,7 @@ public class NoticiaController {
         return ResponseEntity.status(404).build();
     }
 
-    @PutMapping("/comentarios/{idUsuario}/{idComentario}")
+    @PutMapping("/comentarios/{idUsuario}/{idNoticia}")
     public ResponseEntity<Noticia> salvarComentario(@RequestBody ComentarioRequest comentario,
                                                     @PathVariable Long idUsuario, @PathVariable int idNoticia){
 
@@ -104,4 +117,26 @@ public class NoticiaController {
         _noticiaRepository.deleteAll(noticias);
         return ResponseEntity.status(200).build();
     }
+
+    @GetMapping("/comentarios")
+    public ResponseEntity<List<Comentario>> comentarios(){
+        var consulta = _noticiaService.comentarios();
+
+        if (consulta != null){
+            return ResponseEntity.status(200).body(consulta);
+        }
+        return ResponseEntity.status(404).build();
+    }
+
+    @GetMapping("/comentarios-id-noticia/{idNoticia}")
+    public ResponseEntity<List<ComentarioResponse>> comentarioPorId(@PathVariable long idNoticia){
+        var consulta = getNoticiaId((int) idNoticia);
+        if (consulta != null){
+            var consultaComentario = _noticiaService.getComentarioNoticiaPorId(consulta.getBody());
+            return ResponseEntity.status(200).body(consultaComentario);
+        }
+        return ResponseEntity.status(404).build();
+    }
+
+    //foto, nome, descricao
 }
