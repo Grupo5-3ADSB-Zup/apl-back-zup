@@ -40,7 +40,7 @@ public class CadastroUsuarioService {
     public ResponseEntity<Usuario> saveUserComum(UsuarioComumRequestBody usuarioPostRequestBody) {
         var retorno = autenticar(usuarioPostRequestBody);
 
-        byte[] foto = Base64.getDecoder().decode(usuarioPostRequestBody.getFoto());
+       // byte[] foto = Base64.getDecoder().decode(usuarioPostRequestBody.getFoto());
 
         if (retorno == true){
             Usuario usuario = Usuario.builder()
@@ -52,7 +52,7 @@ public class CadastroUsuarioService {
                     .influencer(usuarioPostRequestBody.isInfluencer())
                     .logado(usuarioPostRequestBody.isLogado())
                     .cpf(usuarioPostRequestBody.getCpf())
-                    .foto(foto)
+                    .foto(usuarioPostRequestBody.getFoto())
                     .cnpj(null)
                     .build();
 
