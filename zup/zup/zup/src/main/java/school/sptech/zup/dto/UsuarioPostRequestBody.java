@@ -18,4 +18,5 @@ public abstract class UsuarioPostRequestBody {
     private boolean influencer;
     private Boolean autenticado;
     private boolean logado;
+    private byte[] foto;
 }

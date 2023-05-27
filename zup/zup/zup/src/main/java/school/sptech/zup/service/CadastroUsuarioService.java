@@ -48,6 +48,7 @@ public class CadastroUsuarioService {
                     .influencer(usuarioPostRequestBody.isInfluencer())
                     .logado(usuarioPostRequestBody.isLogado())
                     .cpf(usuarioPostRequestBody.getCpf())
+                    .foto(usuarioPostRequestBody.getFoto())
                     .cnpj(null)
                     .build();
 
@@ -72,6 +73,7 @@ public class CadastroUsuarioService {
                     .influencer(usuarioPostRequestBody.isInfluencer())
                     .logado(usuarioPostRequestBody.isLogado())
                     .cnpj(usuarioPostRequestBody.getCnpj())
+                    .foto(usuarioPostRequestBody.getFoto())
                     .cpf(null)
                     .build();
             _usuarioRepository.save(usuario);
@@ -93,6 +95,7 @@ public class CadastroUsuarioService {
                     .logado(usuarioPostRequestBody.isLogado())
                     .cnpj(null)
                     .cpf(null)
+                    .foto(usuarioPostRequestBody.getFoto())
                     .Admin(usuarioPostRequestBody.getAdmin())
                     .build();
             _usuarioRepository.save(usuario);
