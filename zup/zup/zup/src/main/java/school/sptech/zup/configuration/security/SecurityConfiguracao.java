@@ -52,6 +52,7 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/swagger-ui/**"),
             new AntPathRequestMatcher("/usuarios/login/**"),
             new AntPathRequestMatcher("/usuario/id"),
+            new AntPathRequestMatcher("/usuario/{id}"),
             //new AntPathRequestMatcher("/usuario/user/comum"),
             //new AntPathRequestMatcher("/usuario/user/empresa"),
             //new AntPathRequestMatcher("/usuario/user/admin"),
