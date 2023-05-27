@@ -144,9 +144,9 @@ public class NoticiaService {
 
         if (noticias.isPresent()){
 
-            int contador = noticias.get().getLikes();
+            Integer contador = noticias.get().getLikes();
 
-            contador += like.getLikes();
+            contador = contador + like.getLikes();
 
             Noticia noticia =new Noticia().builder()
                     .id(id)
