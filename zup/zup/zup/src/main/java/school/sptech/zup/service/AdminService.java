@@ -331,6 +331,7 @@ public class AdminService {
             noticiaObj.setDtNoticia(consulta.getBody().get(i).getDtNoticia());
             noticiaObj.setLikes(consulta.getBody().get(i).getLikes());
             noticiaObj.setComentario(consulta.getBody().get(i).getComentario());
+            noticiaObj.setFoto(consulta.getBody().get(i).getFoto());
 
 
             filaNoticias.insert(noticiaObj);

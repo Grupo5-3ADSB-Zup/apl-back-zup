@@ -82,7 +82,7 @@ public class NoticiaController {
         return ResponseEntity.status(404).build();
     }
 
-    @PutMapping("/comentarios/{idUsuario}/{idNoticia}")
+    @PostMapping("/comentarios/{idUsuario}/{idNoticia}")
     public ResponseEntity<Noticia> salvarComentario(@RequestBody ComentarioRequest comentario,
                                                     @PathVariable Long idUsuario, @PathVariable int idNoticia){
 
@@ -99,7 +99,7 @@ public class NoticiaController {
         return ResponseEntity.status(404).build();
     }
 
-    @PutMapping("/likes/{id}")
+    @PostMapping("/likes/{id}")
     public ResponseEntity<Noticia> salvarLikes(@RequestBody LikesRequest likes, @PathVariable int id){
         var consulta = _noticiaService.buscarNoticiaPorIdLikes(likes, id);
         if (consulta.getStatusCodeValue() == 200){
