@@ -187,7 +187,7 @@ public class NoticiaService {
 
                     ComentarioResponse comentarioResposta = new ComentarioResponse();
 
-                    comentarioResposta.setId(comentarios.get(i).getId());
+                    comentarioResposta.setId(comentarios.get(i).getNoticias().getId());
                     comentarioResposta.setNome(comentarios.get(i).getUsuario().getNome());
                     comentarioResposta.setDescricao(comentarios.get(i).getDescricao());
                     comentarioResposta.setFoto(comentarios.get(i).getUsuario().getFoto());
