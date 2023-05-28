@@ -13,7 +13,7 @@ import school.sptech.zup.service.LoginUsuarioService;
 import school.sptech.zup.service.UsuarioService;
 import school.sptech.zup.util.DateUtil;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://apl-front-zup-teste-git-prodution-vercel-zup.vercel.app/")
 @RestController
 @RequestMapping("/login")
 @Log4j2

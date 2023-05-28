@@ -19,7 +19,7 @@ import school.sptech.zup.util.DateUtil;
 
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://apl-front-zup-teste-git-prodution-vercel-zup.vercel.app/")
 @RestController
 @RequestMapping("/usuario")
 @Log4j2

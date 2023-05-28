@@ -22,7 +22,7 @@ import school.sptech.zup.service.UsuarioService;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://apl-front-zup-teste-git-prodution-vercel-zup.vercel.app/")
 @RestController
 @RequestMapping("/noticia")
 @RequiredArgsConstructor
