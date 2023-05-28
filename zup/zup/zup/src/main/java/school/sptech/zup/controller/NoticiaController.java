@@ -76,7 +76,7 @@ public class NoticiaController {
         var consultaTituloNoticia = _noticiaService.procuraPorNome(gpt);
 
         if (consulta.getStatusCodeValue() == 200 && consultaTituloNoticia.getStatusCodeValue() == 200){
-            var retorno = _gptService.gptNoticia(consulta.getBody(), gpt);
+            var retorno = _gptService.gptNoticia(gpt);
             return ResponseEntity.status(200).body(retorno);
         }
         return ResponseEntity.status(404).build();
