@@ -13,7 +13,7 @@ import school.sptech.zup.util.DateUtil;
 
 import java.util.List;
 
-@CrossOrigin(origins = "https://apl-front-zup-teste-git-prodution-vercel-zup.vercel.app/")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/chat")
 @Log4j2

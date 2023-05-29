@@ -13,7 +13,7 @@ import school.sptech.zup.service.UsuarioService;
 import school.sptech.zup.util.DateUtil;
 import java.util.Base64;
 
-@CrossOrigin(origins = "https://apl-front-zup-teste-git-prodution-vercel-zup.vercel.app/")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/cadastro")
 @Log4j2

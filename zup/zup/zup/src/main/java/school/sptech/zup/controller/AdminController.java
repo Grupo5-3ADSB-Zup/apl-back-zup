@@ -14,7 +14,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.util.List;
 
-@CrossOrigin(origins = "https://apl-front-zup-teste-git-prodution-vercel-zup.vercel.app/")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/admin")
 @Log4j2
