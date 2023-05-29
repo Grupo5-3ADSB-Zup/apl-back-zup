@@ -138,7 +138,7 @@ public class NoticiaController {
         return ResponseEntity.status(404).build();
     }
 
-    @GetMapping("/rss/{id}")
+    @GetMapping("/rss/isolado/{id}")
     public ResponseEntity<Optional<Noticia>> getNoticiaPorId(int id){
         Optional<Noticia> noticiaPorId = _noticiaRepository.findById(id);
         if (noticiaPorId.isEmpty()){
