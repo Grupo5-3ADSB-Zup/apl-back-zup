@@ -14,20 +14,20 @@ import java.util.concurrent.CompletionService;
 
 @Service
 public class GptService {
-    private static final String API_KEY = "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";
+    private static final String API_KEY ="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";
 
-    public GptResponse gptNoticia(List<Noticia> noticias, Gpt gpt) {
+    public GptResponse gptNoticia(Gpt gpt) {
         OpenAiService service = new OpenAiService(API_KEY);
         GptResponse gptResponse = new GptResponse();
 
         CompletionRequest request = CompletionRequest.builder()
                 .model("text-davinci-003")
-                .prompt(noticias.get(gpt.getId()) + gpt.getPergunta())
+                .prompt(gpt.getTitulo() + gpt.getPergunta())
                 .maxTokens(1000)
                 .build();
 
         gptResponse.setResposta(service.createCompletion(request).getChoices().get(0).getText());
-
+        gptResponse.setId(gpt.getId());
         return gptResponse;
     }
 }

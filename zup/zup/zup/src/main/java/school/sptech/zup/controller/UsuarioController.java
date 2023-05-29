@@ -19,7 +19,7 @@ import school.sptech.zup.util.DateUtil;
 
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/usuario")
 @Log4j2
@@ -41,12 +41,6 @@ public class UsuarioController {
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Usuario> getUsuario(@RequestParam String username) {
         var retorno = usuarioService.buscaPorUsername(username);
-        return retorno;
-    }
-
-    @GetMapping("/id")
-    public ResponseEntity<Usuario> getUsuarioId(@RequestParam Long id) {
-        var retorno = usuarioService.buscaUsuarioPorId(id);
         return retorno;
     }
 
@@ -91,6 +85,12 @@ public class UsuarioController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Usuario> deleteUser(@PathVariable long id) {
         var retorno = usuarioService.deleteUser(id);
+        return retorno;
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Usuario> getUsuarioId(@PathVariable Long id) {
+        var retorno = usuarioService.buscaUsuarioPorId(id);
         return retorno;
     }
 }

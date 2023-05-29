@@ -5,8 +5,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class GptResponse {
-
+public class ComentarioResponse {
     private int id;
-    private String resposta;
+    private String nome;
+    private String descricao;
+    private byte[] foto;
 }

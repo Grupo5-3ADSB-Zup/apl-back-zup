@@ -18,6 +18,7 @@ public abstract class UsuarioPostRequestBody {
     private boolean influencer;
     private Boolean autenticado;
     private boolean logado;
+<<<<<<< HEAD
 
     public UsuarioPostRequestBody(String nome, String email, String username, String senha, boolean influencer, Boolean autenticado, boolean logado) {
         this.nome = nome;
@@ -28,4 +29,7 @@ public abstract class UsuarioPostRequestBody {
         this.autenticado = autenticado;
         this.logado = logado;
     }
+=======
+    private byte[] foto;
+>>>>>>> ba12f621e6b2f35a7ab4abbe94a8ea0ddc8b5a72
 }

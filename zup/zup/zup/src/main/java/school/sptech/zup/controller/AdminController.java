@@ -14,7 +14,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/admin")
 @Log4j2
@@ -56,7 +56,6 @@ public class AdminController {
     }
 
     @PatchMapping(value = "/importacao/txt")
-
     public ResponseEntity<BufferedReader>  importarArquivoTXT(@RequestParam MultipartFile arquivo) {
            var retorno = _adminService.lerArquivoTxt(arquivo);
            if (retorno.getStatusCodeValue() == 201){

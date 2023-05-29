@@ -52,6 +52,7 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/swagger-ui/**"),
             new AntPathRequestMatcher("/usuarios/login/**"),
             new AntPathRequestMatcher("/usuario/id"),
+            new AntPathRequestMatcher("/usuario/{id}"),
             //new AntPathRequestMatcher("/usuario/user/comum"),
             //new AntPathRequestMatcher("/usuario/user/empresa"),
             //new AntPathRequestMatcher("/usuario/user/admin"),
@@ -61,13 +62,15 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/noticia/**"),
             new AntPathRequestMatcher("/cadastro/**"),
             new AntPathRequestMatcher("/login/logar"),
+            new AntPathRequestMatcher("/login/usuario/*"),
             new AntPathRequestMatcher("/h2-console"),
             new AntPathRequestMatcher("/error/**"),
             new AntPathRequestMatcher("/admin/**"),
             new AntPathRequestMatcher("jdbc:mysql://localhost:3306/zup?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true"),
             new AntPathRequestMatcher("jdbc:sqlserver://projeto-zup.database.windows.net:1433;database=bd-projeto-zup;user=admin-zup@projeto-zup;password=#Gfgrupo5;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30"),
             new AntPathRequestMatcher("/3001/**"),
-            new AntPathRequestMatcher("/3000/**")
+            new AntPathRequestMatcher("/3000/**"),
+            new AntPathRequestMatcher("https://apl-front-zup-teste-git-prodution-vercel-zup.vercel.app/home")
     };
 
     @Bean

@@ -5,28 +5,33 @@ import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpStatusCodeException;
+import school.sptech.zup.domain.Comentario;
 import school.sptech.zup.domain.Gpt;
 import school.sptech.zup.domain.Noticia;
+import school.sptech.zup.domain.Usuario;
+import school.sptech.zup.dto.request.ComentarioRequest;
+import school.sptech.zup.dto.request.LikesRequest;
+import school.sptech.zup.dto.response.ComentarioResponse;
+import school.sptech.zup.repository.ComentarioRepository;
 import school.sptech.zup.repository.NoticiaRepository;
 import school.sptech.zup.util.DateUtil;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.sql.Date;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class NoticiaService {
     private final NoticiaRepository _noticiaRepository;
+
+    private final ComentarioRepository _comentarioRepository;
     private DateUtil _dateUtil;
 
     public ResponseEntity<List<Noticia>>  getXmlUOL(){
@@ -100,5 +105,98 @@ public class NoticiaService {
             }
         }
         return ResponseEntity.status(404).build();
+    }
+
+    public ResponseEntity<Noticia> buscarNoticiaPorIdComentario(ComentarioRequest comentario, int idNoticia, Usuario usuario){
+        Optional<Noticia> noticias = _noticiaRepository.findById(idNoticia);
+
+        if (noticias.isPresent()){
+
+            Noticia noticia =new Noticia().builder()
+                    .id(idNoticia)
+                    .titulo(noticias.get().getTitulo())
+                    .descricao(noticias.get().getDescricao())
+                    .link(noticias.get().getLink())
+                    .emissora(noticias.get().getEmissora())
+                    .likes(noticias.get().getLikes())
+                    .comentario(comentario.getComentario())
+                    .dtNoticia(noticias.get().getDtNoticia())
+                    .foto(noticias.get().getFoto())
+                    .build();
+
+            _noticiaRepository.save(noticia);
+
+            Comentario criarComentario = new Comentario().builder()
+                    .descricao(noticia.getComentario())
+                    .usuario(usuario)
+                    .noticias(noticia)
+                    .build();
+
+            _comentarioRepository.save(criarComentario);
+
+            return ResponseEntity.status(200).body(noticia);
+        }
+        return ResponseEntity.status(404).build();
+    }
+
+    public ResponseEntity<Noticia> buscarNoticiaPorIdLikes(LikesRequest like, int id){
+        Optional<Noticia> noticias = _noticiaRepository.findById(id);
+
+        if (noticias.isPresent()){
+
+            Integer contador = noticias.get().getLikes();
+
+            contador = contador + like.getLikes();
+
+            Noticia noticia =new Noticia().builder()
+                    .id(id)
+                    .titulo(noticias.get().getTitulo())
+                    .descricao(noticias.get().getDescricao())
+                    .link(noticias.get().getLink())
+                    .emissora(noticias.get().getEmissora())
+                    .likes(contador)
+                    .comentario(noticias.get().getComentario())
+                    .dtNoticia(noticias.get().getDtNoticia())
+                    .foto(noticias.get().getFoto())
+                    .build();
+
+            _noticiaRepository.save(noticia);
+
+            return ResponseEntity.status(200).body(noticia);
+        }
+        return ResponseEntity.status(404).build();
+    }
+
+    public List<Comentario> comentarios(){
+        var retorno = _comentarioRepository.findAll();
+
+        if (retorno.isEmpty()){
+            return null;
+        }
+        return retorno;
+    }
+
+    public List<ComentarioResponse> getComentarioNoticiaPorId(Noticia noticia){
+        List<Comentario> comentarios = _comentarioRepository.findAll();
+
+        List<ComentarioResponse> listaComentariosResponse = new ArrayList();
+
+        if (!comentarios.isEmpty()){
+            for (int i = 0; i < comentarios.size(); i++){
+                if (comentarios.get(i).getNoticias().getId() == noticia.getId()){
+
+                    ComentarioResponse comentarioResposta = new ComentarioResponse();
+
+                    comentarioResposta.setId(comentarios.get(i).getNoticias().getId());
+                    comentarioResposta.setNome(comentarios.get(i).getUsuario().getNome());
+                    comentarioResposta.setDescricao(comentarios.get(i).getDescricao());
+                    comentarioResposta.setFoto(comentarios.get(i).getUsuario().getFoto());
+
+                    listaComentariosResponse.add(comentarioResposta);
+                }
+            }
+            return listaComentariosResponse;
+        }
+        return null;
     }
 }

@@ -10,20 +10,20 @@ import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
 import school.sptech.zup.service.AutenticacaoJWT.UsuarioTokenDto;
 import school.sptech.zup.service.CadastroUsuarioService;
 import school.sptech.zup.service.LoginUsuarioService;
+import school.sptech.zup.service.UsuarioService;
 import school.sptech.zup.util.DateUtil;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/login")
 @Log4j2
 @RequiredArgsConstructor
 public class LoginUsuarioController {
-    @Autowired
     private final DateUtil dateUtil;
-    @Autowired
     private final LoginUsuarioService _loginService;
-    @Autowired
     private final CadastroUsuarioService _cadastroUsuarioService;
+
+    private final UsuarioService _usuarioService;
 
    @PostMapping("/logar")
     public ResponseEntity<UsuarioTokenDto> logarUser(@RequestBody UsuarioLoginDto loginDto){
@@ -37,5 +37,4 @@ public class LoginUsuarioController {
         var retorno = _loginService.deslogar(username);
         return retorno;
     }
-
 }
