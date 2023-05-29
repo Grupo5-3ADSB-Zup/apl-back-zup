@@ -138,5 +138,12 @@ public class NoticiaController {
         return ResponseEntity.status(404).build();
     }
 
-    //foto, nome, descricao
+    @GetMapping("/rss/{id}")
+    public ResponseEntity<Optional<Noticia>> getNoticiaPorId(int id){
+        Optional<Noticia> noticiaPorId = _noticiaRepository.findById(id);
+        if (noticiaPorId.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(200).body(noticiaPorId);
+    }
 }
