@@ -2,18 +2,19 @@ package school.sptech.zup.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.obj.NoticiaObj;
 import school.sptech.zup.dto.obj.PilhaObj;
 import school.sptech.zup.dto.obj.UsuarioObj;
 import school.sptech.zup.service.AdminService;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -30,18 +31,36 @@ public class AdminController {
     private UsuarioObj[] vetor;
     private int nroElem;
 
-    @PostMapping("/csv/{nomeArquivo}")
-    public ResponseEntity<Object>  gravarArquivoCsv(@PathVariable String nomeArquivo) {
+    @GetMapping("/csv/{nomeArquivo}")
+    public ResponseEntity<byte[]> baixarArquivo(@PathVariable String nomeArquivo) {
+
         var retorno = _adminService.getListUsuario();
-        if (retorno.getStatusCodeValue() == 200){
-           _adminService.gravarArquivoCsv(retorno.getBody(), nomeArquivo);
-             return ResponseEntity.status(201).build();
+        if (retorno.getStatusCodeValue() == 200) {
+            _adminService.gravarArquivoCsv(retorno.getBody(), nomeArquivo);
+
+
+            File file = new File("./Usuario.csv");
+
+            try {
+                FileInputStream fileInputStream = new FileInputStream(file);
+
+                return ResponseEntity
+                        .status(200)
+                        .header("Content-Disposition",
+                                "attachment; filename="+nomeArquivo)
+                        .contentType(MediaType.parseMediaType("application/csv"))
+                        .body(fileInputStream.readAllBytes());
+            } catch (FileNotFoundException e) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         return ResponseEntity.status(404).build();
     }
 
     @GetMapping("/{indice}")
-    public ResponseEntity<UsuarioObj>  pesquisaBinaria(@PathVariable String indice) {
+    public ResponseEntity<UsuarioObj> pesquisaBinaria(@PathVariable String indice) {
         return _adminService.pesquisaBinaria(indice);
     }
 
@@ -50,8 +69,8 @@ public class AdminController {
 
     public ResponseEntity<BufferedWriter> gravarArquivoTXT(@PathVariable String nomeArquivo) {
         var retorno = _adminService.getListUsuario();
-        if (retorno.getStatusCodeValue() == 200){
-             var gerar = _adminService.gravarArquivoTxt(retorno.getBody(), nomeArquivo);
+        if (retorno.getStatusCodeValue() == 200) {
+            var gerar = _adminService.gravarArquivoTxt(retorno.getBody(), nomeArquivo);
 
             return ResponseEntity.status(201).build();
         }
@@ -59,28 +78,28 @@ public class AdminController {
     }
 
     @PatchMapping(value = "/importacao/txt")
-    public ResponseEntity<BufferedReader>  importarArquivoTXT(@RequestParam MultipartFile arquivo) {
-           var retorno = _adminService.lerArquivoTxt(arquivo);
-           if (retorno.getStatusCodeValue() == 201){
-               return retorno;
-           }
-            return ResponseEntity.status(404).build();
+    public ResponseEntity<BufferedReader> importarArquivoTXT(@RequestParam MultipartFile arquivo) {
+        var retorno = _adminService.lerArquivoTxt(arquivo);
+        if (retorno.getStatusCodeValue() == 201) {
+            return retorno;
+        }
+        return ResponseEntity.status(404).build();
     }
 
     @GetMapping("/filaPilha/noticias")
-    public ResponseEntity<List<NoticiaObj>> retornarFilaPilhaObj(){
-            var retorno = _adminService.getNoticiasFilaPilha();
-            if (retorno.isEmpty()){
-                return ResponseEntity.status(404).build();
-            }
-            return ResponseEntity.status(200).body(retorno);
+    public ResponseEntity<List<NoticiaObj>> retornarFilaPilhaObj() {
+        var retorno = _adminService.getNoticiasFilaPilha();
+        if (retorno.isEmpty()) {
+            return ResponseEntity.status(404).build();
+        }
+        return ResponseEntity.status(200).body(retorno);
     }
 
     @GetMapping
-    public ResponseEntity<List<Usuario>> getTodosOsUsuarios(){
+    public ResponseEntity<List<Usuario>> getTodosOsUsuarios() {
         var retorno = _adminService.getListTodosUsuario();
 
-        if (retorno.getStatusCodeValue() == 200){
+        if (retorno.getStatusCodeValue() == 200) {
             return ResponseEntity.status(200).body(retorno.getBody());
         }
         return ResponseEntity.status(404).build();
