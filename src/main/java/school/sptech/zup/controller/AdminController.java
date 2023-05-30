@@ -83,5 +83,6 @@ public class AdminController {
         if (retorno.getStatusCodeValue() == 200){
             return ResponseEntity.status(200).body(retorno.getBody());
         }
+        return ResponseEntity.status(404).build();
     }
 }
