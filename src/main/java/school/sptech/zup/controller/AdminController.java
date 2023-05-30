@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.obj.NoticiaObj;
 import school.sptech.zup.dto.obj.PilhaObj;
 import school.sptech.zup.dto.obj.UsuarioObj;
@@ -12,6 +13,7 @@ import school.sptech.zup.service.AdminService;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -32,7 +34,7 @@ public class AdminController {
     public ResponseEntity<Object>  gravarArquivoCsv(@PathVariable String nomeArquivo) {
         var retorno = _adminService.getListUsuario();
         if (retorno.getStatusCodeValue() == 200){
-             _adminService.gravarArquivoCsv(retorno.getBody(), nomeArquivo);
+           _adminService.gravarArquivoCsv(retorno.getBody(), nomeArquivo);
              return ResponseEntity.status(201).build();
         }
         return ResponseEntity.status(404).build();
@@ -72,5 +74,14 @@ public class AdminController {
                 return ResponseEntity.status(404).build();
             }
             return ResponseEntity.status(200).body(retorno);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Usuario>> getTodosOsUsuarios(){
+        var retorno = _adminService.getListTodosUsuario();
+
+        if (retorno.getStatusCodeValue() == 200){
+            return ResponseEntity.status(200).body(retorno.getBody());
+        }
     }
 }

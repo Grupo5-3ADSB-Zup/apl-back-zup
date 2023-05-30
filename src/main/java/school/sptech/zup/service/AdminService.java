@@ -351,4 +351,13 @@ public class AdminService {
         }
         return noticiasObj;
     }
+
+    public ResponseEntity<List<Usuario>> getListTodosUsuario() {
+        List<Usuario> usuarioConsulta = _usuarioRepository.findAll();
+
+        if (usuarioConsulta.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(200).body(usuarioConsulta);
+    }
 }
