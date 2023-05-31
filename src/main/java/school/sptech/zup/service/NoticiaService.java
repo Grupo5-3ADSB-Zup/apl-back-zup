@@ -14,6 +14,7 @@ import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.request.ComentarioRequest;
 import school.sptech.zup.dto.request.LikesRequest;
 import school.sptech.zup.dto.response.ComentarioResponse;
+import school.sptech.zup.dto.response.UsuarioResponse;
 import school.sptech.zup.repository.ComentarioRepository;
 import school.sptech.zup.repository.NoticiaRepository;
 import school.sptech.zup.util.DateUtil;
@@ -193,10 +194,9 @@ public class NoticiaService {
 
                     ComentarioResponse comentarioResposta = new ComentarioResponse();
 
-                    comentarioResposta.setId(comentarios.get(i).getNoticias().getId());
-                    comentarioResposta.setNome(comentarios.get(i).getUsuario().getNome());
+                    comentarioResposta.setId(comentarios.get(i).getId());
+                    comentarioResposta.setUsuario(new UsuarioResponse(comentarios.get(i).getUsuario()));
                     comentarioResposta.setDescricao(comentarios.get(i).getDescricao());
-                    comentarioResposta.setFoto(comentarios.get(i).getUsuario().getFoto());
 
                     listaComentariosResponse.add(comentarioResposta);
                 }

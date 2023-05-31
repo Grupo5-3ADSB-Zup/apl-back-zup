@@ -2,6 +2,8 @@ package school.sptech.zup.dto.obj;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import school.sptech.zup.domain.Comentario;
+import school.sptech.zup.dto.response.ComentarioResponse;
 
 import javax.persistence.Column;
 import javax.persistence.Lob;
@@ -18,14 +20,14 @@ public class NoticiaObj {
     @Column(length = 50 * 1024 * 1024)
     private byte[] fotoNoticia;
 
-    private Long idComentario;
+    private ComentarioResponse comentario;
     private String nomeUsuario;
     @Lob
     @Column(name="descricao", length=2048)
     private String descricaoComentario;
     private byte[] fotoUsuario;
 
-    public NoticiaObj(int id, String titulo, String descricao, String link, String emissora, LocalDateTime dtNoticia, Integer likes, byte[] fotoNoticia, Long idComentario, String nomeUsuario, String descricaoComentario, byte[] fotoUsuario) {
+    public NoticiaObj(int id, String titulo, String descricao, String link, String emissora, LocalDateTime dtNoticia, Integer likes, byte[] fotoNoticia, ComentarioResponse comentario, String nomeUsuario, String descricaoComentario, byte[] fotoUsuario) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
@@ -34,7 +36,7 @@ public class NoticiaObj {
         this.dtNoticia = dtNoticia;
         this.likes = likes;
         this.fotoNoticia = fotoNoticia;
-        this.idComentario = idComentario;
+        this.comentario = comentario;
         this.nomeUsuario = nomeUsuario;
         this.descricaoComentario = descricaoComentario;
         this.fotoUsuario = fotoUsuario;
@@ -107,12 +109,12 @@ public class NoticiaObj {
         this.fotoNoticia = fotoNoticia;
     }
 
-    public Long getIdComentario() {
-        return idComentario;
+    public ComentarioResponse getComentario() {
+        return comentario;
     }
 
-    public void setIdComentario(Long idComentario) {
-        this.idComentario = idComentario;
+    public void setComentario(ComentarioResponse comentario) {
+        this.comentario = comentario;
     }
 
     public String getNomeUsuario() {

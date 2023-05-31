@@ -9,8 +9,10 @@ import org.springframework.web.server.ResponseStatusException;
 import school.sptech.zup.controller.NoticiaController;
 import school.sptech.zup.controller.UsuarioController;
 import school.sptech.zup.domain.Carteira;
+import school.sptech.zup.domain.Comentario;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.obj.*;
+import school.sptech.zup.dto.response.ComentarioResponse;
 import school.sptech.zup.repository.CarteiraRepository;
 import school.sptech.zup.repository.ComentarioRepository;
 import school.sptech.zup.repository.NoticiaRepository;
@@ -359,15 +361,14 @@ public class AdminService {
             noticiaObj.setEmissora(consultaNoticia.getBody().get(i).getEmissora());
             noticiaObj.setDtNoticia(consultaNoticia.getBody().get(i).getDtNoticia());
             noticiaObj.setLikes(consultaNoticia.getBody().get(i).getLikes());
-            noticiaObj.setFotoNoticia(consultaNoticia.getBody().get(i).getFoto());
+            //noticiaObj.setFotoNoticia(consultaNoticia.getBody().get(i).getFoto());
 
-                if (consultaComentario.get(i).getNoticias().getId() == consultaNoticia.getBody().get(i).getId()){
-                    noticiaObj.setIdComentario(consultaComentario.get(i).getId());
-                    // noticiasObj.get(i).setNomeUsuario(consultaComentario.get(i).getUsuario().getNome());
-                    // noticiasObj.get(i).setDescricaoComentario(consultaComentario.get(i).getDescricao());
-                    //  noticiaObj.setFotoUsuario(consultaComentario.get(i).getUsuario().getFoto());
+            for (Comentario comentario :consultaComentario) {
 
+                if(comentario.getNoticias().getId() == noticiaObj.getId()) {
+                    noticiaObj.setComentario(new ComentarioResponse(comentario));
                 }
+            }
 
             filaNoticias.insert(noticiaObj);
         }
