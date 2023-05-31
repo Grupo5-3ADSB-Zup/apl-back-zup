@@ -359,7 +359,7 @@ public class AdminService {
             noticiaObj.setEmissora(consultaNoticia.getBody().get(i).getEmissora());
             noticiaObj.setDtNoticia(consultaNoticia.getBody().get(i).getDtNoticia());
             noticiaObj.setLikes(consultaNoticia.getBody().get(i).getLikes());
-            //noticiaObj.setFotoNoticia(consultaNoticia.getBody().get(i).getFoto());
+            noticiaObj.setFotoNoticia(consultaNoticia.getBody().get(i).getFoto());
 
               //  if (consultaComentario.get(i).getNoticias().getId() == consultaNoticia.getBody().get(i).getId()){
                   //  noticiaObj.setIdComentario(consultaComentario.get(i).getId());
