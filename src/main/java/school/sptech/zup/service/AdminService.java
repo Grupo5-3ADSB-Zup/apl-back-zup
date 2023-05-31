@@ -361,12 +361,13 @@ public class AdminService {
             noticiaObj.setLikes(consultaNoticia.getBody().get(i).getLikes());
             noticiaObj.setFotoNoticia(consultaNoticia.getBody().get(i).getFoto());
 
-              //  if (consultaComentario.get(i).getNoticias().getId() == consultaNoticia.getBody().get(i).getId()){
-                  //  noticiaObj.setIdComentario(consultaComentario.get(i).getId());
+                if (consultaComentario.get(i).getNoticias().getId() == consultaNoticia.getBody().get(i).getId()){
+                    noticiaObj.setIdComentario(consultaComentario.get(i).getId());
                     // noticiasObj.get(i).setNomeUsuario(consultaComentario.get(i).getUsuario().getNome());
                     // noticiasObj.get(i).setDescricaoComentario(consultaComentario.get(i).getDescricao());
                     //  noticiaObj.setFotoUsuario(consultaComentario.get(i).getUsuario().getFoto());
-             //   }
+
+                }
 
             filaNoticias.insert(noticiaObj);
         }

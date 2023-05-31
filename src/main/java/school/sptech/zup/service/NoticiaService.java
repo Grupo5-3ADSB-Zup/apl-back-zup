@@ -142,9 +142,15 @@ public class NoticiaService {
     public ResponseEntity<Noticia> buscarNoticiaPorIdLikes(LikesRequest like, int id){
         Optional<Noticia> noticias = _noticiaRepository.findById(id);
 
+        Integer contador = 0;
+
         if (noticias.isPresent()){
 
-            Integer contador = noticias.get().getLikes();
+            if (noticias.get().getLikes() != null){
+                contador = noticias.get().getLikes();
+            }else{
+                contador = 0;
+            }
 
             contador = contador + like.getLikes();
 
