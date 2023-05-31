@@ -36,25 +36,11 @@ public class AdminController {
 
         var retorno = _adminService.getListUsuario();
         if (retorno.getStatusCodeValue() == 200) {
-            _adminService.gravarArquivoCsv(retorno.getBody(), nomeArquivo);
+          var consulta =  _adminService.gravarArquivoCsv(retorno.getBody(), nomeArquivo);
 
-
-            File file = new File("./Usuario.csv");
-
-            try {
-                FileInputStream fileInputStream = new FileInputStream(file);
-
-                return ResponseEntity
-                        .status(200)
-                        .header("Content-Disposition",
-                                "attachment; filename="+nomeArquivo)
-                        .contentType(MediaType.parseMediaType("application/csv"))
-                        .body(fileInputStream.readAllBytes());
-            } catch (FileNotFoundException e) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+          if (consulta.getStatusCodeValue() == 200){
+              return ResponseEntity.status(200).body(consulta.getBody());
+          }
         }
         return ResponseEntity.status(404).build();
     }

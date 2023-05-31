@@ -1,14 +1,18 @@
 package school.sptech.zup.service;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import school.sptech.zup.controller.NoticiaController;
 import school.sptech.zup.controller.UsuarioController;
 import school.sptech.zup.domain.Carteira;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.obj.*;
 import school.sptech.zup.repository.CarteiraRepository;
+import school.sptech.zup.repository.ComentarioRepository;
 import school.sptech.zup.repository.NoticiaRepository;
 import school.sptech.zup.repository.UsuarioRepository;
 
@@ -28,14 +32,20 @@ public class AdminService {
     private final UsuarioController _usuarioController;
     private final CarteiraRepository _carteiraRepository;
 
-    public AdminService(UsuarioRepository _usuarioRepository, NoticiaController _noticiaController, UsuarioController _usuarioController, CarteiraRepository _carteiraRepository) {
+    private final ComentarioRepository _comentarioRepository;
+
+    public AdminService(UsuarioRepository _usuarioRepository, NoticiaController _noticiaController,
+                        UsuarioController _usuarioController, CarteiraRepository _carteiraRepository,
+                        ComentarioRepository _comentarioRepository) {
+
         this._usuarioRepository = _usuarioRepository;
         this._noticiaController = _noticiaController;
         this._usuarioController = _usuarioController;
         this._carteiraRepository = _carteiraRepository;
+        this._comentarioRepository = _comentarioRepository;
     }
 
-    public void gravarArquivoCsv(ListaObj<UsuarioObj> listaUsuarioObj, String nomeArquivo){
+    public ResponseEntity<byte[]> gravarArquivoCsv(ListaObj<UsuarioObj> listaUsuarioObj, String nomeArquivo){
         FileWriter arq = null;
         Formatter saida = null;
         Boolean deuRuim = false;
@@ -67,18 +77,36 @@ public class AdminService {
         catch (FormatterClosedException erro){
             System.out.println("Erro ao gravar o arquivo");
             deuRuim = true;
-        } finally {
-            saida.close();
-            try {
-                arq.close();
-            }catch (IOException erro){
-                System.out.println("Erro ao fechar o arquivo");
-                deuRuim = true;
-            }
-            if (deuRuim){
-                System.exit(1);
-            }
         }
+
+        saida.close();
+        try {
+            arq.close();
+        }catch (IOException erro){
+            System.out.println("Erro ao fechar o arquivo");
+            deuRuim = true;
+        }
+        if (deuRuim){
+            System.exit(1);
+        }
+
+        try {
+
+            File file = new File("./" + nomeArquivo);
+            FileInputStream fileInputStream = new FileInputStream(file);
+
+            return ResponseEntity
+                    .status(200)
+                    .header("Content-Disposition",
+                            "attachment; filename="+nomeArquivo)
+                    .contentType(MediaType.parseMediaType("application/csv"))
+                    .body(fileInputStream.readAllBytes());
+        } catch (FileNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+      // return ResponseEntity.status(404).build();
     }
 
     public ResponseEntity<UsuarioObj> pesquisaBinaria(String x) {
@@ -317,25 +345,32 @@ public class AdminService {
 
     public List<NoticiaObj> getNoticiasFilaPilha(){
 
-        var consulta = _noticiaController.getNoticia();
+        var consultaNoticia = _noticiaController.getNoticia();
+        var consultaComentario = _comentarioRepository.findAll();
 
-        FilaObj<NoticiaObj> filaNoticias = new FilaObj(consulta.getBody().size());
-        for (int i = 0; i < consulta.getBody().size(); i++){
+        FilaObj<NoticiaObj> filaNoticias = new FilaObj(consultaNoticia.getBody().size());
+        for (int i = 1; i < consultaNoticia.getBody().size(); i++){
             NoticiaObj noticiaObj = new NoticiaObj();
 
-            noticiaObj.setId(consulta.getBody().get(i).getId());
-            noticiaObj.setTitulo(consulta.getBody().get(i).getTitulo());
-            noticiaObj.setDescricao(consulta.getBody().get(i).getDescricao());
-            noticiaObj.setLink(consulta.getBody().get(i).getLink());
-            noticiaObj.setEmissora(consulta.getBody().get(i).getEmissora());
-            noticiaObj.setDtNoticia(consulta.getBody().get(i).getDtNoticia());
-            noticiaObj.setLikes(consulta.getBody().get(i).getLikes());
-            noticiaObj.setComentario(consulta.getBody().get(i).getComentario());
-            noticiaObj.setFoto(consulta.getBody().get(i).getFoto());
+            noticiaObj.setId(consultaNoticia.getBody().get(i).getId());
+            noticiaObj.setTitulo(consultaNoticia.getBody().get(i).getTitulo());
+            noticiaObj.setDescricao(consultaNoticia.getBody().get(i).getDescricao());
+            noticiaObj.setLink(consultaNoticia.getBody().get(i).getLink());
+            noticiaObj.setEmissora(consultaNoticia.getBody().get(i).getEmissora());
+            noticiaObj.setDtNoticia(consultaNoticia.getBody().get(i).getDtNoticia());
+            noticiaObj.setLikes(consultaNoticia.getBody().get(i).getLikes());
+            //noticiaObj.setFotoNoticia(consultaNoticia.getBody().get(i).getFoto());
 
+              //  if (consultaComentario.get(i).getNoticias().getId() == consultaNoticia.getBody().get(i).getId()){
+                  //  noticiaObj.setIdComentario(consultaComentario.get(i).getId());
+                    // noticiasObj.get(i).setNomeUsuario(consultaComentario.get(i).getUsuario().getNome());
+                    // noticiasObj.get(i).setDescricaoComentario(consultaComentario.get(i).getDescricao());
+                    //  noticiaObj.setFotoUsuario(consultaComentario.get(i).getUsuario().getFoto());
+             //   }
 
             filaNoticias.insert(noticiaObj);
         }
+
         PilhaObj<NoticiaObj> noticiaPilha = new PilhaObj(filaNoticias.getTamanho());
         int tamanhoFila = filaNoticias.getTamanho();
 
@@ -349,6 +384,7 @@ public class AdminService {
         for (int i = 0; i < tamanhoPilha; i++){
             noticiasObj.add(noticiaPilha.pop());
         }
+
         return noticiasObj;
     }
 
