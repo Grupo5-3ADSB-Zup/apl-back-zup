@@ -63,8 +63,10 @@ public class AdminController {
         return ResponseEntity.status(404).build();
     }
 
-    @PatchMapping(value = "/importacao/txt")
-    public ResponseEntity<BufferedReader> importarArquivoTXT(@RequestParam MultipartFile arquivo) {
+
+
+    @PostMapping(value = "/importacao/txt", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<BufferedReader> importarArquivoTXT(@RequestParam("arquivo") MultipartFile arquivo) {
         var retorno = _adminService.lerArquivoTxt(arquivo);
         if (retorno.getStatusCodeValue() == 201) {
             return retorno;
