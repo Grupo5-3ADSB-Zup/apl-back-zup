@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import school.sptech.zup.domain.Usuario;
+import school.sptech.zup.dto.UsuarioComumPutRequestBody;
 import school.sptech.zup.dto.obj.NoticiaObj;
 import school.sptech.zup.dto.obj.PilhaObj;
 import school.sptech.zup.dto.obj.UsuarioObj;
@@ -91,5 +92,11 @@ public class AdminController {
             return ResponseEntity.status(200).body(retorno.getBody());
         }
         return ResponseEntity.status(404).build();
+    }
+
+    @PutMapping("influencer/comum")
+    public ResponseEntity<Usuario> atualizarUserComum(@PathVariable Long idUsuario, @PathVariable boolean influencer) {
+        var retorno = _adminService.atualizarUsuarioParaInfluencer(idUsuario, influencer);
+        return retorno;
     }
 }

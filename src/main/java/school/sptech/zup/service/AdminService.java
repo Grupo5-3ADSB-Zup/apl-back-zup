@@ -21,10 +21,7 @@ import school.sptech.zup.repository.UsuarioRepository;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Formatter;
-import java.util.FormatterClosedException;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class AdminService {
@@ -397,5 +394,29 @@ public class AdminService {
             return ResponseEntity.status(204).build();
         }
         return ResponseEntity.status(200).body(usuarioConsulta);
+    }
+
+    public ResponseEntity<Usuario> atualizarUsuarioParaInfluencer(Long idUsuario, boolean influencer) {
+        Optional<Usuario> usuario = _usuarioRepository.findById(idUsuario);
+
+        if (usuario.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+        Usuario usuarioNovo = new Usuario().builder()
+                .id(usuario.get().getId())
+                .nome(usuario.get().getNome())
+                .email(usuario.get().getEmail())
+                .username(usuario.get().getUsername())
+                .senha(usuario.get().getSenha())
+                .influencer(influencer)
+                .autenticado(usuario.get().getAutenticado())
+                .logado(usuario.get().isLogado())
+                .cpf(usuario.get().getCpf())
+                .cnpj(usuario.get().getCnpj())
+                .Admin(usuario.get().getAdmin())
+                .foto(usuario.get().getFoto())
+                .build();
+
+        return ResponseEntity.status(200).body(usuarioNovo);
     }
 }
