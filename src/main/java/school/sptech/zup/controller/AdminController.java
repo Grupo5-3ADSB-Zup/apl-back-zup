@@ -94,7 +94,7 @@ public class AdminController {
         return ResponseEntity.status(404).build();
     }
 
-    @PutMapping("influencer/comum")
+    @PutMapping("influencer/comum/{idUsuario}/{influencer}")
     public ResponseEntity<Usuario> atualizarUserComum(@PathVariable Long idUsuario, @PathVariable boolean influencer) {
         var retorno = _adminService.atualizarUsuarioParaInfluencer(idUsuario, influencer);
         return retorno;
