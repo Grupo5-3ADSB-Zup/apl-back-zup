@@ -90,7 +90,7 @@ public class UsuarioController {
 
     @GetMapping("{id}")
     public ResponseEntity<Usuario> getUsuarioId(@PathVariable Long id) {
-        var retorno = usuarioService.buscaUsuarioPorId(id);
+        var retorno = usuarioService.buscaPorId(id);
         return retorno;
     }
 }

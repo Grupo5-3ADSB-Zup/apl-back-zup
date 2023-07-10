@@ -86,7 +86,7 @@ public class NoticiaController {
     public ResponseEntity<Noticia> salvarComentario(@RequestBody ComentarioRequest comentario,
                                                     @PathVariable Long idUsuario, @PathVariable int idNoticia){
 
-        var consultaUsuario = _usuarioService.buscaUsuarioPorId(idUsuario);
+        var consultaUsuario = _usuarioService.buscaPorId(idUsuario);
 
         if (consultaUsuario.getStatusCodeValue() == 200){
             var consultaNoticia = _noticiaService.buscarNoticiaPorIdComentario(comentario, idNoticia,

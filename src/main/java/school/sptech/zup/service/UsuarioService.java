@@ -85,16 +85,6 @@ public class UsuarioService {
         return ResponseEntity.status(404).build();
     }
 
-    public ResponseEntity<Usuario> buscaUsuarioPorId(Long id){
-        Optional<Usuario> usuarioConsulta  = _usuarioRepository.findById(id);
-            if (usuarioConsulta.get().getId() == id){
-                return ResponseEntity.status(200).body(usuarioConsulta.get());
-            }
-            if(usuarioConsulta.isEmpty()) return ResponseEntity.status(404).build();
-
-        return ResponseEntity.status(404).build();
-    }
-
     public ResponseEntity<byte[]> BuscarImagemPorId(@PathVariable Long idFoto){
         var consulta = _usuarioRepository.findAll();
         for (int i = 0; i < consulta.size(); i++){
