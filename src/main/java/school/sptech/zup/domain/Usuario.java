@@ -32,7 +32,6 @@ public class Usuario {
 
     private Boolean autenticado;
 
-    private boolean logado;
     @Schema(name = "cpf", description = "Seu CPF", example = "123456764532")
     private String cpf;
     @Schema(name = "cnpj", description = "CNPJ da sua empresa", example = "12345678987654")

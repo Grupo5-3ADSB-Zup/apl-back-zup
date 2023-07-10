@@ -42,7 +42,6 @@ public class UsuarioService {
             usuarioObj.setSenha(usuarioConsulta.get(i).getSenha());
             usuarioObj.setInfluencer(usuarioConsulta.get(i).isInfluencer());
             usuarioObj.setAutenticado(usuarioConsulta.get(i).getAutenticado());
-            usuarioObj.setLogado(usuarioConsulta.get(i).isLogado());
             usuarioObj.setCpf(usuarioConsulta.get(i).getCpf());
             usuarioObj.setCnpj(usuarioConsulta.get(i).getCnpj());
 
@@ -115,7 +114,6 @@ public class UsuarioService {
                     .senha(usuarioPutRequestBody.getSenha())
                     .autenticado(usuarioPutRequestBody.getAutenticado())
                     .influencer(usuarioPutRequestBody.isInfluencer())
-                    .logado(usuarioPutRequestBody.isLogado())
                     .cpf(usuarioPutRequestBody.getCpf())
                     .cnpj(null)
                     .build();
@@ -138,7 +136,6 @@ public class UsuarioService {
                     .senha(usuarioPutRequestBody.getSenha())
                     .autenticado(usuarioPutRequestBody.getAutenticado())
                     .influencer(usuarioPutRequestBody.isInfluencer())
-                    .logado(usuarioPutRequestBody.isLogado())
                     .cnpj(usuarioPutRequestBody.getCnpj())
                     .cpf(null)
                     .build();
@@ -161,7 +158,6 @@ public class UsuarioService {
                     .senha(usuarioPutRequestBody.getSenha())
                     .autenticado(null)
                     .influencer(usuarioPutRequestBody.isInfluencer())
-                    .logado(usuarioPutRequestBody.isLogado())
                     .cnpj(null)
                     .cpf(null)
                     .Admin(usuarioPutRequestBody.getAdmin())

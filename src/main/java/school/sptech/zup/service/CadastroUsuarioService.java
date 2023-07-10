@@ -50,7 +50,6 @@ public class CadastroUsuarioService {
                     .senha(usuarioPostRequestBody.getSenha())
                     .autenticado(usuarioPostRequestBody.getAutenticado())
                     .influencer(usuarioPostRequestBody.isInfluencer())
-                    .logado(usuarioPostRequestBody.isLogado())
                     .cpf(usuarioPostRequestBody.getCpf())
                     .foto(usuarioPostRequestBody.getFoto())
                     .cnpj(null)
@@ -78,7 +77,6 @@ public class CadastroUsuarioService {
                     .senha(usuarioPostRequestBody.getSenha())
                     .autenticado(usuarioPostRequestBody.getAutenticado())
                     .influencer(usuarioPostRequestBody.isInfluencer())
-                    .logado(usuarioPostRequestBody.isLogado())
                     .cnpj(usuarioPostRequestBody.getCnpj())
                     .foto(foto)
                     .cpf(null)
@@ -102,7 +100,6 @@ public class CadastroUsuarioService {
                     .senha(usuarioPostRequestBody.getSenha())
                     .autenticado(null)
                     .influencer(usuarioPostRequestBody.isInfluencer())
-                    .logado(usuarioPostRequestBody.isLogado())
                     .cnpj(null)
                     .cpf(null)
                     .foto(foto)
@@ -115,7 +112,7 @@ public class CadastroUsuarioService {
     }
 
        private boolean autenticar(UsuarioPostRequestBody user){
-        if (user.getAutenticado() == false && user.isLogado() == false){
+        if (user.getAutenticado() == false){
                 user.setAutenticado(true);
                 return true;
             }

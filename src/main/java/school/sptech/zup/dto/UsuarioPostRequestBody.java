@@ -17,6 +17,5 @@ public abstract class UsuarioPostRequestBody {
     @Schema(name = "Influencer", description = "Você é um influenciador ?", example = "@PrimoRico")
     private boolean influencer;
     private Boolean autenticado;
-    private boolean logado;
     private byte[] foto;
 }

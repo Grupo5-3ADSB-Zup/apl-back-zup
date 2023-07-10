@@ -67,9 +67,9 @@ public class AdminService {
         try {
             for (int i =0; i < listaUsuarioObj.getTamanho(); i++){
                 UsuarioObj user = listaUsuarioObj.getElemento(i);
-                saida.format("%d;%s;%s;%s;%s;%s;%s;%s;%s;%s\n",
+                saida.format("%d;%s;%s;%s;%s;%s;%s;%s;%s\n",
                         user.getId(), user.getNome(), user.getEmail(), user.getUsername(),
-                        user.getSenha(), user.isInfluencer(), user.getAutenticado(), user.isLogado(), user.getCpf(),
+                        user.getSenha(), user.isInfluencer(), user.getAutenticado(), user.getCpf(),
                         user.getCnpj());
             }
         }
@@ -320,7 +320,6 @@ public class AdminService {
             usuarioObj.setSenha(usuarioConsulta.get(i).getSenha());
             usuarioObj.setInfluencer(usuarioConsulta.get(i).isInfluencer());
             usuarioObj.setAutenticado(usuarioConsulta.get(i).getAutenticado());
-            usuarioObj.setLogado(usuarioConsulta.get(i).isLogado());
             usuarioObj.setCpf(usuarioConsulta.get(i).getCpf());
             usuarioObj.setCnpj(usuarioConsulta.get(i).getCnpj());
 
@@ -410,7 +409,6 @@ public class AdminService {
                 .senha(usuario.get().getSenha())
                 .influencer(influencer)
                 .autenticado(usuario.get().getAutenticado())
-                .logado(usuario.get().isLogado())
                 .cpf(usuario.get().getCpf())
                 .cnpj(usuario.get().getCnpj())
                 .Admin(usuario.get().getAdmin())

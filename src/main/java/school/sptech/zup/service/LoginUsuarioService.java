@@ -20,10 +20,9 @@ public class LoginUsuarioService {
 
     public ResponseEntity<Usuario> logar(UsuarioLoginDto loginDto){
         var consulta = usuarioService.getUsername(loginDto);
-        if (consulta.getStatusCodeValue() == 200 && consulta.getBody().isLogado() == false
+        if (consulta.getStatusCodeValue() == 200
                 && consulta.getBody().getSenha().equals(loginDto.getSenha())){
 
-            consulta.getBody().setLogado(true);
             _usuarioRepository.save(consulta.getBody());
             return ResponseEntity.status(200).body(consulta.getBody());
         }
@@ -32,8 +31,8 @@ public class LoginUsuarioService {
 
     public ResponseEntity<Usuario> deslogar(String username){
         var consulta = usuarioService.buscaPorUsername(username);
-        if (consulta.getStatusCodeValue() == 200 && consulta.getBody().isLogado() == true){
-            consulta.getBody().setLogado(false);
+        if (consulta.getStatusCodeValue() == 200 ){
+
             _usuarioRepository.save(consulta.getBody());
             return ResponseEntity.status(200).body(consulta.getBody());
         }
