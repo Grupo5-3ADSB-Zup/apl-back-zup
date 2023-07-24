@@ -35,20 +35,22 @@ public class NoticiaController {
     private final UsuarioService _usuarioService;
 
     @GetMapping("/rss/uol")
-    @Scheduled(cron = "* * 23/23 * * *")
+    //@Scheduled(cron = "0 1 12 * * ?")
     public ResponseEntity<List<Noticia>> getRssUOL(){
         var retorno = _noticiaService.getXmlUOL();
         if (retorno.getStatusCodeValue() == 200){
+            System.out.println("Tarefa diária UOL executada com sucesso");
             return retorno;
         }
         return retorno;
     }
 
     @GetMapping("/rss/gazeta")
-    @Scheduled(cron = "* * 23/23 * * *")
+    @Scheduled(cron = "0 1 12 * * ?")
     public ResponseEntity<List<Noticia>> getRssGazeta(){
         var retorno = _noticiaService.getXmlGAZETA();
         if (retorno.getStatusCodeValue() == 200){
+            System.out.println("Tarefa diária Gazeta executada com sucesso");
             return retorno;
         }
         return retorno;
