@@ -95,15 +95,11 @@ public class NoticiaService {
         return ResponseEntity.status(404).build();
     }
 
-    public ResponseEntity<Integer> procuraPorNome(Gpt gpt){
-        List<Noticia> noticias = _noticiaRepository.findAll();
-
-        for (int i = 0; i < noticias.size(); i++) {
-            if (noticias.get(i).getTitulo().equals(gpt.getTitulo())){
-                gpt.setId(i);
-                return ResponseEntity.status(200).body(noticias.get(i).getId());
+    public ResponseEntity<Noticia> procuraPorNome(Gpt gpt){
+        Optional<Noticia> noticia = _noticiaRepository.findByTitulo(gpt.getTitulo());
+            if (noticia.isPresent()){
+                return ResponseEntity.status(200).body(noticia.get());
             }
-        }
         return ResponseEntity.status(404).build();
     }
 

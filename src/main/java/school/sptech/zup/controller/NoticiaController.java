@@ -68,7 +68,6 @@ public class NoticiaController {
     @GetMapping("/rss/{id}")
     public ResponseEntity<Noticia> getNoticiaId(Integer id){
         Optional<Noticia> consulta = _noticiaRepository.findById(id);
-
         if (consulta.isEmpty()){
             return ResponseEntity.status(204).build();
         }
@@ -77,10 +76,8 @@ public class NoticiaController {
 
     @PostMapping("/rss/info")
     public ResponseEntity<GptResponse> InserirNoticiasGPT(@RequestBody Gpt gpt){
-        var consulta = getNoticia();
         var consultaTituloNoticia = _noticiaService.procuraPorNome(gpt);
-
-        if (consulta.getStatusCodeValue() == 200 && consultaTituloNoticia.getStatusCodeValue() == 200){
+        if (consultaTituloNoticia.getStatusCodeValue() == 200){
             var retorno = _gptService.gptNoticia(gpt);
             return ResponseEntity.status(200).body(retorno);
         }
