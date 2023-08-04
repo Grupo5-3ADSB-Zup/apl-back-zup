@@ -20,6 +20,7 @@ import school.sptech.zup.service.GptService;
 import school.sptech.zup.service.NoticiaService;
 import school.sptech.zup.service.UsuarioService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,7 +59,9 @@ public class NoticiaController {
 
     @GetMapping("/rss")
     public ResponseEntity<List<Noticia>> getNoticia(){
-        var consulta = _noticiaRepository.findAll();
+        //var consulta = _noticiaRepository.findAll();
+        LocalDateTime startDate = LocalDateTime.now().minusDays(2);
+        var consulta = _noticiaRepository.listagemNoticias(startDate);
         if (consulta.isEmpty()){
             return ResponseEntity.status(204).build();
         }

@@ -1,7 +1,6 @@
 package school.sptech.zup.service;
-
-import com.theokanning.openai.OpenAiService;
 import com.theokanning.openai.completion.CompletionRequest;
+import com.theokanning.openai.service.OpenAiService;
 import org.springframework.stereotype.Service;
 import school.sptech.zup.domain.Gpt;
 import school.sptech.zup.dto.response.GptResponse;
