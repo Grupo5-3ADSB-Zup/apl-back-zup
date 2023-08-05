@@ -9,7 +9,4 @@ import java.util.List;
 
 public interface ComentarioRepository extends JpaRepository<Comentario, Long> {
     List<Comentario> findAllById(Long idNoticia);
-
-    @Query("SELECT n FROM Comentario n WHERE n.dtNoticia ")
-    List<Comentario> buscarComentariosNoticias();
 }
