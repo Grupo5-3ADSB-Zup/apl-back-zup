@@ -46,7 +46,7 @@ public class NoticiaController {
     }
 
     @GetMapping("/rss/gazeta")
-    @Scheduled(cron = "0 10 14 * * ?")
+    @Scheduled(cron = "0 1 1 * * ?")
     public ResponseEntity<List<Noticia>> getRssGazeta(){
         var retorno = _noticiaService.getXmlGAZETA();
         if (retorno.getStatusCodeValue() == 200){
