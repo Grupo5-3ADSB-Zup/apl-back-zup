@@ -2,16 +2,12 @@ package school.sptech.zup.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 import school.sptech.zup.domain.Usuario;
-import school.sptech.zup.dto.UsuarioComumPutRequestBody;
 import school.sptech.zup.dto.obj.NoticiaObj;
-import school.sptech.zup.dto.obj.PilhaObj;
 import school.sptech.zup.dto.obj.UsuarioObj;
 import school.sptech.zup.service.AdminService;
 
@@ -26,11 +22,6 @@ import java.util.List;
 public class AdminController {
 
     private final AdminService _adminService;
-
-    private final NoticiaController _noticiaController;
-
-    private UsuarioObj[] vetor;
-    private int nroElem;
 
     @GetMapping("/csv/{nomeArquivo}")
     public ResponseEntity<byte[]> baixarArquivo(@PathVariable String nomeArquivo) {
@@ -53,7 +44,6 @@ public class AdminController {
 
 
     @PostMapping(value = "/exportacao/txt/{nomeArquivo}")
-
     public ResponseEntity<BufferedWriter> gravarArquivoTXT(@PathVariable String nomeArquivo) {
         var retorno = _adminService.getListUsuario();
         if (retorno.getStatusCodeValue() == 200) {
@@ -63,8 +53,6 @@ public class AdminController {
         }
         return ResponseEntity.status(404).build();
     }
-
-
 
     @PostMapping(value = "/importacao/txt", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<BufferedReader> importarArquivoTXT(@RequestParam("arquivo") MultipartFile arquivo) {

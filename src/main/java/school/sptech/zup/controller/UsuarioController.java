@@ -9,15 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.UsuarioAdminPutRequest;
-import school.sptech.zup.dto.UsuarioComumPutRequestBody;
-import school.sptech.zup.dto.UsuarioComumRequestBody;
+import school.sptech.zup.dto.UsuarioComumPutRequestBody;;
 import school.sptech.zup.dto.UsuarioEmpresaPutRequestBody;
-import school.sptech.zup.dto.obj.UsuarioObj;
 import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.service.UsuarioService;
-import school.sptech.zup.util.DateUtil;
-
-import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -26,16 +21,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UsuarioController {
     @Autowired
-    private final DateUtil dateUtil;
-
-    @Autowired
     private final UsuarioService usuarioService;
 
     @Autowired
     private final UsuarioRepository _usuarioRepository;
-
-    private UsuarioObj[] vetor;
-    private int nroElem;
 
     @GetMapping
     @SecurityRequirement(name = "Bearer")
@@ -92,5 +81,23 @@ public class UsuarioController {
     public ResponseEntity<Usuario> getUsuarioId(@PathVariable Long id) {
         var retorno = usuarioService.buscaUsuarioPorId(id);
         return retorno;
+    }
+
+    @PutMapping("/linkTwitter/{idUsuario}/{link}")
+    public ResponseEntity<Usuario> PostLinkTwitter(@PathVariable Long idUsuario, @PathVariable String link) {
+        var retorno = usuarioService.InserirLinkTwitter(idUsuario, link);
+        if (retorno != null){
+            return ResponseEntity.status(200).body(retorno);
+        }
+        return ResponseEntity.status(404).build();
+    }
+
+    @PutMapping("/linkLinkedin/{idUsuario}/{link}")
+    public ResponseEntity<Usuario> PostLinkLinkedin(@PathVariable Long idUsuario, @PathVariable String link) {
+        var retorno = usuarioService.InserirLinkLinkedin(idUsuario, link);
+        if (retorno != null){
+            return ResponseEntity.status(200).body(retorno);
+        }
+        return ResponseEntity.status(404).build();
     }
 }

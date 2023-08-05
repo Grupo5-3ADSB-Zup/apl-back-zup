@@ -17,7 +17,6 @@ import school.sptech.zup.dto.response.ComentarioResponse;
 import school.sptech.zup.dto.response.UsuarioResponse;
 import school.sptech.zup.repository.ComentarioRepository;
 import school.sptech.zup.repository.NoticiaRepository;
-import school.sptech.zup.util.DateUtil;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -32,7 +31,6 @@ public class NoticiaService {
     private final NoticiaRepository _noticiaRepository;
 
     private final ComentarioRepository _comentarioRepository;
-    private DateUtil _dateUtil;
 
     public ResponseEntity<List<Noticia>>  getXmlUOL(){
         try {
