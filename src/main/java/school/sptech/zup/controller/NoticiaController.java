@@ -36,7 +36,7 @@ public class NoticiaController {
     private final UsuarioService _usuarioService;
 
     @GetMapping("/rss/uol")
-    //@Scheduled(cron = "0 1 12 * * ?")
+    //@Scheduled(cron = "0 1 14 * * ?")
     public ResponseEntity<List<Noticia>> getRssUOL(){
         var retorno = _noticiaService.getXmlUOL();
         if (retorno.getStatusCodeValue() == 200){
@@ -47,7 +47,7 @@ public class NoticiaController {
     }
 
     @GetMapping("/rss/gazeta")
-    @Scheduled(cron = "0 1 12 * * ?")
+    @Scheduled(cron = "0 1 14 * * ?")
     public ResponseEntity<List<Noticia>> getRssGazeta(){
         var retorno = _noticiaService.getXmlGAZETA();
         if (retorno.getStatusCodeValue() == 200){
