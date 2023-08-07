@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import school.sptech.zup.controller.NoticiaController;
-import school.sptech.zup.controller.UsuarioController;
 import school.sptech.zup.domain.Carteira;
 import school.sptech.zup.domain.Comentario;
 import school.sptech.zup.domain.Usuario;
@@ -15,7 +14,6 @@ import school.sptech.zup.dto.obj.*;
 import school.sptech.zup.dto.response.ComentarioResponse;
 import school.sptech.zup.repository.CarteiraRepository;
 import school.sptech.zup.repository.ComentarioRepository;
-import school.sptech.zup.repository.NoticiaRepository;
 import school.sptech.zup.repository.UsuarioRepository;
 
 import java.io.*;
@@ -27,19 +25,16 @@ import java.util.*;
 public class AdminService {
     private final UsuarioRepository _usuarioRepository;
     private final NoticiaController _noticiaController;
-
-    private final UsuarioController _usuarioController;
     private final CarteiraRepository _carteiraRepository;
 
     private final ComentarioRepository _comentarioRepository;
 
     public AdminService(UsuarioRepository _usuarioRepository, NoticiaController _noticiaController,
-                        UsuarioController _usuarioController, CarteiraRepository _carteiraRepository,
+                        CarteiraRepository _carteiraRepository,
                         ComentarioRepository _comentarioRepository) {
 
         this._usuarioRepository = _usuarioRepository;
         this._noticiaController = _noticiaController;
-        this._usuarioController = _usuarioController;
         this._carteiraRepository = _carteiraRepository;
         this._comentarioRepository = _comentarioRepository;
     }

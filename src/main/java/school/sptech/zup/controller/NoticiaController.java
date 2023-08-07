@@ -20,6 +20,7 @@ import school.sptech.zup.service.GptService;
 import school.sptech.zup.service.NoticiaService;
 import school.sptech.zup.service.UsuarioService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,7 +59,9 @@ public class NoticiaController {
 
     @GetMapping("/rss")
     public ResponseEntity<List<Noticia>> getNoticia(){
-        var consulta = _noticiaRepository.findAll();
+        //var consulta = _noticiaRepository.findAll();
+        LocalDateTime startDate = LocalDateTime.now().minusDays(2);
+        var consulta = _noticiaRepository.listagemNoticias(startDate);
         if (consulta.isEmpty()){
             return ResponseEntity.status(204).build();
         }
@@ -68,7 +71,6 @@ public class NoticiaController {
     @GetMapping("/rss/{id}")
     public ResponseEntity<Noticia> getNoticiaId(Integer id){
         Optional<Noticia> consulta = _noticiaRepository.findById(id);
-
         if (consulta.isEmpty()){
             return ResponseEntity.status(204).build();
         }
@@ -77,10 +79,8 @@ public class NoticiaController {
 
     @PostMapping("/rss/info")
     public ResponseEntity<GptResponse> InserirNoticiasGPT(@RequestBody Gpt gpt){
-        var consulta = getNoticia();
         var consultaTituloNoticia = _noticiaService.procuraPorNome(gpt);
-
-        if (consulta.getStatusCodeValue() == 200 && consultaTituloNoticia.getStatusCodeValue() == 200){
+        if (consultaTituloNoticia.getStatusCodeValue() == 200){
             var retorno = _gptService.gptNoticia(gpt);
             return ResponseEntity.status(200).body(retorno);
         }
