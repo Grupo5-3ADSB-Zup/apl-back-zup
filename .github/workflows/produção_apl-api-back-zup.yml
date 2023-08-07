@@ -49,5 +49,5 @@ jobs:
         with:
           app-name: 'apl-api-back-zup'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2CDAE6A53823420AAE9C4011EA7173BD }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A0C85F2EFCAA4601BAE8AAFE914331FD }}
           package: '*.jar'
