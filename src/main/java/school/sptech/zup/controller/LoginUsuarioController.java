@@ -21,6 +21,7 @@ public class LoginUsuarioController {
 
    @PostMapping("/logar")
     public ResponseEntity<UsuarioTokenDto> logarUser(@RequestBody UsuarioLoginDto loginDto){
+        //var retorno = _loginService.logar(loginDto);
         UsuarioTokenDto usuarioTokenDto = this._cadastroUsuarioService.autenticar(loginDto);
         return ResponseEntity.status(200).body(usuarioTokenDto);
     }

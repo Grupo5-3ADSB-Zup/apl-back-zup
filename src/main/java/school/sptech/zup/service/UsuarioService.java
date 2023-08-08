@@ -11,6 +11,10 @@ import school.sptech.zup.dto.obj.ListaObj;
 import school.sptech.zup.dto.obj.UsuarioObj;
 import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
+
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -112,10 +116,6 @@ public class UsuarioService {
     public ResponseEntity<Usuario> atualizarUsuarioComum(UsuarioComumPutRequestBody usuarioPutRequestBody) {
         var consulta = buscaPorId(usuarioPutRequestBody.getId());
 
-        if (usuarioPutRequestBody.getSenha() == consulta.getBody().getSenha()) {
-            return null;
-        }
-
         if (consulta.getStatusCodeValue() == 200){
             Usuario usuario = Usuario.builder()
                     .id(consulta.getBody().getId())
@@ -139,10 +139,6 @@ public class UsuarioService {
     public ResponseEntity<Usuario> atualizarUsuarioEmpresa(UsuarioEmpresaPutRequestBody usuarioPutRequestBody) {
         var consulta = buscaPorId(usuarioPutRequestBody.getId());
 
-        if (usuarioPutRequestBody.getSenha() == consulta.getBody().getSenha()) {
-            return null;
-        }
-
         if (consulta.getStatusCodeValue() == 200){
             Usuario usuario = Usuario.builder()
                     .id(consulta.getBody().getId())
@@ -165,10 +161,6 @@ public class UsuarioService {
 
     public ResponseEntity<Usuario> atualizarUsuarioAdmin(UsuarioAdminPutRequest usuarioPutRequestBody) {
         var consulta = buscaPorId(usuarioPutRequestBody.getId());
-
-        if (usuarioPutRequestBody.getSenha() == consulta.getBody().getSenha()) {
-            return null;
-        }
 
         if (consulta.getStatusCodeValue() == 200){
             Usuario usuario = Usuario.builder()
@@ -198,28 +190,6 @@ public class UsuarioService {
             return ResponseEntity.status(200).build();
         }
         return retorno;
-    }
-
-    public Usuario InserirLinkTwitter(Long idUsuario, String link){
-        var retorno = buscaUsuarioPorId(idUsuario);
-
-        if (retorno.getStatusCodeValue() == 200){
-            retorno.getBody().setLinkTwitter(link);
-            _usuarioRepository.save(retorno.getBody());
-            return retorno.getBody();
-        }
-        return null;
-    }
-
-    public Usuario InserirLinkLinkedin(Long idUsuario, String link){
-        var retorno = buscaUsuarioPorId(idUsuario);
-
-        if (retorno.getStatusCodeValue() == 200){
-            retorno.getBody().setLinkTwitter(link);
-            _usuarioRepository.save(retorno.getBody());
-            retorno.getBody();
-        }
-        return null;
     }
 
 }

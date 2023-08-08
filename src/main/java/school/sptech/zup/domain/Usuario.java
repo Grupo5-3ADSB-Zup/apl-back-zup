@@ -29,18 +29,19 @@ public class Usuario {
     private String senha;
     @Schema(name = "Influencer", description = "Você é um influenciador ?", example = "@PrimoRico")
     private boolean influencer;
+
     private Boolean autenticado;
+
     private boolean logado;
     @Schema(name = "cpf", description = "Seu CPF", example = "123456764532")
     private String cpf;
     @Schema(name = "cnpj", description = "CNPJ da sua empresa", example = "12345678987654")
     private String cnpj;
+
     private int Admin;
+
+    //@JsonIgnore
     @Column(length = 50 * 1024 * 1024)
     private byte[] foto;
-    @Schema(name = "Twitter", description = "link da Rede social do Usuário", example = "https://twitter.com/i/flow/login")
-    private String LinkTwitter;
-    @Schema(name = "linkedin", description = "link da Rede social do Usuário", example = "https://www.linkedin.com/in/eduardo-oliveira-0244581b7/")
-    private String linkedin;
 
 }

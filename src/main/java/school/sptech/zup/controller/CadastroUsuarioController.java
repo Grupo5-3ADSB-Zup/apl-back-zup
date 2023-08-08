@@ -18,13 +18,7 @@ import school.sptech.zup.util.DateUtil;
 @Log4j2
 @RequiredArgsConstructor
 public class CadastroUsuarioController {
-
-    @Autowired
-    private final DateUtil dateUtil;
     private final CadastroUsuarioService _cadastroService;
-    private final UsuarioRepository _usuarioRepository;
-
-    private final UsuarioService _usuarioService;
 
     @PostMapping("/user/comum")
     public ResponseEntity<Usuario> saveUserComum(@RequestBody UsuarioComumRequestBody usuario) {

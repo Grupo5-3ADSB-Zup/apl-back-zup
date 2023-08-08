@@ -1,6 +1,5 @@
 package school.sptech.zup.controller;
 
-import com.theokanning.openai.completion.CompletionChoice;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.domain.Comentario;
 import school.sptech.zup.domain.Gpt;
 import school.sptech.zup.domain.Noticia;
-import school.sptech.zup.domain.Usuario;
-import school.sptech.zup.dto.obj.NoticiaObj;
 import school.sptech.zup.dto.request.ComentarioRequest;
 import school.sptech.zup.dto.request.LikesRequest;
 import school.sptech.zup.dto.response.ComentarioResponse;
@@ -36,7 +33,7 @@ public class NoticiaController {
     private final UsuarioService _usuarioService;
 
     @GetMapping("/rss/uol")
-    //@Scheduled(cron = "0 10 14 * * ?")
+    //@Scheduled(cron = "0 1 12 * * ?")
     public ResponseEntity<List<Noticia>> getRssUOL(){
         var retorno = _noticiaService.getXmlUOL();
         if (retorno.getStatusCodeValue() == 200){
@@ -47,7 +44,7 @@ public class NoticiaController {
     }
 
     @GetMapping("/rss/gazeta")
-    @Scheduled(cron = "0 10 14 * * ?")
+    @Scheduled(cron = "0 1 12 * * ?")
     public ResponseEntity<List<Noticia>> getRssGazeta(){
         var retorno = _noticiaService.getXmlGAZETA();
         if (retorno.getStatusCodeValue() == 200){
@@ -59,7 +56,6 @@ public class NoticiaController {
 
     @GetMapping("/rss")
     public ResponseEntity<List<Noticia>> getNoticia(){
-        //var consulta = _noticiaRepository.findAll();
         LocalDateTime startDate = LocalDateTime.now().minusDays(2);
         var consulta = _noticiaRepository.listagemNoticias(startDate);
         if (consulta.isEmpty()){
@@ -71,6 +67,7 @@ public class NoticiaController {
     @GetMapping("/rss/{id}")
     public ResponseEntity<Noticia> getNoticiaId(Integer id){
         Optional<Noticia> consulta = _noticiaRepository.findById(id);
+
         if (consulta.isEmpty()){
             return ResponseEntity.status(204).build();
         }
@@ -80,6 +77,7 @@ public class NoticiaController {
     @PostMapping("/rss/info")
     public ResponseEntity<GptResponse> InserirNoticiasGPT(@RequestBody Gpt gpt){
         var consultaTituloNoticia = _noticiaService.procuraPorNome(gpt);
+
         if (consultaTituloNoticia.getStatusCodeValue() == 200){
             var retorno = _gptService.gptNoticia(gpt);
             return ResponseEntity.status(200).body(retorno);

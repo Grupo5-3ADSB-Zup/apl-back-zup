@@ -20,7 +20,6 @@ import java.util.List;
 @Log4j2
 @RequiredArgsConstructor
 public class AdminController {
-
     private final AdminService _adminService;
 
     @GetMapping("/csv/{nomeArquivo}")
@@ -44,6 +43,7 @@ public class AdminController {
 
 
     @PostMapping(value = "/exportacao/txt/{nomeArquivo}")
+
     public ResponseEntity<BufferedWriter> gravarArquivoTXT(@PathVariable String nomeArquivo) {
         var retorno = _adminService.getListUsuario();
         if (retorno.getStatusCodeValue() == 200) {
@@ -53,6 +53,8 @@ public class AdminController {
         }
         return ResponseEntity.status(404).build();
     }
+
+
 
     @PostMapping(value = "/importacao/txt", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<BufferedReader> importarArquivoTXT(@RequestParam("arquivo") MultipartFile arquivo) {
