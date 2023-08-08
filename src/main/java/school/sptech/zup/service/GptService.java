@@ -1,13 +1,19 @@
 package school.sptech.zup.service;
+
+
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.service.OpenAiService;
 import org.springframework.stereotype.Service;
 import school.sptech.zup.domain.Gpt;
 import school.sptech.zup.dto.response.GptResponse;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.CompletionService;
+
 @Service
 public class GptService {
-    private static final String API_KEY ="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";
+    private static final String API_KEY ="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";
 
     public GptResponse gptNoticia(Gpt gpt) {
         OpenAiService service = new OpenAiService(API_KEY);

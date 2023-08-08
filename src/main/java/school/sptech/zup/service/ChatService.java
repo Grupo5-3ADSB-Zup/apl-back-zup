@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import school.sptech.zup.domain.Chat;
+import school.sptech.zup.domain.Usuario;
+import school.sptech.zup.dto.UsuarioPostRequestBody;
+import school.sptech.zup.dto.UsuarioPutRequestBody;
 import school.sptech.zup.repository.ChatRepository;
 
 import java.util.List;

@@ -114,7 +114,7 @@ public class CadastroUsuarioService {
         return ResponseEntity.status(401).build();
     }
 
-    private boolean autenticar(UsuarioPostRequestBody user){
+       private boolean autenticar(UsuarioPostRequestBody user){
         if (user.getAutenticado() == false && user.isLogado() == false){
                 user.setAutenticado(true);
                 return true;

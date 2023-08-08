@@ -16,8 +16,6 @@ import java.util.List;
 @Log4j2
 @RequiredArgsConstructor
 public class ChatController {
-    @Autowired
-    private final DateUtil dateUtil;
     private final ChatService chatService;
 
     @GetMapping
