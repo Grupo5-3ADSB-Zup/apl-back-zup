@@ -102,9 +102,11 @@ public class NoticiaController {
         return ResponseEntity.status(404).build();
     }
 
-    @PostMapping("/likes/{id}")
-    public ResponseEntity<Noticia> salvarLikes(@RequestBody LikesRequest likes, @PathVariable int id){
-        var consulta = _noticiaService.buscarNoticiaPorIdLikes(likes, id);
+    @PostMapping("/likes/{idUsuario}/{idNoticia}")
+    public ResponseEntity<Noticia> salvarLikes(@RequestBody LikesRequest likes,
+                                               @PathVariable Long idUsuario, @PathVariable int idNoticia){
+
+        var consulta = _noticiaService.buscarNoticiaPorIdLikes(likes, idUsuario, idNoticia);
         if (consulta.getStatusCodeValue() == 200){
             return ResponseEntity.status(200).body(consulta.getBody());
         }

@@ -17,6 +17,7 @@ import school.sptech.zup.dto.response.ComentarioResponse;
 import school.sptech.zup.dto.response.UsuarioResponse;
 import school.sptech.zup.repository.ComentarioRepository;
 import school.sptech.zup.repository.NoticiaRepository;
+import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.util.DateUtil;
 
 import java.net.URL;
@@ -32,7 +33,8 @@ public class NoticiaService {
     private final NoticiaRepository _noticiaRepository;
 
     private final ComentarioRepository _comentarioRepository;
-    private DateUtil _dateUtil;
+
+    private final UsuarioRepository _usuarioRepository;
 
     public ResponseEntity<List<Noticia>>  getXmlUOL(){
         try {
@@ -135,23 +137,26 @@ public class NoticiaService {
         return ResponseEntity.status(404).build();
     }
 
-    public ResponseEntity<Noticia> buscarNoticiaPorIdLikes(LikesRequest like, int id){
-        Optional<Noticia> noticias = _noticiaRepository.findById(id);
+    public ResponseEntity<Noticia> buscarNoticiaPorIdLikes(LikesRequest like, Long idUsuario, int idNoticia){
+        Optional<Noticia> noticias = _noticiaRepository.findById(idNoticia);
+        Long likePorUsuario = _noticiaRepository.buscarLikePorUsuario(idUsuario, idNoticia);
 
         Integer contador = 0;
 
         if (noticias.isPresent()){
 
-            if (noticias.get().getLikes() != null){
-                contador = noticias.get().getLikes();
-            }else{
-                contador = 0;
+            if (likePorUsuario < 1){
+                contador = contador + like.getLikes();
             }
 
-            contador = contador + like.getLikes();
+            //if (noticias.get().getLikes() != null){
+            //    contador = noticias.get().getLikes();
+            //}else{
+            //    contador = 0;
+            //}
 
             Noticia noticia =new Noticia().builder()
-                    .id(id)
+                    .id(idNoticia)
                     .titulo(noticias.get().getTitulo())
                     .descricao(noticias.get().getDescricao())
                     .link(noticias.get().getLink())
