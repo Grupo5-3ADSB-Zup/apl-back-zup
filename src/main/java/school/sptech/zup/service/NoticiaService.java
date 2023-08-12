@@ -102,7 +102,7 @@ public class NoticiaService {
     }
 
     public ResponseEntity<Comentario> buscarNoticiaPorIdComentario(ComentarioRequest comentario, int idNoticia, Long idUsuario){
-        Optional<Comentario> comentarios = _comentarioRepository.buscarLikePorUsuario(idUsuario, idNoticia);
+        Optional<List<Comentario>> comentarios = _comentarioRepository.findFirstCommentWithLimit(idUsuario, idNoticia);
         Optional<Noticia> noticias = _noticiaRepository.findById(idNoticia);
 
         if (noticias.isPresent()){
@@ -127,8 +127,8 @@ public class NoticiaService {
             } else{
                 Comentario criarComentario = new Comentario().builder()
                         .descricao(comentario.getComentario())
-                        .likes(comentarios.get().getLikes())
-                        .usuario(comentarios.get().getUsuario())
+                        .likes(comentarios.get().get(1).getLikes())
+                        .usuario(comentarios.get().get(1).getUsuario())
                         .noticias(noticias.get())
                         .build();
 
@@ -141,7 +141,7 @@ public class NoticiaService {
     }
 
     public ResponseEntity<Comentario> buscarNoticiaPorIdLikes(LikesRequest like, Long idUsuario, int idNoticia){
-        Optional<Comentario> comentario = _comentarioRepository.buscarLikePorUsuario(idUsuario, idNoticia);
+        Optional<List<Comentario>> comentario = _comentarioRepository.findFirstCommentWithLimit(idUsuario, idNoticia);
 
 
             if (comentario.isEmpty()){
@@ -162,29 +162,29 @@ public class NoticiaService {
 
             } else {
 
-                if (comentario.get().getLikes() < 1){
+                if (comentario.get().get(1).getLikes() < 1){
 
                     Comentario novoComentario = new Comentario().builder()
-                            .descricao(comentario.get().getDescricao())
+                            .descricao(comentario.get().get(1).getDescricao())
                             .likes(like.getLikes())
-                            .usuario(comentario.get().getUsuario())
-                            .noticias(comentario.get().getNoticias())
+                            .usuario(comentario.get().get(1).getUsuario())
+                            .noticias(comentario.get().get(1).getNoticias())
                             .build();
 
                     _comentarioRepository.save(novoComentario);
                 }
-                else if (comentario.get().getLikes() == 1){
+                else if (comentario.get().get(1).getLikes() == 1){
                     Comentario novoComentario = new Comentario().builder()
-                            .descricao(comentario.get().getDescricao())
-                            .likes(comentario.get().getLikes() - like.getLikes())
-                            .usuario(comentario.get().getUsuario())
-                            .noticias(comentario.get().getNoticias())
+                            .descricao(comentario.get().get(1).getDescricao())
+                            .likes(comentario.get().get(1).getLikes() - like.getLikes())
+                            .usuario(comentario.get().get(1).getUsuario())
+                            .noticias(comentario.get().get(1).getNoticias())
                             .build();
 
                     _comentarioRepository.save(novoComentario);
                 }
             }
-            return ResponseEntity.status(200).body(comentario.get());
+            return ResponseEntity.status(200).body(comentario.get().get(1));
     }
 
     public List<Comentario> comentarios(){
