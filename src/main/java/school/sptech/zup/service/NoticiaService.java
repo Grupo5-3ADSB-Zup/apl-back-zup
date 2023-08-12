@@ -10,15 +10,12 @@ import org.springframework.stereotype.Service;
 import school.sptech.zup.domain.Comentario;
 import school.sptech.zup.domain.Gpt;
 import school.sptech.zup.domain.Noticia;
-import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.request.ComentarioRequest;
 import school.sptech.zup.dto.request.LikesRequest;
 import school.sptech.zup.dto.response.ComentarioResponse;
 import school.sptech.zup.dto.response.UsuarioResponse;
 import school.sptech.zup.repository.ComentarioRepository;
 import school.sptech.zup.repository.NoticiaRepository;
-import school.sptech.zup.repository.UsuarioRepository;
-import school.sptech.zup.util.DateUtil;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -33,8 +30,6 @@ public class NoticiaService {
     private final NoticiaRepository _noticiaRepository;
 
     private final ComentarioRepository _comentarioRepository;
-
-    private final UsuarioRepository _usuarioRepository;
 
     public ResponseEntity<List<Noticia>>  getXmlUOL(){
         try {
@@ -105,73 +100,51 @@ public class NoticiaService {
         return ResponseEntity.status(404).build();
     }
 
-    public ResponseEntity<Noticia> buscarNoticiaPorIdComentario(ComentarioRequest comentario, int idNoticia, Usuario usuario){
+    public ResponseEntity<Comentario> buscarNoticiaPorIdComentario(ComentarioRequest comentario, int idNoticia, Long idUsuario){
+        Optional<Comentario> comentarios = _comentarioRepository.buscarLikePorUsuario(idUsuario, idNoticia);
         Optional<Noticia> noticias = _noticiaRepository.findById(idNoticia);
 
         if (noticias.isPresent()){
 
-            Noticia noticia =new Noticia().builder()
-                    .id(idNoticia)
-                    .titulo(noticias.get().getTitulo())
-                    .descricao(noticias.get().getDescricao())
-                    .link(noticias.get().getLink())
-                    .emissora(noticias.get().getEmissora())
-                    .likes(noticias.get().getLikes())
-                    .comentario(comentario.getComentario())
-                    .dtNoticia(noticias.get().getDtNoticia())
-                    .foto(noticias.get().getFoto())
-                    .build();
-
-            _noticiaRepository.save(noticia);
-
             Comentario criarComentario = new Comentario().builder()
-                    .descricao(noticia.getComentario())
-                    .usuario(usuario)
-                    .noticias(noticia)
+                    .descricao(comentarios.get().getDescricao())
+                    .usuario(comentarios.get().getUsuario())
+                    .noticias(noticias.get())
                     .build();
 
             _comentarioRepository.save(criarComentario);
 
-            return ResponseEntity.status(200).body(noticia);
+            return ResponseEntity.status(200).body(criarComentario);
         }
         return ResponseEntity.status(404).build();
     }
 
-    public ResponseEntity<Noticia> buscarNoticiaPorIdLikes(LikesRequest like, Long idUsuario, int idNoticia){
-        Optional<Noticia> noticias = _noticiaRepository.findById(idNoticia);
-        Long likePorUsuario = _noticiaRepository.buscarLikePorUsuario(idUsuario, idNoticia);
+    public ResponseEntity<Comentario> buscarNoticiaPorIdLikes(LikesRequest like, Long idUsuario, int idNoticia){
+        Optional<Comentario> comentario = _comentarioRepository.buscarLikePorUsuario(idUsuario, idNoticia);
 
-        Integer contador = 0;
+            if (comentario.get().getLikes() < 1){
+                Comentario novoComentario = new Comentario().builder()
+                        .id(comentario.get().getId())
+                        .descricao(comentario.get().getDescricao())
+                        .likes(comentario.get().getLikes() + 1)
+                        .usuario(comentario.get().getUsuario())
+                        .noticias(comentario.get().getNoticias())
+                        .build();
 
-        if (noticias.isPresent()){
-
-            if (likePorUsuario < 1){
-                contador = contador + like.getLikes();
+                _comentarioRepository.save(novoComentario);
             }
+            else if (comentario.get().getLikes() == 1){
+                Comentario novoComentario = new Comentario().builder()
+                        .id(comentario.get().getId())
+                        .descricao(comentario.get().getDescricao())
+                        .likes(comentario.get().getLikes() - 1)
+                        .usuario(comentario.get().getUsuario())
+                        .noticias(comentario.get().getNoticias())
+                        .build();
 
-            //if (noticias.get().getLikes() != null){
-            //    contador = noticias.get().getLikes();
-            //}else{
-            //    contador = 0;
-            //}
-
-            Noticia noticia =new Noticia().builder()
-                    .id(idNoticia)
-                    .titulo(noticias.get().getTitulo())
-                    .descricao(noticias.get().getDescricao())
-                    .link(noticias.get().getLink())
-                    .emissora(noticias.get().getEmissora())
-                    .likes(contador)
-                    .comentario(noticias.get().getComentario())
-                    .dtNoticia(noticias.get().getDtNoticia())
-                    .foto(noticias.get().getFoto())
-                    .build();
-
-            _noticiaRepository.save(noticia);
-
-            return ResponseEntity.status(200).body(noticia);
-        }
-        return ResponseEntity.status(404).build();
+                _comentarioRepository.save(novoComentario);
+            }
+            return ResponseEntity.status(200).body(comentario.get());
     }
 
     public List<Comentario> comentarios(){

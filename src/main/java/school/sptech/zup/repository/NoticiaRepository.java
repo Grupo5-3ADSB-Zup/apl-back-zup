@@ -12,16 +12,8 @@ import java.util.OptionalLong;
 public interface NoticiaRepository extends JpaRepository<Noticia, Integer> {
     Optional<Noticia> findByTitulo(String titulo);
 
-    @Query("SELECT n FROM Noticia n WHERE n.dtNoticia >= :startDate")
+    @Query("SELECT n FROM Noticia n " +
+            "   WHERE n.dtNoticia >= :startDate" +
+            "   ORDER BY n.id DESC")
     List<Noticia> listagemNoticias(LocalDateTime startDate);
-
-    @Query("SELECT COUNT(n.likes) FROM Noticia n " +
-            "JOIN Comentario c" +
-            "   ON c.noticias.id = n.id" +
-            "       JOIN Usuario u" +
-            "           ON u.id = c.usuario.id" +
-            "               WHERE n.id = :idUsuario" +
-            "                   AND n.id = :idNoticia")
-
-    Long buscarLikePorUsuario(Long idUsuario, int idNoticia);
 }

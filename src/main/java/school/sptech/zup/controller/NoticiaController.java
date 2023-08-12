@@ -86,24 +86,19 @@ public class NoticiaController {
     }
 
     @PostMapping("/comentarios/{idUsuario}/{idNoticia}")
-    public ResponseEntity<Noticia> salvarComentario(@RequestBody ComentarioRequest comentario,
+    public ResponseEntity<Comentario> salvarComentario(@RequestBody ComentarioRequest comentario,
                                                     @PathVariable Long idUsuario, @PathVariable int idNoticia){
 
-        var consultaUsuario = _usuarioService.buscaUsuarioPorId(idUsuario);
-
-        if (consultaUsuario.getStatusCodeValue() == 200){
-            var consultaNoticia = _noticiaService.buscarNoticiaPorIdComentario(comentario, idNoticia,
-                    consultaUsuario.getBody());
+            var consultaNoticia = _noticiaService.buscarNoticiaPorIdComentario(comentario, idNoticia, idUsuario);
 
             if (consultaNoticia.getStatusCodeValue() == 200){
                 return ResponseEntity.status(200).body(consultaNoticia.getBody());
             }
-        }
-        return ResponseEntity.status(404).build();
+            return ResponseEntity.status(404).build();
     }
 
     @PostMapping("/likes/{idUsuario}/{idNoticia}")
-    public ResponseEntity<Noticia> salvarLikes(@RequestBody LikesRequest likes,
+    public ResponseEntity<Comentario> salvarLikes(@RequestBody LikesRequest likes,
                                                @PathVariable Long idUsuario, @PathVariable int idNoticia){
 
         var consulta = _noticiaService.buscarNoticiaPorIdLikes(likes, idUsuario, idNoticia);

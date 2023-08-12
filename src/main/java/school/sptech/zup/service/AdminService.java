@@ -347,7 +347,8 @@ public class AdminService {
         var consultaNoticia = _noticiaController.getNoticia();
         var consultaComentario = _comentarioRepository.findAll();
 
-        FilaObj<NoticiaObj> filaNoticias = new FilaObj(consultaNoticia.getBody().size());
+        List<NoticiaObj> filaNoticias = new ArrayList<>();
+
         for (int i = 1; i < consultaNoticia.getBody().size(); i++){
             NoticiaObj noticiaObj = new NoticiaObj();
 
@@ -357,8 +358,7 @@ public class AdminService {
             noticiaObj.setLink(consultaNoticia.getBody().get(i).getLink());
             noticiaObj.setEmissora(consultaNoticia.getBody().get(i).getEmissora());
             noticiaObj.setDtNoticia(consultaNoticia.getBody().get(i).getDtNoticia());
-            noticiaObj.setLikes(consultaNoticia.getBody().get(i).getLikes());
-            //noticiaObj.setFotoNoticia(consultaNoticia.getBody().get(i).getFoto());
+            noticiaObj.setFotoNoticia(consultaNoticia.getBody().get(i).getFoto());
 
             for (Comentario comentario :consultaComentario) {
 
@@ -367,24 +367,10 @@ public class AdminService {
                 }
             }
 
-            filaNoticias.insert(noticiaObj);
+            filaNoticias.add(noticiaObj);
         }
 
-        PilhaObj<NoticiaObj> noticiaPilha = new PilhaObj(filaNoticias.getTamanho());
-        int tamanhoFila = filaNoticias.getTamanho();
-
-        for (int a = 0; a < tamanhoFila; a++){
-            noticiaPilha.push(filaNoticias.poll());
-        }
-
-        List<NoticiaObj> noticiasObj = new ArrayList(noticiaPilha.getTopo());
-        int tamanhoPilha = noticiaPilha.getTopo();
-
-        for (int i = 0; i < tamanhoPilha; i++){
-            noticiasObj.add(noticiaPilha.pop());
-        }
-
-        return noticiasObj;
+        return filaNoticias;
     }
 
     public ResponseEntity<List<Usuario>> getListTodosUsuario() {

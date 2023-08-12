@@ -6,5 +6,5 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class LikesRequest {
-    private int likes;
+    private Integer likes;
 }

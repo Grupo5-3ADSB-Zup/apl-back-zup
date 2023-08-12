@@ -1,5 +1,6 @@
 package school.sptech.zup.domain;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +20,8 @@ public class Comentario {
     @Lob
     @Column(name="descricao", length=2048)
     private String descricao;
-
+    @Schema(name = "likes", description = "Curtidas da notícia", example = "30")
+    private Integer likes;
     @ManyToOne
     private Usuario usuario;
     @ManyToOne

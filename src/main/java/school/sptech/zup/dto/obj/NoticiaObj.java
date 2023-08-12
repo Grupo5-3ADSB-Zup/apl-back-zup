@@ -18,29 +18,19 @@ public class NoticiaObj {
     private String link;
     private String emissora;
     private LocalDateTime dtNoticia;
-    private Integer likes;
     @Column(length = 50 * 1024 * 1024)
     private byte[] fotoNoticia;
 
     private List<ComentarioResponse> comentario = new ArrayList();
-    private String nomeUsuario;
-    @Lob
-    @Column(name="descricao", length=2048)
-    private String descricaoComentario;
-    private byte[] fotoUsuario;
 
-    public NoticiaObj(int id, String titulo, String descricao, String link, String emissora, LocalDateTime dtNoticia, Integer likes, byte[] fotoNoticia, String nomeUsuario, String descricaoComentario, byte[] fotoUsuario) {
+    public NoticiaObj(int id, String titulo, String descricao, String link, String emissora, LocalDateTime dtNoticia, Integer likes, byte[] fotoNoticia) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
         this.link = link;
         this.emissora = emissora;
         this.dtNoticia = dtNoticia;
-        this.likes = likes;
         this.fotoNoticia = fotoNoticia;
-        this.nomeUsuario = nomeUsuario;
-        this.descricaoComentario = descricaoComentario;
-        this.fotoUsuario = fotoUsuario;
     }
 
     public NoticiaObj() {
@@ -93,15 +83,6 @@ public class NoticiaObj {
     public void setDtNoticia(LocalDateTime dtNoticia) {
         this.dtNoticia = dtNoticia;
     }
-
-    public Integer getLikes() {
-        return likes;
-    }
-
-    public void setLikes(Integer likes) {
-        this.likes = likes;
-    }
-
     public byte[] getFotoNoticia() {
         return fotoNoticia;
     }
@@ -116,29 +97,5 @@ public class NoticiaObj {
 
     public void setComentario(ComentarioResponse comentario) {
         this.comentario.add(comentario);
-    }
-
-    public String getNomeUsuario() {
-        return nomeUsuario;
-    }
-
-    public void setNomeUsuario(String nomeUsuario) {
-        this.nomeUsuario = nomeUsuario;
-    }
-
-    public String getDescricaoComentario() {
-        return descricaoComentario;
-    }
-
-    public void setDescricaoComentario(String descricaoComentario) {
-        this.descricaoComentario = descricaoComentario;
-    }
-
-    public byte[] getFotoUsuario() {
-        return fotoUsuario;
-    }
-
-    public void setFotoUsuario(byte[] fotoUsuario) {
-        this.fotoUsuario = fotoUsuario;
     }
 }
