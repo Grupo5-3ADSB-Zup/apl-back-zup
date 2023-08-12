@@ -28,8 +28,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class NoticiaService {
     private final NoticiaRepository _noticiaRepository;
-
     private final ComentarioRepository _comentarioRepository;
+    private final UsuarioService _usuarioService;
+
 
     public ResponseEntity<List<Noticia>>  getXmlUOL(){
         try {
@@ -106,17 +107,22 @@ public class NoticiaService {
 
         if (noticias.isPresent()){
 
-            if (comentarios.get().getLikes() == null){
-                Comentario criarComentario = new Comentario().builder()
-                        .descricao(comentario.getComentario())
-                        .likes(null)
-                        .usuario(comentarios.get().getUsuario())
-                        .noticias(noticias.get())
-                        .build();
+            if (comentarios.isEmpty()){
+                var buscaUsuario = _usuarioService.buscaUsuarioPorId(idUsuario);
 
-                _comentarioRepository.save(criarComentario);
+                if (buscaUsuario.getStatusCodeValue() == 200){
+                    Comentario criarComentario = new Comentario().builder()
+                            .descricao(comentario.getComentario())
+                            .likes(null)
+                            .usuario(buscaUsuario.getBody())
+                            .noticias(noticias.get())
+                            .build();
 
-                return ResponseEntity.status(200).body(criarComentario);
+                    _comentarioRepository.save(criarComentario);
+
+                    return ResponseEntity.status(200).body(criarComentario);
+                }
+                return ResponseEntity.status(404).build();
 
             } else{
                 Comentario criarComentario = new Comentario().builder()
@@ -137,28 +143,46 @@ public class NoticiaService {
     public ResponseEntity<Comentario> buscarNoticiaPorIdLikes(LikesRequest like, Long idUsuario, int idNoticia){
         Optional<Comentario> comentario = _comentarioRepository.buscarLikePorUsuario(idUsuario, idNoticia);
 
-            if (comentario.get().getLikes() < 1){
 
-                Comentario novoComentario = new Comentario().builder()
-                        .id(comentario.get().getId())
-                        .descricao(comentario.get().getDescricao())
-                        .likes(like.getLikes())
-                        .usuario(comentario.get().getUsuario())
-                        .noticias(comentario.get().getNoticias())
-                        .build();
+            if (comentario.isEmpty()){
+                var buscaUsuario = _usuarioService.buscaUsuarioPorId(idUsuario);
+                Optional<Noticia> noticias = _noticiaRepository.findById(idNoticia);
 
-                _comentarioRepository.save(novoComentario);
-            }
-            else if (comentario.get().getLikes() == 1){
-                Comentario novoComentario = new Comentario().builder()
-                        .id(comentario.get().getId())
-                        .descricao(comentario.get().getDescricao())
-                        .likes(comentario.get().getLikes() - like.getLikes())
-                        .usuario(comentario.get().getUsuario())
-                        .noticias(comentario.get().getNoticias())
-                        .build();
+                if (buscaUsuario.getStatusCodeValue() == 200 && noticias.isPresent()){
+                    Comentario novoComentario = new Comentario().builder()
+                            .descricao(null)
+                            .likes(like.getLikes())
+                            .usuario(null)
+                            .noticias(null)
+                            .build();
 
-                _comentarioRepository.save(novoComentario);
+                    _comentarioRepository.save(novoComentario);
+                }
+                return ResponseEntity.status(404).build();
+
+            } else {
+
+                if (comentario.get().getLikes() < 1){
+
+                    Comentario novoComentario = new Comentario().builder()
+                            .descricao(comentario.get().getDescricao())
+                            .likes(like.getLikes())
+                            .usuario(comentario.get().getUsuario())
+                            .noticias(comentario.get().getNoticias())
+                            .build();
+
+                    _comentarioRepository.save(novoComentario);
+                }
+                else if (comentario.get().getLikes() == 1){
+                    Comentario novoComentario = new Comentario().builder()
+                            .descricao(comentario.get().getDescricao())
+                            .likes(comentario.get().getLikes() - like.getLikes())
+                            .usuario(comentario.get().getUsuario())
+                            .noticias(comentario.get().getNoticias())
+                            .build();
+
+                    _comentarioRepository.save(novoComentario);
+                }
             }
             return ResponseEntity.status(200).body(comentario.get());
     }
