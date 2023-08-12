@@ -108,6 +108,7 @@ public class NoticiaService {
 
             Comentario criarComentario = new Comentario().builder()
                     .descricao(comentarios.get().getDescricao())
+                    .likes(comentarios.get().getLikes())
                     .usuario(comentarios.get().getUsuario())
                     .noticias(noticias.get())
                     .build();
