@@ -106,16 +106,30 @@ public class NoticiaService {
 
         if (noticias.isPresent()){
 
-            Comentario criarComentario = new Comentario().builder()
-                    .descricao(comentarios.get().getDescricao())
-                    .likes(comentarios.get().getLikes())
-                    .usuario(comentarios.get().getUsuario())
-                    .noticias(noticias.get())
-                    .build();
+            if (comentarios.get().getLikes() == null){
+                Comentario criarComentario = new Comentario().builder()
+                        .descricao(comentario.getComentario())
+                        .likes(null)
+                        .usuario(comentarios.get().getUsuario())
+                        .noticias(noticias.get())
+                        .build();
 
-            _comentarioRepository.save(criarComentario);
+                _comentarioRepository.save(criarComentario);
 
-            return ResponseEntity.status(200).body(criarComentario);
+                return ResponseEntity.status(200).body(criarComentario);
+
+            } else{
+                Comentario criarComentario = new Comentario().builder()
+                        .descricao(comentario.getComentario())
+                        .likes(comentarios.get().getLikes())
+                        .usuario(comentarios.get().getUsuario())
+                        .noticias(noticias.get())
+                        .build();
+
+                _comentarioRepository.save(criarComentario);
+
+                return ResponseEntity.status(200).body(criarComentario);
+            }
         }
         return ResponseEntity.status(404).build();
     }
@@ -124,10 +138,11 @@ public class NoticiaService {
         Optional<Comentario> comentario = _comentarioRepository.buscarLikePorUsuario(idUsuario, idNoticia);
 
             if (comentario.get().getLikes() < 1){
+
                 Comentario novoComentario = new Comentario().builder()
                         .id(comentario.get().getId())
                         .descricao(comentario.get().getDescricao())
-                        .likes(comentario.get().getLikes() + 1)
+                        .likes(like.getLikes())
                         .usuario(comentario.get().getUsuario())
                         .noticias(comentario.get().getNoticias())
                         .build();
@@ -138,7 +153,7 @@ public class NoticiaService {
                 Comentario novoComentario = new Comentario().builder()
                         .id(comentario.get().getId())
                         .descricao(comentario.get().getDescricao())
-                        .likes(comentario.get().getLikes() - 1)
+                        .likes(comentario.get().getLikes() - like.getLikes())
                         .usuario(comentario.get().getUsuario())
                         .noticias(comentario.get().getNoticias())
                         .build();
