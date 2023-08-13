@@ -11,14 +11,11 @@ public class ComentarioResponse {
 
     private String descricao;
 
-    private Integer likes;
-
     private UsuarioResponse usuario;
 
     public ComentarioResponse(Comentario comentario) {
         this.id = comentario.getId();
         this.descricao = comentario.getDescricao();
-        this.likes = comentario.getLikes();
         this.usuario = new UsuarioResponse(comentario.getUsuario());
     }
 }

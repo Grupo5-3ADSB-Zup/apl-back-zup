@@ -10,13 +10,12 @@ import school.sptech.zup.controller.NoticiaController;
 import school.sptech.zup.controller.UsuarioController;
 import school.sptech.zup.domain.Carteira;
 import school.sptech.zup.domain.Comentario;
+import school.sptech.zup.domain.Curtida;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.obj.*;
 import school.sptech.zup.dto.response.ComentarioResponse;
-import school.sptech.zup.repository.CarteiraRepository;
-import school.sptech.zup.repository.ComentarioRepository;
-import school.sptech.zup.repository.NoticiaRepository;
-import school.sptech.zup.repository.UsuarioRepository;
+import school.sptech.zup.dto.response.CurtidaResponse;
+import school.sptech.zup.repository.*;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -27,21 +26,23 @@ import java.util.*;
 public class AdminService {
     private final UsuarioRepository _usuarioRepository;
     private final NoticiaController _noticiaController;
-
     private final UsuarioController _usuarioController;
     private final CarteiraRepository _carteiraRepository;
 
     private final ComentarioRepository _comentarioRepository;
 
+    private final CurtidaRepository _curtidaRepository;
+
     public AdminService(UsuarioRepository _usuarioRepository, NoticiaController _noticiaController,
                         UsuarioController _usuarioController, CarteiraRepository _carteiraRepository,
-                        ComentarioRepository _comentarioRepository) {
+                        ComentarioRepository _comentarioRepository, CurtidaRepository _curtidaRepository) {
 
         this._usuarioRepository = _usuarioRepository;
         this._noticiaController = _noticiaController;
         this._usuarioController = _usuarioController;
         this._carteiraRepository = _carteiraRepository;
         this._comentarioRepository = _comentarioRepository;
+        this._curtidaRepository = _curtidaRepository;
     }
 
     public ResponseEntity<byte[]> gravarArquivoCsv(ListaObj<UsuarioObj> listaUsuarioObj, String nomeArquivo){
@@ -346,6 +347,7 @@ public class AdminService {
 
         var consultaNoticia = _noticiaController.getNoticia();
         var consultaComentario = _comentarioRepository.findAll();
+        var consultaCurtida = _curtidaRepository.findAll();
 
         List<NoticiaObj> filaNoticias = new ArrayList<>();
 
@@ -364,6 +366,13 @@ public class AdminService {
 
                 if(comentario.getNoticias().getId() == noticiaObj.getId()) {
                     noticiaObj.setComentario(new ComentarioResponse(comentario));
+                }
+            }
+
+            for (Curtida curtida : consultaCurtida){
+
+                if (curtida.getNoticias().getId() == noticiaObj.getId()) {
+                    noticiaObj.setCurtidas(new CurtidaResponse(curtida));
                 }
             }
 

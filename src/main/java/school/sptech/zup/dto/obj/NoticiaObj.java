@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import school.sptech.zup.domain.Comentario;
 import school.sptech.zup.dto.response.ComentarioResponse;
+import school.sptech.zup.dto.response.CurtidaResponse;
 
 import javax.persistence.Column;
 import javax.persistence.Lob;
@@ -23,7 +24,9 @@ public class NoticiaObj {
 
     private List<ComentarioResponse> comentario = new ArrayList();
 
-    public NoticiaObj(int id, String titulo, String descricao, String link, String emissora, LocalDateTime dtNoticia, Integer likes, byte[] fotoNoticia) {
+    private List<CurtidaResponse> curtidas = new ArrayList<>();
+
+    public NoticiaObj(int id, String titulo, String descricao, String link, String emissora, LocalDateTime dtNoticia, byte[] fotoNoticia) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
@@ -97,5 +100,13 @@ public class NoticiaObj {
 
     public void setComentario(ComentarioResponse comentario) {
         this.comentario.add(comentario);
+    }
+
+    public List<CurtidaResponse> getCurtidas() {
+        return curtidas;
+    }
+
+    public void setCurtidas(CurtidaResponse curtidas) {
+        this.curtidas.add(curtidas);
     }
 }
