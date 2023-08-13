@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import school.sptech.zup.domain.Comentario;
+import school.sptech.zup.domain.Curtida;
 import school.sptech.zup.domain.Gpt;
 import school.sptech.zup.domain.Noticia;
 import school.sptech.zup.dto.request.ComentarioRequest;
@@ -15,6 +16,7 @@ import school.sptech.zup.dto.request.LikesRequest;
 import school.sptech.zup.dto.response.ComentarioResponse;
 import school.sptech.zup.dto.response.UsuarioResponse;
 import school.sptech.zup.repository.ComentarioRepository;
+import school.sptech.zup.repository.CurtidaRepository;
 import school.sptech.zup.repository.NoticiaRepository;
 
 import java.net.URL;
@@ -29,6 +31,7 @@ import java.util.Optional;
 public class NoticiaService {
     private final NoticiaRepository _noticiaRepository;
     private final ComentarioRepository _comentarioRepository;
+    private final CurtidaRepository _curtidaRepository;
     private final UsuarioService _usuarioService;
 
 
@@ -113,7 +116,6 @@ public class NoticiaService {
                 if (buscaUsuario.getStatusCodeValue() == 200){
                     Comentario criarComentario = new Comentario().builder()
                             .descricao(comentario.getComentario())
-                            //.likes(null)
                             .usuario(buscaUsuario.getBody())
                             .noticias(noticias.get())
                             .build();
@@ -127,7 +129,6 @@ public class NoticiaService {
             } else{
                 Comentario criarComentario = new Comentario().builder()
                         .descricao(comentario.getComentario())
-                        //.likes(comentarios.get(0).getLikes())
                         .usuario(comentarios.get(0).getUsuario())
                         .noticias(noticias.get())
                         .build();
@@ -140,52 +141,47 @@ public class NoticiaService {
         return ResponseEntity.status(404).build();
     }
 
-    public ResponseEntity<Comentario> buscarNoticiaPorIdLikes(LikesRequest like, Long idUsuario, int idNoticia){
-        List<Comentario> comentario = _comentarioRepository.findFirstCommentWithLimit(idUsuario, idNoticia);
+    public ResponseEntity<Curtida> buscarNoticiaPorIdLikes(LikesRequest like, Long idUsuario, int idNoticia){
+        Optional<Curtida> curtida = _curtidaRepository.findFirstLikeWithLimit(idUsuario, idNoticia);
 
 
-            if (comentario.size() == 0){
+            if (curtida.isEmpty()){
                 var buscaUsuario = _usuarioService.buscaUsuarioPorId(idUsuario);
                 Optional<Noticia> noticias = _noticiaRepository.findById(idNoticia);
 
                 if (buscaUsuario.getStatusCodeValue() == 200 && noticias.isPresent()){
-                    Comentario novoComentario = new Comentario().builder()
-                            .descricao(null)
-                            //.likes(like.getLikes())
-                            .usuario(null)
-                            .noticias(null)
+                    Curtida novaCurtida = new Curtida().builder()
+                            .likes(like.getLikes())
+                            .usuario(buscaUsuario.getBody())
+                            .noticias(noticias.get())
                             .build();
 
-                    _comentarioRepository.save(novoComentario);
+                    _curtidaRepository.save(novaCurtida);
                 }
                 return ResponseEntity.status(404).build();
 
             } else {
-                //MEXER AQUI (LIKES)
-                if (comentario.get(0).getId() < 1){
+                if (curtida.get().getLikes() < 1){
 
-                    Comentario novoComentario = new Comentario().builder()
-                            .descricao(comentario.get(0).getDescricao())
-                            //.likes(like.getLikes())
-                            .usuario(comentario.get(0).getUsuario())
-                            .noticias(comentario.get(0).getNoticias())
+                    Curtida novaCurtida = new Curtida().builder()
+                            .likes(like.getLikes())
+                            .usuario(curtida.get().getUsuario())
+                            .noticias(curtida.get().getNoticias())
                             .build();
 
-                    _comentarioRepository.save(novoComentario);
+                    _curtidaRepository.save(novaCurtida);
                 }
-                //MEXER AQUI (LIKES)
-                else if (comentario.get(0).getId() == 1){
-                    Comentario novoComentario = new Comentario().builder()
-                            .descricao(comentario.get(0).getDescricao())
-                           // .likes(comentario.get(0).getLikes() - like.getLikes())
-                            .usuario(comentario.get(0).getUsuario())
-                            .noticias(comentario.get(0).getNoticias())
+                else if (curtida.get().getId() == 1){
+                    Curtida novaCurtida = new Curtida().builder()
+                            .likes(curtida.get().getLikes() - like.getLikes())
+                            .usuario(curtida.get().getUsuario())
+                            .noticias(curtida.get().getNoticias())
                             .build();
 
-                    _comentarioRepository.save(novoComentario);
+                    _curtidaRepository.save(novaCurtida);
                 }
             }
-            return ResponseEntity.status(200).body(comentario.get(0));
+            return ResponseEntity.status(200).body(curtida.get());
     }
 
     public List<Comentario> comentarios(){

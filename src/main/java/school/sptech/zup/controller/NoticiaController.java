@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.domain.Comentario;
+import school.sptech.zup.domain.Curtida;
 import school.sptech.zup.domain.Gpt;
 import school.sptech.zup.domain.Noticia;
 import school.sptech.zup.dto.request.ComentarioRequest;
@@ -99,7 +100,7 @@ public class NoticiaController {
     }
 
     @PostMapping("/likes/{idUsuario}/{idNoticia}")
-    public ResponseEntity<Comentario> salvarLikes(@RequestBody LikesRequest likes,
+    public ResponseEntity<Curtida> salvarLikes(@RequestBody LikesRequest likes,
                                                @PathVariable Long idUsuario, @PathVariable int idNoticia){
 
         var consulta = _noticiaService.buscarNoticiaPorIdLikes(likes, idUsuario, idNoticia);
