@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.UsuarioAdminPutRequest;
 import school.sptech.zup.dto.UsuarioComumPutRequestBody;
-import school.sptech.zup.dto.UsuarioComumRequestBody;
 import school.sptech.zup.dto.UsuarioEmpresaPutRequestBody;
 import school.sptech.zup.dto.obj.UsuarioObj;
 import school.sptech.zup.repository.UsuarioRepository;
@@ -26,17 +25,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UsuarioController {
     @Autowired
-    private final DateUtil dateUtil;
-
-    @Autowired
     private final UsuarioService usuarioService;
 
     @Autowired
     private final UsuarioRepository _usuarioRepository;
-
-    private UsuarioObj[] vetor;
-    private int nroElem;
-
     @GetMapping
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Usuario> getUsuario(@RequestParam String username) {
@@ -53,11 +45,11 @@ public class UsuarioController {
         return retorno;
     }
 
-    @PatchMapping(value = "/foto/{idFoto}")
-    public ResponseEntity<Void> adicionarImagem(@PathVariable Long idFoto, @RequestBody byte[] foto){
-        var retorno = usuarioService.buscaPorId(idFoto);
+    @PatchMapping(value = "/foto/{idUsuario}")
+    public ResponseEntity<Void> adicionarImagem(@PathVariable Long idUsuario, @RequestBody byte[] foto){
+        var retorno = usuarioService.buscaPorId(idUsuario);
         if (retorno.getStatusCodeValue() == 200){
-            _usuarioRepository.setFoto(idFoto, foto);
+            _usuarioRepository.setFoto(idUsuario, foto);
             return ResponseEntity.status(200).build();
         }
         return ResponseEntity.status(404).build();
@@ -83,9 +75,9 @@ public class UsuarioController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Usuario> deleteUser(@PathVariable long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable long id) {
         var retorno = usuarioService.deleteUser(id);
-        return retorno;
+        return ResponseEntity.status(200).build();
     }
 
     @GetMapping("{id}")

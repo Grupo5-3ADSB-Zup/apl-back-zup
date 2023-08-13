@@ -172,7 +172,7 @@ public class UsuarioService {
     public ResponseEntity<Usuario> deleteUser(long id) {
         var retorno = buscaPorId(id);
         if (retorno.getStatusCodeValue() == 200){
-            _usuarioRepository.deleteById(id);
+            retorno.getBody().setLogado(false);
             return ResponseEntity.status(200).build();
         }
         return retorno;

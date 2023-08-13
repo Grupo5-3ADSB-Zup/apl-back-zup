@@ -10,13 +10,12 @@ import school.sptech.zup.controller.NoticiaController;
 import school.sptech.zup.controller.UsuarioController;
 import school.sptech.zup.domain.Carteira;
 import school.sptech.zup.domain.Comentario;
+import school.sptech.zup.domain.Curtida;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.obj.*;
 import school.sptech.zup.dto.response.ComentarioResponse;
-import school.sptech.zup.repository.CarteiraRepository;
-import school.sptech.zup.repository.ComentarioRepository;
-import school.sptech.zup.repository.NoticiaRepository;
-import school.sptech.zup.repository.UsuarioRepository;
+import school.sptech.zup.dto.response.CurtidaResponse;
+import school.sptech.zup.repository.*;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -27,21 +26,23 @@ import java.util.*;
 public class AdminService {
     private final UsuarioRepository _usuarioRepository;
     private final NoticiaController _noticiaController;
-
     private final UsuarioController _usuarioController;
     private final CarteiraRepository _carteiraRepository;
 
     private final ComentarioRepository _comentarioRepository;
 
+    private final CurtidaRepository _curtidaRepository;
+
     public AdminService(UsuarioRepository _usuarioRepository, NoticiaController _noticiaController,
                         UsuarioController _usuarioController, CarteiraRepository _carteiraRepository,
-                        ComentarioRepository _comentarioRepository) {
+                        ComentarioRepository _comentarioRepository, CurtidaRepository _curtidaRepository) {
 
         this._usuarioRepository = _usuarioRepository;
         this._noticiaController = _noticiaController;
         this._usuarioController = _usuarioController;
         this._carteiraRepository = _carteiraRepository;
         this._comentarioRepository = _comentarioRepository;
+        this._curtidaRepository = _curtidaRepository;
     }
 
     public ResponseEntity<byte[]> gravarArquivoCsv(ListaObj<UsuarioObj> listaUsuarioObj, String nomeArquivo){
@@ -345,8 +346,10 @@ public class AdminService {
 
         var consultaNoticia = _noticiaController.getNoticia();
         var consultaComentario = _comentarioRepository.findAll();
+        var consultaCurtida = _curtidaRepository.findAll();
 
-        FilaObj<NoticiaObj> filaNoticias = new FilaObj(consultaNoticia.getBody().size());
+        List<NoticiaObj> filaNoticias = new ArrayList<>();
+
         for (int i = 1; i < consultaNoticia.getBody().size(); i++){
             NoticiaObj noticiaObj = new NoticiaObj();
 
@@ -356,8 +359,7 @@ public class AdminService {
             noticiaObj.setLink(consultaNoticia.getBody().get(i).getLink());
             noticiaObj.setEmissora(consultaNoticia.getBody().get(i).getEmissora());
             noticiaObj.setDtNoticia(consultaNoticia.getBody().get(i).getDtNoticia());
-            noticiaObj.setLikes(consultaNoticia.getBody().get(i).getLikes());
-            //noticiaObj.setFotoNoticia(consultaNoticia.getBody().get(i).getFoto());
+            noticiaObj.setFotoNoticia(consultaNoticia.getBody().get(i).getFoto());
 
             for (Comentario comentario :consultaComentario) {
 
@@ -366,24 +368,17 @@ public class AdminService {
                 }
             }
 
-            filaNoticias.insert(noticiaObj);
+            for (Curtida curtida : consultaCurtida){
+
+                if (curtida.getNoticias().getId() == noticiaObj.getId()) {
+                    noticiaObj.setCurtidas(new CurtidaResponse(curtida));
+                }
+            }
+
+            filaNoticias.add(noticiaObj);
         }
 
-        PilhaObj<NoticiaObj> noticiaPilha = new PilhaObj(filaNoticias.getTamanho());
-        int tamanhoFila = filaNoticias.getTamanho();
-
-        for (int a = 0; a < tamanhoFila; a++){
-            noticiaPilha.push(filaNoticias.poll());
-        }
-
-        List<NoticiaObj> noticiasObj = new ArrayList(noticiaPilha.getTopo());
-        int tamanhoPilha = noticiaPilha.getTopo();
-
-        for (int i = 0; i < tamanhoPilha; i++){
-            noticiasObj.add(noticiaPilha.pop());
-        }
-
-        return noticiasObj;
+        return filaNoticias;
     }
 
     public ResponseEntity<List<Usuario>> getListTodosUsuario() {

@@ -13,13 +13,13 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Builder
-public class Comentario {
+public class Curtida {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Lob
-    @Column(name="descricao", length=2048)
-    private String descricao;
+    @Schema(name = "likes", description = "Curtidas da notícia", example = "30")
+    private Integer likes;
+
     @ManyToOne
     private Usuario usuario;
     @ManyToOne
