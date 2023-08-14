@@ -89,10 +89,10 @@ public class UsuarioService {
         var consulta = _usuarioRepository.findAll();
         for (int i = 0; i < consulta.size(); i++){
             if (consulta.get(i).getId() == idFoto){
-                return ResponseEntity.status(200).body(consulta.get(i).getFoto());
+                return consulta.get(i).getFoto();
             }
         }
-        return ResponseEntity.status(404).build();
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Imagem não encontrado");
     }
 
     public Usuario buscaPorId(Long id){
@@ -107,7 +107,7 @@ public class UsuarioService {
         var consulta = buscaPorId(usuarioPutRequestBody.getId());
 
             Usuario usuario = Usuario.builder()
-                    .id(consulta.getBody().getId())
+                    .id(consulta.getId())
                     .nome(usuarioPutRequestBody.getNome())
                     .email(usuarioPutRequestBody.getEmail())
                     .username(usuarioPutRequestBody.getUsername())
@@ -126,7 +126,7 @@ public class UsuarioService {
         var consulta = buscaPorId(usuarioPutRequestBody.getId());
 
             Usuario usuario = Usuario.builder()
-                    .id(consulta.getBody().getId())
+                    .id(consulta.getId())
                     .nome(usuarioPutRequestBody.getNome())
                     .email(usuarioPutRequestBody.getEmail())
                     .username(usuarioPutRequestBody.getUsername())
@@ -146,7 +146,7 @@ public class UsuarioService {
         var consulta = buscaPorId(usuarioPutRequestBody.getId());
 
             Usuario usuario = Usuario.builder()
-                    .id(consulta.getBody().getId())
+                    .id(consulta.getId())
                     .nome(usuarioPutRequestBody.getNome())
                     .email(usuarioPutRequestBody.getEmail())
                     .username(usuarioPutRequestBody.getUsername())
