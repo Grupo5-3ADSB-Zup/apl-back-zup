@@ -7,10 +7,13 @@ import school.sptech.zup.domain.Noticia;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalLong;
 
 public interface NoticiaRepository extends JpaRepository<Noticia, Integer> {
     Optional<Noticia> findByTitulo(String titulo);
 
-    @Query("SELECT n FROM Noticia n WHERE n.dtNoticia >= :startDate")
+    @Query("SELECT n FROM Noticia n " +
+            "   WHERE n.dtNoticia >= :startDate" +
+            "   ORDER BY n.id DESC")
     List<Noticia> listagemNoticias(LocalDateTime startDate);
 }

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.domain.Comentario;
+import school.sptech.zup.domain.Curtida;
 import school.sptech.zup.domain.Gpt;
 import school.sptech.zup.domain.Noticia;
 import school.sptech.zup.dto.request.ComentarioRequest;
@@ -56,7 +57,8 @@ public class NoticiaController {
 
     @GetMapping("/rss")
     public ResponseEntity<List<Noticia>> getNoticia(){
-        LocalDateTime startDate = LocalDateTime.now().minusDays(2);
+        //LocalDateTime startDate = LocalDateTime.now().minusDays(1);
+        LocalDateTime startDate = LocalDateTime.now().minusDays(3);
         var consulta = _noticiaRepository.listagemNoticias(startDate);
         if (consulta.isEmpty()){
             return ResponseEntity.status(204).build();
@@ -86,25 +88,22 @@ public class NoticiaController {
     }
 
     @PostMapping("/comentarios/{idUsuario}/{idNoticia}")
-    public ResponseEntity<Noticia> salvarComentario(@RequestBody ComentarioRequest comentario,
+    public ResponseEntity<Comentario> salvarComentario(@RequestBody ComentarioRequest comentario,
                                                     @PathVariable Long idUsuario, @PathVariable int idNoticia){
 
-        var consultaUsuario = _usuarioService.buscaUsuarioPorId(idUsuario);
-
-        if (consultaUsuario.getStatusCodeValue() == 200){
-            var consultaNoticia = _noticiaService.buscarNoticiaPorIdComentario(comentario, idNoticia,
-                    consultaUsuario.getBody());
+            var consultaNoticia = _noticiaService.buscarNoticiaPorIdComentario(comentario, idNoticia, idUsuario);
 
             if (consultaNoticia.getStatusCodeValue() == 200){
                 return ResponseEntity.status(200).body(consultaNoticia.getBody());
             }
-        }
-        return ResponseEntity.status(404).build();
+            return ResponseEntity.status(404).build();
     }
 
-    @PostMapping("/likes/{id}")
-    public ResponseEntity<Noticia> salvarLikes(@RequestBody LikesRequest likes, @PathVariable int id){
-        var consulta = _noticiaService.buscarNoticiaPorIdLikes(likes, id);
+    @PostMapping("/likes/{idUsuario}/{idNoticia}")
+    public ResponseEntity<Curtida> salvarLikes(@RequestBody LikesRequest likes,
+                                               @PathVariable Long idUsuario, @PathVariable int idNoticia){
+
+        var consulta = _noticiaService.buscarNoticiaPorIdLikes(likes, idUsuario, idNoticia);
         if (consulta.getStatusCodeValue() == 200){
             return ResponseEntity.status(200).body(consulta.getBody());
         }

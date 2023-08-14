@@ -8,16 +8,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import school.sptech.zup.domain.Comentario;
+import school.sptech.zup.domain.Curtida;
 import school.sptech.zup.domain.Gpt;
 import school.sptech.zup.domain.Noticia;
-import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.request.ComentarioRequest;
 import school.sptech.zup.dto.request.LikesRequest;
 import school.sptech.zup.dto.response.ComentarioResponse;
 import school.sptech.zup.dto.response.UsuarioResponse;
 import school.sptech.zup.repository.ComentarioRepository;
+import school.sptech.zup.repository.CurtidaRepository;
 import school.sptech.zup.repository.NoticiaRepository;
-import school.sptech.zup.util.DateUtil;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -30,9 +30,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class NoticiaService {
     private final NoticiaRepository _noticiaRepository;
-
     private final ComentarioRepository _comentarioRepository;
-    private DateUtil _dateUtil;
+    private final CurtidaRepository _curtidaRepository;
+    private final UsuarioService _usuarioService;
+
 
     public ResponseEntity<List<Noticia>>  getXmlUOL(){
         try {
@@ -103,70 +104,84 @@ public class NoticiaService {
         return ResponseEntity.status(404).build();
     }
 
-    public ResponseEntity<Noticia> buscarNoticiaPorIdComentario(ComentarioRequest comentario, int idNoticia, Usuario usuario){
+    public ResponseEntity<Comentario> buscarNoticiaPorIdComentario(ComentarioRequest comentario, int idNoticia, Long idUsuario){
+        List<Comentario> comentarios = _comentarioRepository.findFirstCommentWithLimit(idUsuario, idNoticia);
         Optional<Noticia> noticias = _noticiaRepository.findById(idNoticia);
 
         if (noticias.isPresent()){
 
-            Noticia noticia =new Noticia().builder()
-                    .id(idNoticia)
-                    .titulo(noticias.get().getTitulo())
-                    .descricao(noticias.get().getDescricao())
-                    .link(noticias.get().getLink())
-                    .emissora(noticias.get().getEmissora())
-                    .likes(noticias.get().getLikes())
-                    .comentario(comentario.getComentario())
-                    .dtNoticia(noticias.get().getDtNoticia())
-                    .foto(noticias.get().getFoto())
-                    .build();
+            if (comentarios.size() == 0){
+                var buscaUsuario = _usuarioService.buscaUsuarioPorId(idUsuario);
 
-            _noticiaRepository.save(noticia);
+                if (buscaUsuario.getStatusCodeValue() == 200){
+                    Comentario criarComentario = new Comentario().builder()
+                            .descricao(comentario.getComentario())
+                            .usuario(buscaUsuario.getBody())
+                            .noticias(noticias.get())
+                            .build();
 
-            Comentario criarComentario = new Comentario().builder()
-                    .descricao(noticia.getComentario())
-                    .usuario(usuario)
-                    .noticias(noticia)
-                    .build();
+                    _comentarioRepository.save(criarComentario);
 
-            _comentarioRepository.save(criarComentario);
+                    return ResponseEntity.status(200).body(criarComentario);
+                }
+                return ResponseEntity.status(404).build();
 
-            return ResponseEntity.status(200).body(noticia);
+            } else{
+                Comentario criarComentario = new Comentario().builder()
+                        .descricao(comentario.getComentario())
+                        .usuario(comentarios.get(0).getUsuario())
+                        .noticias(noticias.get())
+                        .build();
+
+                _comentarioRepository.save(criarComentario);
+
+                return ResponseEntity.status(200).body(criarComentario);
+            }
         }
         return ResponseEntity.status(404).build();
     }
 
-    public ResponseEntity<Noticia> buscarNoticiaPorIdLikes(LikesRequest like, int id){
-        Optional<Noticia> noticias = _noticiaRepository.findById(id);
+    public ResponseEntity<Curtida> buscarNoticiaPorIdLikes(LikesRequest like, Long idUsuario, int idNoticia){
+        Optional<Curtida> curtida = _curtidaRepository.findFirstLikeWithLimit(idUsuario, idNoticia);
 
-        Integer contador = 0;
 
-        if (noticias.isPresent()){
+            if (curtida.isEmpty()){
+                var buscaUsuario = _usuarioService.buscaUsuarioPorId(idUsuario);
+                Optional<Noticia> noticias = _noticiaRepository.findById(idNoticia);
 
-            if (noticias.get().getLikes() != null){
-                contador = noticias.get().getLikes();
-            }else{
-                contador = 0;
+                if (buscaUsuario.getStatusCodeValue() == 200 && noticias.isPresent()){
+                    Curtida novaCurtida = new Curtida().builder()
+                            .likes(like.getLikes())
+                            .usuario(buscaUsuario.getBody())
+                            .noticias(noticias.get())
+                            .build();
+
+                    _curtidaRepository.save(novaCurtida);
+                }
+                return ResponseEntity.status(404).build();
+
+            } else {
+                if (curtida.get().getLikes() < 1){
+
+                    Curtida novaCurtida = new Curtida().builder()
+                            .likes(like.getLikes())
+                            .usuario(curtida.get().getUsuario())
+                            .noticias(curtida.get().getNoticias())
+                            .build();
+
+                    _curtidaRepository.save(novaCurtida);
+                }
+                else if (curtida.get().getId() == 1){
+                    Curtida novaCurtida = new Curtida().builder()
+                            .likes(curtida.get().getLikes() - like.getLikes())
+                            .usuario(curtida.get().getUsuario())
+                            .noticias(curtida.get().getNoticias())
+                            .build();
+
+                    _curtidaRepository.save(novaCurtida);
+                }
             }
-
-            contador = contador + like.getLikes();
-
-            Noticia noticia =new Noticia().builder()
-                    .id(id)
-                    .titulo(noticias.get().getTitulo())
-                    .descricao(noticias.get().getDescricao())
-                    .link(noticias.get().getLink())
-                    .emissora(noticias.get().getEmissora())
-                    .likes(contador)
-                    .comentario(noticias.get().getComentario())
-                    .dtNoticia(noticias.get().getDtNoticia())
-                    .foto(noticias.get().getFoto())
-                    .build();
-
-            _noticiaRepository.save(noticia);
-
-            return ResponseEntity.status(200).body(noticia);
-        }
-        return ResponseEntity.status(404).build();
+            return ResponseEntity.status(200).body(curtida.get());
     }
 
     public List<Comentario> comentarios(){
