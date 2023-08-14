@@ -23,18 +23,18 @@ public class CadastroUsuarioController {
     @PostMapping("/user/comum")
     public ResponseEntity<Usuario> saveUserComum(@RequestBody UsuarioComumRequestBody usuario) {
         var retorno = _cadastroService.saveUserComum(usuario);
-        return retorno;
+        return ResponseEntity.ok(retorno);
     }
 
     @PostMapping("/user/empresa")
     public ResponseEntity<Usuario> saveUserEmpresa(@RequestBody UsuarioEmpresaRequestBody usuario) {
         var retorno = _cadastroService.saveUserEmpresa(usuario);
-        return retorno;
+        return ResponseEntity.ok(retorno);
     }
 
     @PostMapping("/user/admin")
     public ResponseEntity<Usuario> saveUserAdmin(@RequestBody UsuarioAdminPostRequest usuario) {
         var retorno = _cadastroService.saveUserAdmin(usuario);
-        return retorno;
+        return ResponseEntity.ok(retorno);
     }
 }

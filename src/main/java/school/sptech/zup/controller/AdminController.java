@@ -24,21 +24,20 @@ public class AdminController {
 
     @GetMapping("/csv/{nomeArquivo}")
     public ResponseEntity<byte[]> baixarArquivo(@PathVariable String nomeArquivo) {
-
         var retorno = _adminService.getListUsuario();
-        if (retorno.getStatusCodeValue() == 200) {
-          var consulta =  _adminService.gravarArquivoCsv(retorno.getBody(), nomeArquivo);
+        var consulta =  _adminService.gravarArquivoCsv(retorno, nomeArquivo);
 
           if (consulta.getStatusCodeValue() == 200){
               return ResponseEntity.status(200).body(consulta.getBody());
           }
-        }
         return ResponseEntity.status(404).build();
     }
 
     @GetMapping("/{indice}")
     public ResponseEntity<UsuarioObj> pesquisaBinaria(@PathVariable String indice) {
-        return _adminService.pesquisaBinaria(indice);
+        UsuarioObj consulta = _adminService.pesquisaBinaria(indice);
+
+        return ResponseEntity.ok(consulta);
     }
 
 
@@ -46,47 +45,38 @@ public class AdminController {
 
     public ResponseEntity<BufferedWriter> gravarArquivoTXT(@PathVariable String nomeArquivo) {
         var retorno = _adminService.getListUsuario();
-        if (retorno.getStatusCodeValue() == 200) {
-            var gerar = _adminService.gravarArquivoTxt(retorno.getBody(), nomeArquivo);
+            var gerar = _adminService.gravarArquivoTxt(retorno, nomeArquivo);
 
             return ResponseEntity.status(201).build();
-        }
-        return ResponseEntity.status(404).build();
+
     }
 
 
 
     @PostMapping(value = "/importacao/txt", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<BufferedReader> importarArquivoTXT(@RequestParam("arquivo") MultipartFile arquivo) {
-        var retorno = _adminService.lerArquivoTxt(arquivo);
-        if (retorno.getStatusCodeValue() == 201) {
-            return retorno;
-        }
-        return ResponseEntity.status(404).build();
+        _adminService.lerArquivoTxt(arquivo);
+
+        return ResponseEntity.ok().build();
+
     }
 
     @GetMapping("/filaPilha/noticias")
     public ResponseEntity<List<NoticiaObj>> retornarFilaPilhaObj() {
         var retorno = _adminService.getNoticiasFilaPilha();
-        if (retorno.isEmpty()) {
-            return ResponseEntity.status(404).build();
-        }
-        return ResponseEntity.status(200).body(retorno);
+
+        return ResponseEntity.ok(retorno);
     }
 
     @GetMapping
     public ResponseEntity<List<Usuario>> getTodosOsUsuarios() {
         var retorno = _adminService.getListTodosUsuario();
-
-        if (retorno.getStatusCodeValue() == 200) {
-            return ResponseEntity.status(200).body(retorno.getBody());
-        }
-        return ResponseEntity.status(404).build();
+        return ResponseEntity.ok(retorno);
     }
 
     @PutMapping("influencer/comum/{idUsuario}/{influencer}")
     public ResponseEntity<Usuario> atualizarUserComum(@PathVariable Long idUsuario, @PathVariable boolean influencer) {
         var retorno = _adminService.atualizarUsuarioParaInfluencer(idUsuario, influencer);
-        return retorno;
+        return ResponseEntity.ok(retorno);
     }
 }

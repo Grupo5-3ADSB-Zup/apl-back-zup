@@ -109,22 +109,21 @@ public class AdminService {
       // return ResponseEntity.status(404).build();
     }
 
-    public ResponseEntity<UsuarioObj> pesquisaBinaria(String x) {
+    public UsuarioObj pesquisaBinaria(String x) {
 
-        ResponseEntity<ListaObj<UsuarioObj>> consulta = getListUsuario();
+        ListaObj<UsuarioObj> consulta = getListUsuario();
 
-        if (consulta.getStatusCodeValue() == 200){
             int esquerda = 0;
 
-            int direita =  consulta.getBody().getTamanho() -1;
+            int direita =  consulta.getTamanho() -1;
 
             for (; esquerda <= direita;){
                 int meio = (esquerda + direita) / 2;
 
-                int comparacao = consulta.getBody().getElemento(meio).getNome().compareToIgnoreCase(x);
+                int comparacao = consulta.getElemento(meio).getNome().compareToIgnoreCase(x);
                 if ( comparacao == 0) {
 
-                    return ResponseEntity.status(200).body(consulta.getBody().getElemento(meio));
+                    return consulta.getElemento(meio);
 
                 } else if (comparacao > 0) {
                     direita = meio - 1;
@@ -132,9 +131,10 @@ public class AdminService {
                     esquerda = meio + 1;
                 }
             }
+
+        throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Não encontrado");
         }
-        return ResponseEntity.status(404).build();
-    }
+
     public BufferedWriter gravarRegistro(String registro, String nomeArq){
         BufferedWriter saida = null;
 
@@ -194,7 +194,7 @@ public class AdminService {
         return (gravarRegistro(trailer, nomeArq));
     }
 
-    public ResponseEntity lerArquivoTxt(MultipartFile nomeArq){
+    public void lerArquivoTxt(MultipartFile nomeArq){
         BufferedReader entrada = null;
         String registro, tipoRegistro;
         String nome, email, corretora, perfil, patrimonio;
@@ -300,15 +300,15 @@ public class AdminService {
 
         //repository.saveAll(listalida);
 
-        return ResponseEntity.status(201).build();
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Não autorizado");
 
     }
 
-    public ResponseEntity<ListaObj<UsuarioObj>> getListUsuario(){
+    public ListaObj<UsuarioObj> getListUsuario(){
         List<Usuario> usuarioConsulta = _usuarioRepository.findAll();
 
         if (usuarioConsulta.isEmpty()){
-            return ResponseEntity.status(204).build();
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Não encontrado");
         }
         ListaObj<UsuarioObj> listaUsuario = new ListaObj(usuarioConsulta.size());
         for (int i = 0; i < usuarioConsulta.size(); i++){
@@ -339,7 +339,7 @@ public class AdminService {
             }
         }
 
-        return ResponseEntity.status(200).body(listaUsuario);
+        return listaUsuario;
     }
 
     public List<NoticiaObj> getNoticiasFilaPilha(){
@@ -381,20 +381,20 @@ public class AdminService {
         return filaNoticias;
     }
 
-    public ResponseEntity<List<Usuario>> getListTodosUsuario() {
+    public List<Usuario> getListTodosUsuario() {
         List<Usuario> usuarioConsulta = _usuarioRepository.findAll();
 
         if (usuarioConsulta.isEmpty()){
-            return ResponseEntity.status(204).build();
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Não encontrado");
         }
-        return ResponseEntity.status(200).body(usuarioConsulta);
+        return usuarioConsulta;
     }
 
-    public ResponseEntity<Usuario> atualizarUsuarioParaInfluencer(Long idUsuario, boolean influencer) {
+    public Usuario atualizarUsuarioParaInfluencer(Long idUsuario, boolean influencer) {
         Optional<Usuario> usuario = _usuarioRepository.findById(idUsuario);
 
         if (usuario.isEmpty()){
-            return ResponseEntity.status(204).build();
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Usuario não encontrado");
         }
         Usuario usuarioNovo = new Usuario().builder()
                 .id(usuario.get().getId())
@@ -410,6 +410,6 @@ public class AdminService {
                 .foto(usuario.get().getFoto())
                 .build();
 
-        return ResponseEntity.status(200).body(usuarioNovo);
+        return usuarioNovo;
     }
 }

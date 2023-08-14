@@ -1,6 +1,7 @@
 package school.sptech.zup.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,7 +38,7 @@ public class CadastroUsuarioService {
     }
 
 
-    public ResponseEntity<Usuario> saveUserComum(UsuarioComumRequestBody usuarioPostRequestBody) {
+    public Usuario saveUserComum(UsuarioComumRequestBody usuarioPostRequestBody) {
         var retorno = autenticar(usuarioPostRequestBody);
 
        // byte[] foto = Base64.getDecoder().decode(usuarioPostRequestBody.getFoto());
@@ -59,12 +60,12 @@ public class CadastroUsuarioService {
             usuario.setSenha(senhaCriptografada);
 
             _usuarioRepository.save(usuario);
-            return ResponseEntity.status(200).body(usuario);
+            return usuario;
         }
-         return ResponseEntity.status(401).build();
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Sem credenciais");
     }
 
-    public ResponseEntity<Usuario> saveUserEmpresa(UsuarioEmpresaRequestBody usuarioPostRequestBody) {
+    public Usuario saveUserEmpresa(UsuarioEmpresaRequestBody usuarioPostRequestBody) {
         var retorno = autenticar(usuarioPostRequestBody);
 
         byte[] foto = Base64.getDecoder().decode(usuarioPostRequestBody.getFoto());
@@ -82,12 +83,12 @@ public class CadastroUsuarioService {
                     .cpf(null)
                     .build();
             _usuarioRepository.save(usuario);
-            return ResponseEntity.status(200).body(usuario);
+            return usuario;
         }
-        return ResponseEntity.status(401).build();
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Sem credenciais");
     }
 
-    public ResponseEntity<Usuario> saveUserAdmin(UsuarioAdminPostRequest usuarioPostRequestBody) {
+    public Usuario saveUserAdmin(UsuarioAdminPostRequest usuarioPostRequestBody) {
         var retorno = autenticar(usuarioPostRequestBody);
 
         byte[] foto = Base64.getDecoder().decode(usuarioPostRequestBody.getFoto());
@@ -106,9 +107,9 @@ public class CadastroUsuarioService {
                     .Admin(usuarioPostRequestBody.getAdmin())
                     .build();
             _usuarioRepository.save(usuario);
-            return ResponseEntity.status(200).body(usuario);
+            return usuario;
         }
-        return ResponseEntity.status(401).build();
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Sem credenciais");
     }
 
        private boolean autenticar(UsuarioPostRequestBody user){
