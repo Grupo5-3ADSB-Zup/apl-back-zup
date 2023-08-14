@@ -1,8 +1,10 @@
 package school.sptech.zup.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.server.ResponseStatusException;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.UsuarioAdminPutRequest;
 import school.sptech.zup.dto.UsuarioComumPutRequestBody;
@@ -25,11 +27,11 @@ public class UsuarioService {
         _usuarioRepository = usuarioRepository;
     }
 
-    public ResponseEntity<ListaObj<UsuarioObj>> getListUsuario(){
+    public ListaObj<UsuarioObj> getListUsuario(){
         List<Usuario> usuarioConsulta = _usuarioRepository.findAll();
 
         if (usuarioConsulta.isEmpty()){
-            return ResponseEntity.status(204).build();
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Usuario não encontrado");
         }
         ListaObj<UsuarioObj> listaUsuario = new ListaObj(usuarioConsulta.size());
         for (int i = 0; i < usuarioConsulta.size(); i++){
@@ -42,7 +44,6 @@ public class UsuarioService {
             usuarioObj.setSenha(usuarioConsulta.get(i).getSenha());
             usuarioObj.setInfluencer(usuarioConsulta.get(i).isInfluencer());
             usuarioObj.setAutenticado(usuarioConsulta.get(i).getAutenticado());
-            usuarioObj.setLogado(usuarioConsulta.get(i).isLogado());
             usuarioObj.setCpf(usuarioConsulta.get(i).getCpf());
             usuarioObj.setCnpj(usuarioConsulta.get(i).getCnpj());
 
@@ -61,135 +62,111 @@ public class UsuarioService {
             }
         }
 
-        return ResponseEntity.status(200).body(listaUsuario);
+        return listaUsuario;
     }
 
-    public ResponseEntity<Usuario> getUsername(UsuarioLoginDto loginDto) {
+    public Usuario getUsername(UsuarioLoginDto loginDto) {
         var consulta = buscaPorUsername(loginDto.getUsername());
-        if (consulta.getStatusCodeValue() == 200
-                && consulta.getBody().getSenha().equals(loginDto.getSenha())){
+        if (consulta.getSenha().equals(loginDto.getSenha())){
 
-            return ResponseEntity.status(200).body(consulta.getBody());
+            return consulta;
         }
         return consulta;
     }
 
-    public ResponseEntity<Usuario> buscaPorUsername(String username){
+    public Usuario buscaPorUsername(String username){
         List<Usuario> usuarioConsulta = _usuarioRepository.findAll();
 
         for (int i = 0; i < usuarioConsulta.size(); i++) {
             if (usuarioConsulta.get(i).getUsername().equals(username)){
-                return ResponseEntity.status(200).body(usuarioConsulta.get(i));
+                return usuarioConsulta.get(i);
             }
         }
-        return ResponseEntity.status(404).build();
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario não encontrado");
     }
 
-    public ResponseEntity<Usuario> buscaUsuarioPorId(Long id){
-        Optional<Usuario> usuarioConsulta  = _usuarioRepository.findById(id);
-            if (usuarioConsulta.get().getId() == id){
-                return ResponseEntity.status(200).body(usuarioConsulta.get());
-            }
-            if(usuarioConsulta.isEmpty()) return ResponseEntity.status(404).build();
-
-        return ResponseEntity.status(404).build();
-    }
-
-    public ResponseEntity<byte[]> BuscarImagemPorId(@PathVariable Long idFoto){
+    public byte[] BuscarImagemPorId(@PathVariable Long idFoto){
         var consulta = _usuarioRepository.findAll();
         for (int i = 0; i < consulta.size(); i++){
             if (consulta.get(i).getId() == idFoto){
-                return ResponseEntity.status(200).body(consulta.get(i).getFoto());
+                return consulta.get(i).getFoto();
             }
         }
-        return ResponseEntity.status(404).build();
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Imagem não encontrado");
     }
 
-    public ResponseEntity<Usuario> buscaPorId(Long id){
+    public Usuario buscaPorId(Long id){
         Optional<Usuario> usuarioConsulta = _usuarioRepository.findById(id);
         if (usuarioConsulta.isPresent()){
-            return ResponseEntity.status(200).body(usuarioConsulta.get());
+            return usuarioConsulta.get();
         }
-        return ResponseEntity.status(404).build();
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario não encontrado");
     }
 
-    public ResponseEntity<Usuario> atualizarUsuarioComum(UsuarioComumPutRequestBody usuarioPutRequestBody) {
+    public Usuario atualizarUsuarioComum(UsuarioComumPutRequestBody usuarioPutRequestBody) {
         var consulta = buscaPorId(usuarioPutRequestBody.getId());
 
-        if (consulta.getStatusCodeValue() == 200){
             Usuario usuario = Usuario.builder()
-                    .id(consulta.getBody().getId())
+                    .id(consulta.getId())
                     .nome(usuarioPutRequestBody.getNome())
                     .email(usuarioPutRequestBody.getEmail())
                     .username(usuarioPutRequestBody.getUsername())
                     .senha(usuarioPutRequestBody.getSenha())
                     .autenticado(usuarioPutRequestBody.getAutenticado())
                     .influencer(usuarioPutRequestBody.isInfluencer())
-                    .logado(usuarioPutRequestBody.isLogado())
                     .cpf(usuarioPutRequestBody.getCpf())
                     .cnpj(null)
                     .build();
             _usuarioRepository.save(usuario);
 
-            return ResponseEntity.status(200).body(usuario);
-        }
-        return ResponseEntity.status(404).build();
+            return usuario;
     }
 
-    public ResponseEntity<Usuario> atualizarUsuarioEmpresa(UsuarioEmpresaPutRequestBody usuarioPutRequestBody) {
+    public Usuario atualizarUsuarioEmpresa(UsuarioEmpresaPutRequestBody usuarioPutRequestBody) {
         var consulta = buscaPorId(usuarioPutRequestBody.getId());
 
-        if (consulta.getStatusCodeValue() == 200){
             Usuario usuario = Usuario.builder()
-                    .id(consulta.getBody().getId())
+                    .id(consulta.getId())
                     .nome(usuarioPutRequestBody.getNome())
                     .email(usuarioPutRequestBody.getEmail())
                     .username(usuarioPutRequestBody.getUsername())
                     .senha(usuarioPutRequestBody.getSenha())
                     .autenticado(usuarioPutRequestBody.getAutenticado())
                     .influencer(usuarioPutRequestBody.isInfluencer())
-                    .logado(usuarioPutRequestBody.isLogado())
                     .cnpj(usuarioPutRequestBody.getCnpj())
                     .cpf(null)
                     .build();
             _usuarioRepository.save(usuario);
 
-            return ResponseEntity.status(200).body(usuario);
-        }
-        return ResponseEntity.status(404).build();
+            return usuario;
+
     }
 
-    public ResponseEntity<Usuario> atualizarUsuarioAdmin(UsuarioAdminPutRequest usuarioPutRequestBody) {
+    public Usuario atualizarUsuarioAdmin(UsuarioAdminPutRequest usuarioPutRequestBody) {
         var consulta = buscaPorId(usuarioPutRequestBody.getId());
 
-        if (consulta.getStatusCodeValue() == 200){
             Usuario usuario = Usuario.builder()
-                    .id(consulta.getBody().getId())
+                    .id(consulta.getId())
                     .nome(usuarioPutRequestBody.getNome())
                     .email(usuarioPutRequestBody.getEmail())
                     .username(usuarioPutRequestBody.getUsername())
                     .senha(usuarioPutRequestBody.getSenha())
                     .autenticado(null)
                     .influencer(usuarioPutRequestBody.isInfluencer())
-                    .logado(usuarioPutRequestBody.isLogado())
                     .cnpj(null)
                     .cpf(null)
                     .Admin(usuarioPutRequestBody.getAdmin())
                     .build();
             _usuarioRepository.save(usuario);
 
-            return ResponseEntity.status(200).body(usuario);
-        }
-        return ResponseEntity.status(404).build();
+            return usuario;
     }
 
-    public ResponseEntity<Usuario> deleteUser(long id) {
+    public Usuario deleteUser(long id) {
         var retorno = buscaPorId(id);
-        if (retorno.getStatusCodeValue() == 200){
-            retorno.getBody().setLogado(false);
-            return ResponseEntity.status(200).build();
-        }
-        return retorno;
+            retorno.setAutenticado(false);
+            return retorno;
+
     }
 
 }

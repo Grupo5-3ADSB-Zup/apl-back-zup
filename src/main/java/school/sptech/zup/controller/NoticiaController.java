@@ -37,22 +37,17 @@ public class NoticiaController {
     //@Scheduled(cron = "0 1 12 * * ?")
     public ResponseEntity<List<Noticia>> getRssUOL(){
         var retorno = _noticiaService.getXmlUOL();
-        if (retorno.getStatusCodeValue() == 200){
             System.out.println("Tarefa diária UOL executada com sucesso");
-            return retorno;
-        }
-        return retorno;
+            return ResponseEntity.ok(retorno);
+
     }
 
     @GetMapping("/rss/gazeta")
     @Scheduled(cron = "0 1 12 * * ?")
     public ResponseEntity<List<Noticia>> getRssGazeta(){
         var retorno = _noticiaService.getXmlGAZETA();
-        if (retorno.getStatusCodeValue() == 200){
             System.out.println("Tarefa diária Gazeta executada com sucesso");
-            return retorno;
-        }
-        return retorno;
+            return ResponseEntity.ok(retorno);
     }
 
     @GetMapping("/rss")
@@ -60,10 +55,7 @@ public class NoticiaController {
         //LocalDateTime startDate = LocalDateTime.now().minusDays(1);
         LocalDateTime startDate = LocalDateTime.now().minusDays(3);
         var consulta = _noticiaRepository.listagemNoticias(startDate);
-        if (consulta.isEmpty()){
-            return ResponseEntity.status(204).build();
-        }
-        return ResponseEntity.status(200).body(consulta);
+        return ResponseEntity.ok(consulta);
     }
 
     @GetMapping("/rss/{id}")
@@ -79,24 +71,18 @@ public class NoticiaController {
     @PostMapping("/rss/info")
     public ResponseEntity<GptResponse> InserirNoticiasGPT(@RequestBody Gpt gpt){
         var consultaTituloNoticia = _noticiaService.procuraPorNome(gpt);
+        var retorno = _gptService.gptNoticia(gpt);
+        return ResponseEntity.status(200).body(retorno);
 
-        if (consultaTituloNoticia.getStatusCodeValue() == 200){
-            var retorno = _gptService.gptNoticia(gpt);
-            return ResponseEntity.status(200).body(retorno);
-        }
-        return ResponseEntity.status(404).build();
     }
 
     @PostMapping("/comentarios/{idUsuario}/{idNoticia}")
     public ResponseEntity<Comentario> salvarComentario(@RequestBody ComentarioRequest comentario,
                                                     @PathVariable Long idUsuario, @PathVariable int idNoticia){
+        var consultaNoticia = _noticiaService.buscarNoticiaPorIdComentario(comentario, idNoticia, idUsuario);
 
-            var consultaNoticia = _noticiaService.buscarNoticiaPorIdComentario(comentario, idNoticia, idUsuario);
+        return ResponseEntity.status(200).body(consultaNoticia);
 
-            if (consultaNoticia.getStatusCodeValue() == 200){
-                return ResponseEntity.status(200).body(consultaNoticia.getBody());
-            }
-            return ResponseEntity.status(404).build();
     }
 
     @PostMapping("/likes/{idUsuario}/{idNoticia}")
@@ -104,10 +90,7 @@ public class NoticiaController {
                                                @PathVariable Long idUsuario, @PathVariable int idNoticia){
 
         var consulta = _noticiaService.buscarNoticiaPorIdLikes(likes, idUsuario, idNoticia);
-        if (consulta.getStatusCodeValue() == 200){
-            return ResponseEntity.status(200).body(consulta.getBody());
-        }
-        return ResponseEntity.status(404).build();
+        return ResponseEntity.ok(consulta);
     }
 
     @DeleteMapping
@@ -124,20 +107,15 @@ public class NoticiaController {
     public ResponseEntity<List<Comentario>> comentarios(){
         var consulta = _noticiaService.comentarios();
 
-        if (consulta != null){
-            return ResponseEntity.status(200).body(consulta);
-        }
-        return ResponseEntity.status(404).build();
+        return ResponseEntity.ok(consulta);
     }
 
     @GetMapping("/comentarios-id-noticia/{idNoticia}")
     public ResponseEntity<List<ComentarioResponse>> comentarioPorId(@PathVariable long idNoticia){
         var consulta = getNoticiaId((int) idNoticia);
-        if (consulta != null){
-            var consultaComentario = _noticiaService.getComentarioNoticiaPorId(consulta.getBody());
-            return ResponseEntity.status(200).body(consultaComentario);
-        }
-        return ResponseEntity.status(404).build();
+        var consultaComentario = _noticiaService.getComentarioNoticiaPorId(consulta.getBody());
+        return ResponseEntity.ok(consultaComentario);
+
     }
 
     @GetMapping("/rss/isolado/{id}")

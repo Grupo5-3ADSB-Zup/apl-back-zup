@@ -15,8 +15,6 @@ public class UsuarioObj {
 
     private Boolean autenticado;
 
-    private boolean logado;
-
     private String cpf;
 
     private String cnpj;
@@ -29,7 +27,6 @@ public class UsuarioObj {
         this.senha = senha;
         this.influencer = influencer;
         this.autenticado = autenticado;
-        this.logado = logado;
         this.cpf = cpf;
         this.cnpj = cnpj;
     }
@@ -88,14 +85,6 @@ public class UsuarioObj {
 
     public void setAutenticado(Boolean autenticado) {
         this.autenticado = autenticado;
-    }
-
-    public boolean isLogado() {
-        return logado;
-    }
-
-    public void setLogado(boolean logado) {
-        this.logado = logado;
     }
 
     public String getCpf() {

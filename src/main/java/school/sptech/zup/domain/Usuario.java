@@ -30,9 +30,9 @@ public class Usuario {
     @Schema(name = "Influencer", description = "Você é um influenciador ?", example = "@PrimoRico")
     private boolean influencer;
 
+    // lembrar de validar com o grupo esse atributo
     private Boolean autenticado;
 
-    private boolean logado;
     @Schema(name = "cpf", description = "Seu CPF", example = "123456764532")
     private String cpf;
     @Schema(name = "cnpj", description = "CNPJ da sua empresa", example = "12345678987654")

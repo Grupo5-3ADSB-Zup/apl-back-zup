@@ -5,8 +5,10 @@ import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import school.sptech.zup.domain.Comentario;
 import school.sptech.zup.domain.Curtida;
 import school.sptech.zup.domain.Gpt;
@@ -35,7 +37,7 @@ public class NoticiaService {
     private final UsuarioService _usuarioService;
 
 
-    public ResponseEntity<List<Noticia>>  getXmlUOL(){
+    public List<Noticia>  getXmlUOL(){
         try {
 
             List<Noticia> noticias = new ArrayList<>();
@@ -58,15 +60,15 @@ public class NoticiaService {
                     noticias.add(noticia);
                 }
                 List<Noticia> noticiaList = _noticiaRepository.saveAll(noticias);
-                return ResponseEntity.status(200).body(noticiaList);
+                return noticiaList;
             }
         }  catch (Exception e) {
             e.printStackTrace();
         }
-        return ResponseEntity.status(404).build();
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Notícia não encontrado");
     }
 
-    public ResponseEntity<List<Noticia>>  getXmlGAZETA(){
+    public List<Noticia>  getXmlGAZETA(){
         try {
             List<Noticia> noticias = new ArrayList<>();
 
@@ -88,44 +90,39 @@ public class NoticiaService {
                     noticias.add(noticia);
                 }
                 List<Noticia> noticiaList = _noticiaRepository.saveAll(noticias);
-                return ResponseEntity.status(200).body(noticiaList);
+                return noticiaList;
             }
         }  catch (Exception e) {
             e.printStackTrace();
         }
-        return ResponseEntity.status(404).build();
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Notícia não encontrado");
     }
 
-    public ResponseEntity<Noticia> procuraPorNome(Gpt gpt){
+    public Noticia procuraPorNome(Gpt gpt){
         Optional<Noticia> noticia = _noticiaRepository.findByTitulo(gpt.getTitulo());
         if (noticia.isPresent()) {
-            return ResponseEntity.status(200).body(noticia.get());
+            return noticia.get();
         }
-        return ResponseEntity.status(404).build();
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Notícia não encontrado");
     }
 
-    public ResponseEntity<Comentario> buscarNoticiaPorIdComentario(ComentarioRequest comentario, int idNoticia, Long idUsuario){
+    public Comentario buscarNoticiaPorIdComentario(ComentarioRequest comentario, int idNoticia, Long idUsuario){
         List<Comentario> comentarios = _comentarioRepository.findFirstCommentWithLimit(idUsuario, idNoticia);
         Optional<Noticia> noticias = _noticiaRepository.findById(idNoticia);
 
         if (noticias.isPresent()){
-
             if (comentarios.size() == 0){
-                var buscaUsuario = _usuarioService.buscaUsuarioPorId(idUsuario);
+                var buscaUsuario = _usuarioService.buscaPorId(idUsuario);
 
-                if (buscaUsuario.getStatusCodeValue() == 200){
-                    Comentario criarComentario = new Comentario().builder()
-                            .descricao(comentario.getComentario())
-                            .usuario(buscaUsuario.getBody())
-                            .noticias(noticias.get())
-                            .build();
+                Comentario criarComentario = new Comentario().builder()
+                        .descricao(comentario.getComentario())
+                        .usuario(buscaUsuario)
+                        .noticias(noticias.get())
+                        .build();
 
-                    _comentarioRepository.save(criarComentario);
+                _comentarioRepository.save(criarComentario);
 
-                    return ResponseEntity.status(200).body(criarComentario);
-                }
-                return ResponseEntity.status(404).build();
-
+                return criarComentario;
             } else{
                 Comentario criarComentario = new Comentario().builder()
                         .descricao(comentario.getComentario())
@@ -135,30 +132,30 @@ public class NoticiaService {
 
                 _comentarioRepository.save(criarComentario);
 
-                return ResponseEntity.status(200).body(criarComentario);
+                return criarComentario;
             }
         }
-        return ResponseEntity.status(404).build();
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Notícia não encontrado");
     }
 
-    public ResponseEntity<Curtida> buscarNoticiaPorIdLikes(LikesRequest like, Long idUsuario, int idNoticia){
+    public Curtida buscarNoticiaPorIdLikes(LikesRequest like, Long idUsuario, int idNoticia){
         Optional<Curtida> curtida = _curtidaRepository.findFirstLikeWithLimit(idUsuario, idNoticia);
 
 
             if (curtida.isEmpty()){
-                var buscaUsuario = _usuarioService.buscaUsuarioPorId(idUsuario);
+                var buscaUsuario = _usuarioService.buscaPorId(idUsuario);
                 Optional<Noticia> noticias = _noticiaRepository.findById(idNoticia);
 
-                if (buscaUsuario.getStatusCodeValue() == 200 && noticias.isPresent()){
+                if (noticias.isPresent()){
                     Curtida novaCurtida = new Curtida().builder()
                             .likes(like.getLikes())
-                            .usuario(buscaUsuario.getBody())
+                            .usuario(buscaUsuario)
                             .noticias(noticias.get())
                             .build();
 
                     _curtidaRepository.save(novaCurtida);
                 }
-                return ResponseEntity.status(404).build();
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Notícia não encontrado");
 
             } else {
                 if (curtida.get().getLikes() < 1){
@@ -181,7 +178,7 @@ public class NoticiaService {
                     _curtidaRepository.save(novaCurtida);
                 }
             }
-            return ResponseEntity.status(200).body(curtida.get());
+            return curtida.get();
     }
 
     public List<Comentario> comentarios(){

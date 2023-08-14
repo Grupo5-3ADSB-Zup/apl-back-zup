@@ -21,6 +21,4 @@ public abstract class UsuarioPutRequestBody {
     private boolean influencer;
 
     private Boolean autenticado;
-
-    private boolean logado;
 }

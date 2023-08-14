@@ -33,56 +33,50 @@ public class UsuarioController {
     @SecurityRequirement(name = "Bearer")
     public ResponseEntity<Usuario> getUsuario(@RequestParam String username) {
         var retorno = usuarioService.buscaPorUsername(username);
-        return retorno;
+        return ResponseEntity.ok(retorno);
     }
 
     @GetMapping(value = "/foto/{idFoto}")
     public ResponseEntity<byte[]> retornaImagem(@PathVariable Long idFoto){
         var retorno = usuarioService.BuscarImagemPorId(idFoto);
-        if (retorno.getStatusCodeValue() == 200){
-            return ResponseEntity.status(200).body(retorno.getBody());
-        }
-        return retorno;
+        return ResponseEntity.ok(retorno);
     }
 
     @PatchMapping(value = "/foto/{idUsuario}")
     public ResponseEntity<Void> adicionarImagem(@PathVariable Long idUsuario, @RequestBody byte[] foto){
         var retorno = usuarioService.buscaPorId(idUsuario);
-        if (retorno.getStatusCodeValue() == 200){
             _usuarioRepository.setFoto(idUsuario, foto);
-            return ResponseEntity.status(200).build();
-        }
-        return ResponseEntity.status(404).build();
+            return ResponseEntity.ok().build();
     }
 
     @PutMapping("user/comum")
     public ResponseEntity<Usuario> atualizarUserComum(@RequestBody UsuarioComumPutRequestBody usuarioPutRequestBody) {
         var retorno = usuarioService.atualizarUsuarioComum(usuarioPutRequestBody);
-        return retorno;
+        return ResponseEntity.ok(retorno);
     }
 
     @PutMapping("user/empresa")
     public ResponseEntity<Usuario> atualizarUserEmpresa(@RequestBody UsuarioAdminPutRequest usuarioPutRequestBody) {
         var retorno = usuarioService.atualizarUsuarioAdmin(usuarioPutRequestBody);
-        return retorno;
+        return ResponseEntity.ok(retorno);
     }
 
     @PutMapping("user/admin")
     public ResponseEntity<Usuario> atualizarUserAdmin(@RequestBody UsuarioEmpresaPutRequestBody usuarioPutRequestBody) {
         var retorno = usuarioService.atualizarUsuarioEmpresa(usuarioPutRequestBody);
-        return retorno;
+        return ResponseEntity.ok(retorno);
     }
 
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable long id) {
         var retorno = usuarioService.deleteUser(id);
-        return ResponseEntity.status(200).build();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("{id}")
     public ResponseEntity<Usuario> getUsuarioId(@PathVariable Long id) {
-        var retorno = usuarioService.buscaUsuarioPorId(id);
-        return retorno;
+        var retorno = usuarioService.buscaPorId(id);
+        return ResponseEntity.ok(retorno);
     }
 }

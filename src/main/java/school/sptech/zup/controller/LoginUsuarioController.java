@@ -29,6 +29,6 @@ public class LoginUsuarioController {
     @PutMapping("/{username}")
     public ResponseEntity<Usuario> Deslogar(@PathVariable String username){
         var retorno = _loginService.deslogar(username);
-        return retorno;
+        return ResponseEntity.ok(retorno);
     }
 }
