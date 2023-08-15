@@ -26,7 +26,13 @@ public class NoticiaObj {
 
     private List<CurtidaResponse> curtidas = new ArrayList<>();
 
-    public NoticiaObj(int id, String titulo, String descricao, String link, String emissora, LocalDateTime dtNoticia, byte[] fotoNoticia) {
+    private Integer QtdComentarios;
+
+    private Integer QtdCurtidas;
+
+    public NoticiaObj(int id, String titulo, String descricao,
+                      String link, String emissora,
+                      LocalDateTime dtNoticia, byte[] fotoNoticia, Integer qtdComentarios, Integer qtdCurtidas) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
@@ -34,6 +40,8 @@ public class NoticiaObj {
         this.emissora = emissora;
         this.dtNoticia = dtNoticia;
         this.fotoNoticia = fotoNoticia;
+        this.QtdComentarios = qtdComentarios;
+        this.QtdCurtidas = qtdCurtidas;
     }
 
     public NoticiaObj() {
@@ -108,5 +116,21 @@ public class NoticiaObj {
 
     public void setCurtidas(CurtidaResponse curtidas) {
         this.curtidas.add(curtidas);
+    }
+
+    public Integer getQtdComentarios() {
+        return QtdComentarios;
+    }
+
+    public void setQtdComentarios(Integer qtdComentarios) {
+        QtdComentarios = qtdComentarios;
+    }
+
+    public Integer getQtdCurtidas() {
+        return QtdCurtidas;
+    }
+
+    public void setQtdCurtidas(Integer qtdCurtidas) {
+        QtdCurtidas = qtdCurtidas;
     }
 }

@@ -345,10 +345,13 @@ public class AdminService {
     public List<NoticiaObj> getNoticiasFilaPilha(){
 
         var consultaNoticia = _noticiaController.getNoticia();
-        var consultaComentario = _comentarioRepository.findAll();
+        var consultaComentario = _comentarioRepository.findComment();
         var consultaCurtida = _curtidaRepository.findAll();
 
         List<NoticiaObj> filaNoticias = new ArrayList<>();
+
+        Integer contadorComentarios = 0;
+        Integer contadorCurtidas = 0;
 
         for (int i = 1; i < consultaNoticia.getBody().size(); i++){
             NoticiaObj noticiaObj = new NoticiaObj();
@@ -364,6 +367,7 @@ public class AdminService {
             for (Comentario comentario :consultaComentario) {
 
                 if(comentario.getNoticias().getId() == noticiaObj.getId()) {
+                    contadorComentarios++;
                     noticiaObj.setComentario(new ComentarioResponse(comentario));
                 }
             }
@@ -371,9 +375,13 @@ public class AdminService {
             for (Curtida curtida : consultaCurtida){
 
                 if (curtida.getNoticias().getId() == noticiaObj.getId()) {
+                    contadorCurtidas++;
                     noticiaObj.setCurtidas(new CurtidaResponse(curtida));
                 }
             }
+
+            noticiaObj.setQtdComentarios(contadorComentarios);
+            noticiaObj.setQtdCurtidas(contadorCurtidas);
 
             filaNoticias.add(noticiaObj);
         }
