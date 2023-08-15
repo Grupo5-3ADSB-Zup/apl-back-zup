@@ -139,10 +139,10 @@ public class NoticiaService {
     }
 
     public Curtida buscarNoticiaPorIdLikes(LikesRequest like, Long idUsuario, int idNoticia){
-        Optional<Curtida> curtida = _curtidaRepository.findFirstLikeWithLimit(idUsuario, idNoticia);
+        Curtida curtida = _curtidaRepository.findFirstLikeWithLimit(idUsuario, idNoticia);
 
 
-            if (curtida.isEmpty()){
+            if (curtida == null){
                 var buscaUsuario = _usuarioService.buscaPorId(idUsuario);
                 Optional<Noticia> noticias = _noticiaRepository.findById(idNoticia);
 
@@ -158,27 +158,29 @@ public class NoticiaService {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Notícia não encontrado");
 
             } else {
-                if (curtida.get().getLikes() < 1){
+                if (curtida.getLikes() < 1){
 
                     Curtida novaCurtida = new Curtida().builder()
+                            .id(curtida.getId())
                             .likes(like.getLikes())
-                            .usuario(curtida.get().getUsuario())
-                            .noticias(curtida.get().getNoticias())
+                            .usuario(curtida.getUsuario())
+                            .noticias(curtida.getNoticias())
                             .build();
 
                     _curtidaRepository.save(novaCurtida);
                 }
-                else if (curtida.get().getId() == 1){
+                else if (curtida.getLikes() == 1){
                     Curtida novaCurtida = new Curtida().builder()
-                            .likes(curtida.get().getLikes() - like.getLikes())
-                            .usuario(curtida.get().getUsuario())
-                            .noticias(curtida.get().getNoticias())
+                            .id(curtida.getId())
+                            .likes(0)
+                            .usuario(curtida.getUsuario())
+                            .noticias(curtida.getNoticias())
                             .build();
 
                     _curtidaRepository.save(novaCurtida);
                 }
             }
-            return curtida.get();
+            return curtida;
     }
 
     public List<Comentario> comentarios(){

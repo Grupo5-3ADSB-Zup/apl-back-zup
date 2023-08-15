@@ -19,5 +19,5 @@ public interface CurtidaRepository extends JpaRepository<Curtida, Long> {
             "                   WHERE u.id = :idUsuario" +
             "                       AND n.id = :idNoticia" +
             "                           ORDER BY c.id DESC")
-    Optional<Curtida> findFirstLikeWithLimit(Long idUsuario, int idNoticia);
+    Curtida findFirstLikeWithLimit(Long idUsuario, int idNoticia);
 }
