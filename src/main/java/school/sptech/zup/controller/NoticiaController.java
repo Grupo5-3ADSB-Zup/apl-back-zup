@@ -43,7 +43,7 @@ public class NoticiaController {
     }
 
     @GetMapping("/rss/gazeta")
-    @Scheduled(cron = "0 1 2 * * ?")
+    @Scheduled(cron = "0 0 3 * * ?")
     public ResponseEntity<List<Noticia>> getRssGazeta(){
         var retorno = _noticiaService.getXmlGAZETA();
             System.out.println("Tarefa diária Gazeta executada com sucesso");
@@ -53,7 +53,7 @@ public class NoticiaController {
     @GetMapping("/rss")
     public ResponseEntity<List<Noticia>> getNoticia(){
         //LocalDateTime startDate = LocalDateTime.now().minusDays(1);
-        LocalDateTime startDate = LocalDateTime.now().minusDays(15);
+        LocalDateTime startDate = LocalDateTime.now().minusDays(2);
         var consulta = _noticiaRepository.listagemNoticias(startDate);
         return ResponseEntity.ok(consulta);
     }
