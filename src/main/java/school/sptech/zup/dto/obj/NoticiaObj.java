@@ -1,13 +1,9 @@
 package school.sptech.zup.dto.obj;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import school.sptech.zup.domain.Comentario;
 import school.sptech.zup.dto.response.ComentarioResponse;
 import school.sptech.zup.dto.response.CurtidaResponse;
 
 import javax.persistence.Column;
-import javax.persistence.Lob;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +18,7 @@ public class NoticiaObj {
     @Column(length = 50 * 1024 * 1024)
     private byte[] fotoNoticia;
 
-    private List<ComentarioResponse> comentario = new ArrayList();
+    private List<ComentarioResponse> comentarios = new ArrayList();
 
     private List<CurtidaResponse> curtidas = new ArrayList<>();
 
@@ -102,12 +98,12 @@ public class NoticiaObj {
         this.fotoNoticia = fotoNoticia;
     }
 
-    public List<ComentarioResponse> getComentario() {
-        return comentario;
+    public List<ComentarioResponse> getComentarios() {
+        return comentarios;
     }
 
-    public void setComentario(ComentarioResponse comentario) {
-        this.comentario.add(comentario);
+    public void setComentarios(ComentarioResponse comentarios) {
+        this.comentarios.add(comentarios);
     }
 
     public List<CurtidaResponse> getCurtidas() {

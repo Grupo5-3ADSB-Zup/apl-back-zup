@@ -368,7 +368,7 @@ public class AdminService {
 
                 if(comentario.getNoticias().getId() == noticiaObj.getId()) {
                     contadorComentarios++;
-                    noticiaObj.setComentario(new ComentarioResponse(comentario));
+                    noticiaObj.setComentarios(new ComentarioResponse(comentario));
                 }
             }
 
