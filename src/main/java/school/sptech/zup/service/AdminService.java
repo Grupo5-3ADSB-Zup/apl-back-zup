@@ -375,7 +375,9 @@ public class AdminService {
             for (Curtida curtida : consultaCurtida){
 
                 if (curtida.getNoticias().getId() == noticiaObj.getId()) {
-                    contadorCurtidas++;
+                    if(curtida.getLikes() != 0){
+                        contadorCurtidas++;
+                    }
                     noticiaObj.setCurtidas(new CurtidaResponse(curtida));
                 }
             }
@@ -420,4 +422,6 @@ public class AdminService {
 
         return usuarioNovo;
     }
+
+
 }
