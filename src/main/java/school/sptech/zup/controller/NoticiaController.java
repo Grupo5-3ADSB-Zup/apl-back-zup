@@ -50,6 +50,14 @@ public class NoticiaController {
             return ResponseEntity.ok(retorno);
     }
 
+    @GetMapping("/rss/forbes")
+    @Scheduled(cron = "0 1 12 * * ?")
+    public ResponseEntity<List<Noticia>> getRssForbes(){
+        var retorno = _noticiaService.getXmlForbes();
+        System.out.println("Tarefa diária Forbes executada com sucesso");
+        return ResponseEntity.ok(retorno);
+    }
+
     @GetMapping("/rss")
     public ResponseEntity<List<Noticia>> getNoticia(){
         //LocalDateTime startDate = LocalDateTime.now().minusDays(1);
