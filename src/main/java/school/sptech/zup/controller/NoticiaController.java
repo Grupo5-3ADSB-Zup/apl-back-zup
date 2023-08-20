@@ -61,7 +61,7 @@ public class NoticiaController {
     @GetMapping("/rss")
     public ResponseEntity<List<Noticia>> getNoticia(){
         //LocalDateTime startDate = LocalDateTime.now().minusDays(1);
-        LocalDateTime startDate = LocalDateTime.now().minusDays(15);
+        LocalDateTime startDate = LocalDateTime.now().minusDays(1);
         var consulta = _noticiaRepository.listagemNoticias(startDate);
         return ResponseEntity.ok(consulta);
     }
