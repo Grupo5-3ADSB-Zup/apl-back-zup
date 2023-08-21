@@ -43,7 +43,7 @@ public class NoticiaController {
     }
 
     @GetMapping("/rss/gazeta")
-    @Scheduled(cron = "0 0 3 * * ?")
+    @Scheduled(cron = "0 1 12 * * ?")
     public ResponseEntity<List<Noticia>> getRssGazeta(){
         var retorno = _noticiaService.getXmlGAZETA();
             System.out.println("Tarefa diária Gazeta executada com sucesso");
