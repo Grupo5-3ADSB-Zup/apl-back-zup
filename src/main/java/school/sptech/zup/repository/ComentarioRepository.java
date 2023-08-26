@@ -18,7 +18,7 @@ public interface ComentarioRepository extends JpaRepository<Comentario, Long> {
             "               ON u.id = c.usuario.id" +
             "                   WHERE u.id = :idUsuario" +
             "                       AND n.id = :idNoticia" +
-            "                           ORDER BY c.id DESC")
+            "                           ORDER BY u.influencer DESC, c.id DESC")
     List<Comentario> findFirstCommentWithLimit(Long idUsuario, int idNoticia);
 
 

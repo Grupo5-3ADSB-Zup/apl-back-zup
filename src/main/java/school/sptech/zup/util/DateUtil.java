@@ -2,12 +2,14 @@ package school.sptech.zup.util;
 
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @Component
 public class DateUtil {
-    public  String formLocalDateTimeToDatabaseStyle(LocalDateTime localDateTime){
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(localDateTime);
+    public  String formDate(Date data){
+        return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(data);
     }
 }
