@@ -13,6 +13,6 @@ public class DateUtil {
         return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(data);
     }
     public  String formLocalDate(LocalDateTime data){
-        return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(data);
+        return DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(data);
     }
 }

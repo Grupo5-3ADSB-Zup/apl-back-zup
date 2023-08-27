@@ -7,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Date;
 
 @Data
@@ -32,8 +30,10 @@ public class Noticia {
     private String link;
     @Schema(name = "emissora", description = "Emissora da notícia", example = "UOL")
     private String emissora;
+    @Schema(name = "dtNoticiaFormatado", description = "Data da notícia", example = "20/04/2022")
+    private String dtNoticiaFormatado;
     @Schema(name = "dtNoticia", description = "Data da notícia", example = "20/04/2022")
-    private String dtNoticia;
+    private Date dtNoticia;
     @Column(length = 50 * 1024 * 1024)
     private byte[] foto;
 }

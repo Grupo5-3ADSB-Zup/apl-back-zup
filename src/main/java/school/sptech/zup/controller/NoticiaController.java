@@ -19,6 +19,9 @@ import school.sptech.zup.service.NoticiaService;
 import school.sptech.zup.service.UsuarioService;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -99,7 +102,8 @@ public class NoticiaController {
 
     @GetMapping("/rss")
     public ResponseEntity<List<Noticia>> getNoticia(){
-        LocalDateTime startDate = LocalDateTime.now().minusDays(2);
+        LocalDateTime startDateLocal = LocalDateTime.now().minusDays(2);
+        var startDate = Date.from(startDateLocal.toInstant(ZoneOffset.UTC));
         var consulta = _noticiaRepository.listagemNoticias(startDate);
         return ResponseEntity.ok(consulta);
     }
