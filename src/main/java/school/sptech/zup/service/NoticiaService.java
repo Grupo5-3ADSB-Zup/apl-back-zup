@@ -9,10 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import school.sptech.zup.domain.Comentario;
-import school.sptech.zup.domain.Curtida;
-import school.sptech.zup.domain.Gpt;
-import school.sptech.zup.domain.Noticia;
+import school.sptech.zup.domain.*;
 import school.sptech.zup.dto.request.ComentarioRequest;
 import school.sptech.zup.dto.request.LikesRequest;
 import school.sptech.zup.dto.response.ComentarioResponse;
@@ -20,6 +17,7 @@ import school.sptech.zup.dto.response.UsuarioResponse;
 import school.sptech.zup.repository.ComentarioRepository;
 import school.sptech.zup.repository.CurtidaRepository;
 import school.sptech.zup.repository.NoticiaRepository;
+import school.sptech.zup.repository.ZupLogRepository;
 import school.sptech.zup.util.DateUtil;
 
 import java.net.URL;
@@ -36,7 +34,7 @@ public class NoticiaService {
     private final ComentarioRepository _comentarioRepository;
     private final CurtidaRepository _curtidaRepository;
     private final UsuarioService _usuarioService;
-
+    private final ZupLogRepository _zupLogRepository;
     private final DateUtil _dateutil;
 
 
@@ -65,6 +63,12 @@ public class NoticiaService {
                     noticias.add(noticia);
                 }
                 List<Noticia> noticiaList = _noticiaRepository.saveAll(noticias);
+                ZupLog log = new ZupLog();
+                log.setDescricao("Tarefa Uol executada com sucesso");
+                log.setDt_entrada(
+                        _dateutil.formLocalDate(LocalDateTime.now())
+                );
+                _zupLogRepository.save(log);
                 return noticiaList;
             }
         }  catch (Exception e) {
@@ -97,6 +101,12 @@ public class NoticiaService {
                     noticias.add(noticia);
                 }
                 List<Noticia> noticiaList = _noticiaRepository.saveAll(noticias);
+                ZupLog log = new ZupLog();
+                log.setDescricao("Tarefa Gazeta executada com sucesso");
+                log.setDt_entrada(
+                        _dateutil.formLocalDate(LocalDateTime.now())
+                );
+                _zupLogRepository.save(log);
                 return noticiaList;
             }
         }  catch (Exception e) {
@@ -129,6 +139,12 @@ public class NoticiaService {
                     noticias.add(noticia);
                 }
                 List<Noticia> noticiaList = _noticiaRepository.saveAll(noticias);
+                ZupLog log = new ZupLog();
+                log.setDescricao("Tarefa Forbes executada com sucesso");
+                log.setDt_entrada(
+                        _dateutil.formLocalDate(LocalDateTime.now())
+                );
+                _zupLogRepository.save(log);
                 return noticiaList;
             }
         }  catch (Exception e) {
@@ -162,6 +178,12 @@ public class NoticiaService {
                     noticias.add(noticia);
                 }
                 List<Noticia> noticiaList = _noticiaRepository.saveAll(noticias);
+                ZupLog log = new ZupLog();
+                log.setDescricao("Tarefa Globo executada com sucesso");
+                log.setDt_entrada(
+                        _dateutil.formLocalDate(LocalDateTime.now())
+                );
+                _zupLogRepository.save(log);
                 return noticiaList;
             }
         }  catch (Exception e) {
@@ -194,6 +216,12 @@ public class NoticiaService {
                     noticias.add(noticia);
                 }
                 List<Noticia> noticiaList = _noticiaRepository.saveAll(noticias);
+                ZupLog log = new ZupLog();
+                log.setDescricao("Tarefa Investopedia executada com sucesso");
+                log.setDt_entrada(
+                        _dateutil.formLocalDate(LocalDateTime.now())
+                );
+                _zupLogRepository.save(log);
                 return noticiaList;
             }
         }  catch (Exception e) {
@@ -226,6 +254,12 @@ public class NoticiaService {
                     noticias.add(noticia);
                 }
                 List<Noticia> noticiaList = _noticiaRepository.saveAll(noticias);
+                ZupLog log = new ZupLog();
+                log.setDescricao("Tarefa diária Cnbc executada com sucesso");
+                log.setDt_entrada(
+                        _dateutil.formLocalDate(LocalDateTime.now())
+                );
+                _zupLogRepository.save(log);
                 return noticiaList;
             }
         }  catch (Exception e) {
@@ -258,6 +292,12 @@ public class NoticiaService {
                     noticias.add(noticia);
                 }
                 List<Noticia> noticiaList = _noticiaRepository.saveAll(noticias);
+                ZupLog log = new ZupLog();
+                log.setDescricao("Tarefa Business Insider executada com sucesso");
+                log.setDt_entrada(
+                        _dateutil.formLocalDate(LocalDateTime.now())
+                );
+                _zupLogRepository.save(log);
                 return noticiaList;
             }
         }  catch (Exception e) {
@@ -288,9 +328,14 @@ public class NoticiaService {
 
                     noticias.add(noticia);
                 }
-                //List<Noticia> noticiaList = _noticiaRepository.saveAll(noticias);
-                //return noticiaList;
-                return noticias;
+                List<Noticia> noticiaList = _noticiaRepository.saveAll(noticias);
+                ZupLog log = new ZupLog();
+                log.setDescricao("Tarefa MarketWatch executada com sucesso");
+                log.setDt_entrada(
+                        _dateutil.formLocalDate(LocalDateTime.now())
+                );
+                _zupLogRepository.save(log);
+                return noticiaList;
             }
         }  catch (Exception e) {
             e.printStackTrace();

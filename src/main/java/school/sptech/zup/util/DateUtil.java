@@ -12,4 +12,7 @@ public class DateUtil {
     public  String formDate(Date data){
         return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(data);
     }
+    public  String formLocalDate(LocalDateTime data){
+        return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(data);
+    }
 }
