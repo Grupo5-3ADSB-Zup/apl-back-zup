@@ -15,6 +15,6 @@ public interface NoticiaRepository extends JpaRepository<Noticia, Integer> {
 
     @Query("SELECT n FROM Noticia n " +
             "   WHERE n.dtNoticia >= :startDate" +
-            "   ORDER BY n.id DESC")
+            "   ORDER BY n.dtNoticia DESC")
     List<Noticia> listagemNoticias(Date startDate);
 }
