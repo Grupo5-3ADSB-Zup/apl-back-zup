@@ -14,7 +14,7 @@ public class NoticiaObj {
     private String descricao;
     private String link;
     private String emissora;
-    private LocalDateTime dtNoticia;
+    private String dtNoticia;
     @Column(length = 50 * 1024 * 1024)
     private byte[] fotoNoticia;
 
@@ -28,7 +28,7 @@ public class NoticiaObj {
 
     public NoticiaObj(int id, String titulo, String descricao,
                       String link, String emissora,
-                      LocalDateTime dtNoticia, byte[] fotoNoticia, Integer qtdComentarios, Integer qtdCurtidas) {
+                      String dtNoticia, byte[] fotoNoticia, Integer qtdComentarios, Integer qtdCurtidas) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
@@ -83,11 +83,11 @@ public class NoticiaObj {
         this.emissora = emissora;
     }
 
-    public LocalDateTime getDtNoticia() {
+    public String getDtNoticia() {
         return dtNoticia;
     }
 
-    public void setDtNoticia(LocalDateTime dtNoticia) {
+    public void setDtNoticia(String dtNoticia) {
         this.dtNoticia = dtNoticia;
     }
     public byte[] getFotoNoticia() {

@@ -361,7 +361,7 @@ public class AdminService {
             noticiaObj.setDescricao(consultaNoticia.getBody().get(i).getDescricao());
             noticiaObj.setLink(consultaNoticia.getBody().get(i).getLink());
             noticiaObj.setEmissora(consultaNoticia.getBody().get(i).getEmissora());
-            //noticiaObj.setDtNoticia(consultaNoticia.getBody().get(i).getDtNoticia());
+            noticiaObj.setDtNoticia(consultaNoticia.getBody().get(i).getDtNoticia());
             noticiaObj.setFotoNoticia(consultaNoticia.getBody().get(i).getFoto());
 
             for (Comentario comentario :consultaComentario) {

@@ -81,6 +81,22 @@ public class NoticiaController {
         return ResponseEntity.ok(retorno);
     }
 
+    @GetMapping("/rss/markets")
+    //@Scheduled(cron = "0 2 12 * * ?")
+    public ResponseEntity<List<Noticia>> getRssMarkets(){
+        var retorno = _noticiaService.getXmlMarkets();
+        System.out.println("Tarefa diária Markets executada com sucesso");
+        return ResponseEntity.ok(retorno);
+    }
+
+    @GetMapping("/rss/feedsMarketwatch")
+    //@Scheduled(cron = "0 2 12 * * ?")
+    public ResponseEntity<List<Noticia>> getRssFeedsMarketwatch(){
+        var retorno = _noticiaService.getXmlFeedsMarketwatch();
+        System.out.println("Tarefa diária FeedsMarketwatch executada com sucesso");
+        return ResponseEntity.ok(retorno);
+    }
+
     @GetMapping("/rss")
     public ResponseEntity<List<Noticia>> getNoticia(){
         LocalDateTime startDate = LocalDateTime.now().minusDays(2);
