@@ -33,6 +33,22 @@ public class NoticiaController {
     private final NoticiaService _noticiaService;
     private final GptService _gptService;
 
+
+    //@PostMapping("/rss/agendamento/diario")
+    @Scheduled(cron = "0 27 22 * * ?")
+    public void Agendamento(){
+        //_noticiaService.getXmlInvestopedia(); Não rodar
+        //_noticiaService.getXmlMarkets(); Não rodar
+        //_noticiaService.getXmlUOL();
+       _noticiaService.getXmlGAZETA();
+       _noticiaService.getXmlForbes();
+       _noticiaService.getXmlGlobo();
+       _noticiaService.getXmlCnbc();
+       _noticiaService.getXmlFeedsMarketwatch();
+
+        System.out.println("Tarefas Diárias executadas com sucesso");
+    }
+
     @GetMapping("/rss/uol")
     //@Scheduled(cron = "0 1 12 * * ?")
     public ResponseEntity<List<Noticia>> getRssUOL(){
@@ -42,7 +58,7 @@ public class NoticiaController {
     }
 
     @GetMapping("/rss/gazeta")
-    @Scheduled(cron = "0 1 12 * * ?")
+    //@Scheduled(cron = "0 1 12 * * ?")
     public ResponseEntity<List<Noticia>> getRssGazeta(){
         var retorno = _noticiaService.getXmlGAZETA();
             System.out.println("Tarefa diária Gazeta executada com sucesso");
@@ -50,7 +66,7 @@ public class NoticiaController {
     }
 
     @GetMapping("/rss/forbes")
-    @Scheduled(cron = "0 2 12 * * ?")
+    //@Scheduled(cron = "0 2 12 * * ?")
     public ResponseEntity<List<Noticia>> getRssForbes(){
         var retorno = _noticiaService.getXmlForbes();
         System.out.println("Tarefa diária Forbes executada com sucesso");
@@ -58,7 +74,7 @@ public class NoticiaController {
     }
 
     @GetMapping("/rss/globo")
-    @Scheduled(cron = "0 2 12 * * ?")
+    //@Scheduled(cron = "0 2 12 * * ?")
     public ResponseEntity<List<Noticia>> getRssGlobo(){
         var retorno = _noticiaService.getXmlGlobo();
         System.out.println("Tarefa diária Globo executada com sucesso");
@@ -99,7 +115,7 @@ public class NoticiaController {
 
     @GetMapping("/rss")
     public ResponseEntity<List<Noticia>> getNoticia(){
-        LocalDateTime startDateLocal = LocalDateTime.now().minusDays(2);
+        LocalDateTime startDateLocal = LocalDateTime.now().minusDays(1);
         var startDate = Date.from(startDateLocal.toInstant(ZoneOffset.UTC));
         var consulta = _noticiaRepository.listagemNoticias(startDate);
         return ResponseEntity.ok(consulta);
