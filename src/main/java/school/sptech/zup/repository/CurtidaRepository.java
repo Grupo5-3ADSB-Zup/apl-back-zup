@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CurtidaRepository extends JpaRepository<Curtida, Long> {
-
     @Query("SELECT c " +
             "FROM Curtida c " +
             "   JOIN FETCH Noticia n" +

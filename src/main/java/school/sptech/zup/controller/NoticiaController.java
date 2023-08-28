@@ -16,10 +16,8 @@ import school.sptech.zup.dto.response.GptResponse;
 import school.sptech.zup.repository.NoticiaRepository;
 import school.sptech.zup.service.GptService;
 import school.sptech.zup.service.NoticiaService;
-import school.sptech.zup.service.UsuarioService;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.List;
@@ -41,7 +39,6 @@ public class NoticiaController {
         var retorno = _noticiaService.getXmlUOL();
             System.out.println("Tarefa diária UOL executada com sucesso");
             return ResponseEntity.ok(retorno);
-
     }
 
     @GetMapping("/rss/gazeta")
@@ -123,22 +120,18 @@ public class NoticiaController {
         var consultaTituloNoticia = _noticiaService.procuraPorNome(gpt);
         var retorno = _gptService.gptNoticia(gpt);
         return ResponseEntity.status(200).body(retorno);
-
     }
 
     @PostMapping("/comentarios/{idUsuario}/{idNoticia}")
     public ResponseEntity<Comentario> salvarComentario(@RequestBody ComentarioRequest comentario,
                                                     @PathVariable Long idUsuario, @PathVariable int idNoticia){
         var consultaNoticia = _noticiaService.buscarNoticiaPorIdComentario(comentario, idNoticia, idUsuario);
-
         return ResponseEntity.status(200).body(consultaNoticia);
-
     }
 
     @PostMapping("/likes/{idUsuario}/{idNoticia}")
     public ResponseEntity<Curtida> salvarLikes(@RequestBody LikesRequest likes,
                                                @PathVariable Long idUsuario, @PathVariable int idNoticia){
-
         var consulta = _noticiaService.buscarNoticiaPorIdLikes(likes, idUsuario, idNoticia);
         return ResponseEntity.ok(consulta);
     }
@@ -156,7 +149,6 @@ public class NoticiaController {
     @GetMapping("/comentarios")
     public ResponseEntity<List<Comentario>> comentarios(){
         var consulta = _noticiaService.comentarios();
-
         return ResponseEntity.ok(consulta);
     }
 
@@ -165,7 +157,6 @@ public class NoticiaController {
         var consulta = getNoticiaId((int) idNoticia);
         var consultaComentario = _noticiaService.getComentarioNoticiaPorId(consulta.getBody());
         return ResponseEntity.ok(consultaComentario);
-
     }
 
     @GetMapping("/rss/isolado/{id}")

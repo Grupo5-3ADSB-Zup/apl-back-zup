@@ -7,14 +7,9 @@ import org.springframework.stereotype.Service;
 import school.sptech.zup.domain.Gpt;
 import school.sptech.zup.dto.response.GptResponse;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.CompletionService;
-
 @Service
 public class GptService {
     private static final String API_KEY ="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";
-
     public GptResponse gptNoticia(Gpt gpt) {
         OpenAiService service = new OpenAiService(API_KEY);
         GptResponse gptResponse = new GptResponse();
@@ -24,7 +19,6 @@ public class GptService {
                 .prompt(gpt.getTitulo() + gpt.getPergunta())
                 .maxTokens(1000)
                 .build();
-
         gptResponse.setResposta(service.createCompletion(request).getChoices().get(0).getText());
         gptResponse.setId(gpt.getId());
         return gptResponse;

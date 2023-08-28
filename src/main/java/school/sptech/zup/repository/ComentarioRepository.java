@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public interface ComentarioRepository extends JpaRepository<Comentario, Long> {
     List<Comentario> findAllById(Long idNoticia);
-
     @Query("SELECT c " +
             "FROM Noticia n " +
             "   JOIN FETCH Comentario c" +
@@ -20,8 +19,6 @@ public interface ComentarioRepository extends JpaRepository<Comentario, Long> {
             "                       AND n.id = :idNoticia" +
             "                           ORDER BY u.influencer DESC, c.id DESC")
     List<Comentario> findFirstCommentWithLimit(Long idUsuario, int idNoticia);
-
-
     @Query("SELECT c " +
             "FROM Comentario c " +
             "       ORDER BY c.id DESC")

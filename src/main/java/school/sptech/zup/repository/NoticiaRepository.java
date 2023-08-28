@@ -12,7 +12,6 @@ import java.util.OptionalLong;
 
 public interface NoticiaRepository extends JpaRepository<Noticia, Integer> {
     Optional<Noticia> findByTitulo(String titulo);
-
     @Query("SELECT n FROM Noticia n " +
             "   WHERE n.dtNoticia >= :startDate" +
             "   ORDER BY n.dtNoticia DESC")

@@ -2,7 +2,6 @@ package school.sptech.zup.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,7 +17,6 @@ import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
 import school.sptech.zup.service.AutenticacaoJWT.UsuarioTokenDto;
 
 import java.util.Base64;
-import java.util.Optional;
 
 @Service
 public class CadastroUsuarioService {
@@ -36,8 +34,6 @@ public class CadastroUsuarioService {
         _gerenciadorTokenJwt = gerenciadorTokenJwt;
         _authenticationManager = authenticationManager;
     }
-
-
     public Usuario saveUserComum(UsuarioComumRequestBody usuarioPostRequestBody) {
         var retorno = autenticar(usuarioPostRequestBody);
 
@@ -64,7 +60,6 @@ public class CadastroUsuarioService {
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Sem credenciais");
     }
-
     public Usuario saveUserEmpresa(UsuarioEmpresaRequestBody usuarioPostRequestBody) {
         var retorno = autenticar(usuarioPostRequestBody);
 
@@ -87,7 +82,6 @@ public class CadastroUsuarioService {
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Sem credenciais");
     }
-
     public Usuario saveUserAdmin(UsuarioAdminPostRequest usuarioPostRequestBody) {
         var retorno = autenticar(usuarioPostRequestBody);
 
@@ -111,15 +105,13 @@ public class CadastroUsuarioService {
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Sem credenciais");
     }
-
-       private boolean autenticar(UsuarioPostRequestBody user){
+    private boolean autenticar(UsuarioPostRequestBody user){
         if (user.getAutenticado() == false){
                 user.setAutenticado(true);
                 return true;
             }
         return false;
     }
-
     public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto){
         final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
                 usuarioLoginDto.getUsername(), usuarioLoginDto.getSenha());

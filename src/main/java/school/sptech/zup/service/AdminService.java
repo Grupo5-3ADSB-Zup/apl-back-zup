@@ -28,11 +28,8 @@ public class AdminService {
     private final NoticiaController _noticiaController;
     private final UsuarioController _usuarioController;
     private final CarteiraRepository _carteiraRepository;
-
     private final ComentarioRepository _comentarioRepository;
-
     private final CurtidaRepository _curtidaRepository;
-
     public AdminService(UsuarioRepository _usuarioRepository, NoticiaController _noticiaController,
                         UsuarioController _usuarioController, CarteiraRepository _carteiraRepository,
                         ComentarioRepository _comentarioRepository, CurtidaRepository _curtidaRepository) {
@@ -108,7 +105,6 @@ public class AdminService {
         }
       // return ResponseEntity.status(404).build();
     }
-
     public UsuarioObj pesquisaBinaria(String x) {
 
         ListaObj<UsuarioObj> consulta = getListUsuario();
@@ -134,7 +130,6 @@ public class AdminService {
 
         throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Não encontrado");
         }
-
     public BufferedWriter gravarRegistro(String registro, String nomeArq){
         BufferedWriter saida = null;
 
@@ -157,7 +152,6 @@ public class AdminService {
         }
         return saida;
     }
-
     public BufferedWriter gravarArquivoTxt(ListaObj<UsuarioObj> lista, String nomeArq){
         int contadorRegistroDadosGravados = 0;
 
@@ -193,7 +187,6 @@ public class AdminService {
 
         return (gravarRegistro(trailer, nomeArq));
     }
-
     public void lerArquivoTxt(MultipartFile nomeArq){
         BufferedReader entrada = null;
         String registro, tipoRegistro;
@@ -303,7 +296,6 @@ public class AdminService {
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Não autorizado");
 
     }
-
     public ListaObj<UsuarioObj> getListUsuario(){
         List<Usuario> usuarioConsulta = _usuarioRepository.findAll();
 
@@ -341,7 +333,6 @@ public class AdminService {
 
         return listaUsuario;
     }
-
     public List<NoticiaObj> getNoticiasFilaPilha(){
 
         var consultaNoticia = _noticiaController.getNoticia();
@@ -390,7 +381,6 @@ public class AdminService {
 
         return filaNoticias;
     }
-
     public List<Usuario> getListTodosUsuario() {
         List<Usuario> usuarioConsulta = _usuarioRepository.findAll();
 
@@ -399,7 +389,6 @@ public class AdminService {
         }
         return usuarioConsulta;
     }
-
     public Usuario atualizarUsuarioParaInfluencer(Long idUsuario, boolean influencer) {
         Optional<Usuario> usuario = _usuarioRepository.findById(idUsuario);
 
@@ -422,6 +411,4 @@ public class AdminService {
 
         return usuarioNovo;
     }
-
-
 }

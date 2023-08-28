@@ -20,12 +20,10 @@ public class Noticia {
     private int id;
     @Schema(name = "titulo", description = "Titulo da notícia", example = "Petrobrás Caiu")
     private String titulo;
-
     @Lob
     @Column(name="descricao", length=2048)
     @Schema(name = "descricao", description = "Descrição da notícia", example = "Petrobrás Caiu ontem...")
     private String descricao;
-
     @Schema(name = "link", description = "Link da notícia original", example = "https://...")
     private String link;
     @Schema(name = "emissora", description = "Emissora da notícia", example = "UOL")

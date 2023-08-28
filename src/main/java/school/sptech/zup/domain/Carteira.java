@@ -19,7 +19,6 @@ public class Carteira {
     private String corretora;
     private String patrimonio;
     private String perfil;
-
    @ManyToOne
     private Usuario usuario;
 

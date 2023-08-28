@@ -19,7 +19,6 @@ public class Curtida {
     private Long id;
     @Schema(name = "likes", description = "Curtidas da notícia", example = "30")
     private Integer likes;
-
     @ManyToOne
     private Usuario usuario;
     @ManyToOne
