@@ -16,9 +16,10 @@ import school.sptech.zup.dto.response.GptResponse;
 import school.sptech.zup.repository.NoticiaRepository;
 import school.sptech.zup.service.GptService;
 import school.sptech.zup.service.NoticiaService;
-import school.sptech.zup.service.UsuarioService;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +32,22 @@ public class NoticiaController {
     private final NoticiaRepository _noticiaRepository;
     private final NoticiaService _noticiaService;
     private final GptService _gptService;
-    private final UsuarioService _usuarioService;
+
+
+    //@PostMapping("/rss/agendamento/diario")
+    @Scheduled(cron = "0 27 22 * * ?")
+    public void Agendamento(){
+        //_noticiaService.getXmlInvestopedia(); Não rodar
+        //_noticiaService.getXmlMarkets(); Não rodar
+        //_noticiaService.getXmlUOL();
+       _noticiaService.getXmlGAZETA();
+       _noticiaService.getXmlForbes();
+       _noticiaService.getXmlGlobo();
+       _noticiaService.getXmlCnbc();
+       _noticiaService.getXmlFeedsMarketwatch();
+
+        System.out.println("Tarefas Diárias executadas com sucesso");
+    }
 
     @GetMapping("/rss/uol")
     //@Scheduled(cron = "0 1 12 * * ?")
@@ -39,21 +55,68 @@ public class NoticiaController {
         var retorno = _noticiaService.getXmlUOL();
             System.out.println("Tarefa diária UOL executada com sucesso");
             return ResponseEntity.ok(retorno);
-
     }
 
     @GetMapping("/rss/gazeta")
-    @Scheduled(cron = "0 1 12 * * ?")
+    //@Scheduled(cron = "0 1 12 * * ?")
     public ResponseEntity<List<Noticia>> getRssGazeta(){
         var retorno = _noticiaService.getXmlGAZETA();
             System.out.println("Tarefa diária Gazeta executada com sucesso");
             return ResponseEntity.ok(retorno);
     }
 
+    @GetMapping("/rss/forbes")
+    //@Scheduled(cron = "0 2 12 * * ?")
+    public ResponseEntity<List<Noticia>> getRssForbes(){
+        var retorno = _noticiaService.getXmlForbes();
+        System.out.println("Tarefa diária Forbes executada com sucesso");
+        return ResponseEntity.ok(retorno);
+    }
+
+    @GetMapping("/rss/globo")
+    //@Scheduled(cron = "0 2 12 * * ?")
+    public ResponseEntity<List<Noticia>> getRssGlobo(){
+        var retorno = _noticiaService.getXmlGlobo();
+        System.out.println("Tarefa diária Globo executada com sucesso");
+        return ResponseEntity.ok(retorno);
+    }
+
+    @GetMapping("/rss/investopedia")
+    //@Scheduled(cron = "0 2 12 * * ?")
+    public ResponseEntity<List<Noticia>> getRssInvestopedia(){
+        var retorno = _noticiaService.getXmlInvestopedia();
+        System.out.println("Tarefa diária Investopedia executada com sucesso");
+        return ResponseEntity.ok(retorno);
+    }
+
+    @GetMapping("/rss/cnbc")
+    //@Scheduled(cron = "0 2 12 * * ?")
+    public ResponseEntity<List<Noticia>> getRssCnbc(){
+        var retorno = _noticiaService.getXmlCnbc();
+        System.out.println("Tarefa diária Cnbc executada com sucesso");
+        return ResponseEntity.ok(retorno);
+    }
+
+    @GetMapping("/rss/markets")
+    //@Scheduled(cron = "0 2 12 * * ?")
+    public ResponseEntity<List<Noticia>> getRssMarkets(){
+        var retorno = _noticiaService.getXmlMarkets();
+        System.out.println("Tarefa diária Markets executada com sucesso");
+        return ResponseEntity.ok(retorno);
+    }
+
+    @GetMapping("/rss/feedsMarketwatch")
+    //@Scheduled(cron = "0 2 12 * * ?")
+    public ResponseEntity<List<Noticia>> getRssFeedsMarketwatch(){
+        var retorno = _noticiaService.getXmlFeedsMarketwatch();
+        System.out.println("Tarefa diária FeedsMarketwatch executada com sucesso");
+        return ResponseEntity.ok(retorno);
+    }
+
     @GetMapping("/rss")
     public ResponseEntity<List<Noticia>> getNoticia(){
-        //LocalDateTime startDate = LocalDateTime.now().minusDays(1);
-        LocalDateTime startDate = LocalDateTime.now().minusDays(2);
+        LocalDateTime startDateLocal = LocalDateTime.now().minusDays(1);
+        var startDate = Date.from(startDateLocal.toInstant(ZoneOffset.UTC));
         var consulta = _noticiaRepository.listagemNoticias(startDate);
         return ResponseEntity.ok(consulta);
     }
@@ -73,22 +136,18 @@ public class NoticiaController {
         var consultaTituloNoticia = _noticiaService.procuraPorNome(gpt);
         var retorno = _gptService.gptNoticia(gpt);
         return ResponseEntity.status(200).body(retorno);
-
     }
 
     @PostMapping("/comentarios/{idUsuario}/{idNoticia}")
     public ResponseEntity<Comentario> salvarComentario(@RequestBody ComentarioRequest comentario,
                                                     @PathVariable Long idUsuario, @PathVariable int idNoticia){
         var consultaNoticia = _noticiaService.buscarNoticiaPorIdComentario(comentario, idNoticia, idUsuario);
-
         return ResponseEntity.status(200).body(consultaNoticia);
-
     }
 
     @PostMapping("/likes/{idUsuario}/{idNoticia}")
     public ResponseEntity<Curtida> salvarLikes(@RequestBody LikesRequest likes,
                                                @PathVariable Long idUsuario, @PathVariable int idNoticia){
-
         var consulta = _noticiaService.buscarNoticiaPorIdLikes(likes, idUsuario, idNoticia);
         return ResponseEntity.ok(consulta);
     }
@@ -106,7 +165,6 @@ public class NoticiaController {
     @GetMapping("/comentarios")
     public ResponseEntity<List<Comentario>> comentarios(){
         var consulta = _noticiaService.comentarios();
-
         return ResponseEntity.ok(consulta);
     }
 
@@ -115,7 +173,6 @@ public class NoticiaController {
         var consulta = getNoticiaId((int) idNoticia);
         var consultaComentario = _noticiaService.getComentarioNoticiaPorId(consulta.getBody());
         return ResponseEntity.ok(consultaComentario);
-
     }
 
     @GetMapping("/rss/isolado/{id}")

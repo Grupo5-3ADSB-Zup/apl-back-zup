@@ -40,25 +40,18 @@ public class AdminController {
         return ResponseEntity.ok(consulta);
     }
 
-
     @PostMapping(value = "/exportacao/txt/{nomeArquivo}")
-
     public ResponseEntity<BufferedWriter> gravarArquivoTXT(@PathVariable String nomeArquivo) {
         var retorno = _adminService.getListUsuario();
             var gerar = _adminService.gravarArquivoTxt(retorno, nomeArquivo);
 
             return ResponseEntity.status(201).build();
-
     }
-
-
 
     @PostMapping(value = "/importacao/txt", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<BufferedReader> importarArquivoTXT(@RequestParam("arquivo") MultipartFile arquivo) {
         _adminService.lerArquivoTxt(arquivo);
-
         return ResponseEntity.ok().build();
-
     }
 
     @GetMapping("/filaPilha/noticias")

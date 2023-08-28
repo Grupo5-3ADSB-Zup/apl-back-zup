@@ -11,10 +11,8 @@ import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.UsuarioAdminPutRequest;
 import school.sptech.zup.dto.UsuarioComumPutRequestBody;
 import school.sptech.zup.dto.UsuarioEmpresaPutRequestBody;
-import school.sptech.zup.dto.obj.UsuarioObj;
 import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.service.UsuarioService;
-import school.sptech.zup.util.DateUtil;
 
 import java.util.Optional;
 
@@ -26,7 +24,6 @@ import java.util.Optional;
 public class UsuarioController {
     @Autowired
     private final UsuarioService usuarioService;
-
     @Autowired
     private final UsuarioRepository _usuarioRepository;
     @GetMapping

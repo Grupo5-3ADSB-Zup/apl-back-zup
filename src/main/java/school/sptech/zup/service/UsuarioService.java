@@ -22,14 +22,11 @@ import java.util.*;
 @Service
 public class UsuarioService {
     private final UsuarioRepository _usuarioRepository;
-
     public UsuarioService(UsuarioRepository usuarioRepository) {
         _usuarioRepository = usuarioRepository;
     }
-
     public ListaObj<UsuarioObj> getListUsuario(){
         List<Usuario> usuarioConsulta = _usuarioRepository.findAll();
-
         if (usuarioConsulta.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Usuario não encontrado");
         }
@@ -52,7 +49,6 @@ public class UsuarioService {
         UsuarioObj aux = new UsuarioObj();
         for (int a = 0; a < listaUsuario.getTamanho(); a++){
             for (int b = a + 1; b < listaUsuario.getTamanho(); b++){
-
                 var comparacao = listaUsuario.getElemento(a).getNome().compareToIgnoreCase(listaUsuario.getElemento(b).getNome());
                 if (comparacao > 0){
                     aux = listaUsuario.getElemento(a);
@@ -61,22 +57,17 @@ public class UsuarioService {
                 }
             }
         }
-
         return listaUsuario;
     }
-
     public Usuario getUsername(UsuarioLoginDto loginDto) {
         var consulta = buscaPorUsername(loginDto.getUsername());
         if (consulta.getSenha().equals(loginDto.getSenha())){
-
             return consulta;
         }
         return consulta;
     }
-
     public Usuario buscaPorUsername(String username){
         List<Usuario> usuarioConsulta = _usuarioRepository.findAll();
-
         for (int i = 0; i < usuarioConsulta.size(); i++) {
             if (usuarioConsulta.get(i).getUsername().equals(username)){
                 return usuarioConsulta.get(i);
@@ -84,7 +75,6 @@ public class UsuarioService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario não encontrado");
     }
-
     public byte[] BuscarImagemPorId(@PathVariable Long idFoto){
         var consulta = _usuarioRepository.findAll();
         for (int i = 0; i < consulta.size(); i++){
@@ -94,7 +84,6 @@ public class UsuarioService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Imagem não encontrado");
     }
-
     public Usuario buscaPorId(Long id){
         Optional<Usuario> usuarioConsulta = _usuarioRepository.findById(id);
         if (usuarioConsulta.isPresent()){
@@ -102,10 +91,8 @@ public class UsuarioService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario não encontrado");
     }
-
     public Usuario atualizarUsuarioComum(UsuarioComumPutRequestBody usuarioPutRequestBody) {
         var consulta = buscaPorId(usuarioPutRequestBody.getId());
-
             Usuario usuario = Usuario.builder()
                     .id(consulta.getId())
                     .nome(usuarioPutRequestBody.getNome())
@@ -118,13 +105,10 @@ public class UsuarioService {
                     .cnpj(null)
                     .build();
             _usuarioRepository.save(usuario);
-
             return usuario;
     }
-
     public Usuario atualizarUsuarioEmpresa(UsuarioEmpresaPutRequestBody usuarioPutRequestBody) {
         var consulta = buscaPorId(usuarioPutRequestBody.getId());
-
             Usuario usuario = Usuario.builder()
                     .id(consulta.getId())
                     .nome(usuarioPutRequestBody.getNome())
@@ -137,14 +121,10 @@ public class UsuarioService {
                     .cpf(null)
                     .build();
             _usuarioRepository.save(usuario);
-
             return usuario;
-
     }
-
     public Usuario atualizarUsuarioAdmin(UsuarioAdminPutRequest usuarioPutRequestBody) {
         var consulta = buscaPorId(usuarioPutRequestBody.getId());
-
             Usuario usuario = Usuario.builder()
                     .id(consulta.getId())
                     .nome(usuarioPutRequestBody.getNome())
@@ -158,15 +138,11 @@ public class UsuarioService {
                     .Admin(usuarioPutRequestBody.getAdmin())
                     .build();
             _usuarioRepository.save(usuario);
-
             return usuario;
     }
-
     public Usuario deleteUser(long id) {
         var retorno = buscaPorId(id);
             retorno.setAutenticado(false);
             return retorno;
-
     }
-
 }

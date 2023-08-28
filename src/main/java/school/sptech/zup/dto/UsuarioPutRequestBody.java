@@ -6,9 +6,7 @@ import lombok.Data;
 
 @Data
 public abstract class UsuarioPutRequestBody {
-
     private Long id;
-
     @Schema(name = "nome", description = "Seu nome", example = "Carlos")
     private String nome;
     @Schema(name = "email", description = "Seu Email", example = "Carlos@gmail.com")
@@ -19,6 +17,5 @@ public abstract class UsuarioPutRequestBody {
     private String senha;
     @Schema(name = "Influencer", description = "Você é um influenciador ?", example = "@PrimoRico")
     private boolean influencer;
-
     private Boolean autenticado;
 }

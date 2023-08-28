@@ -5,22 +5,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Builder
-public class Comentario {
+public class ZupLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Lob
-    @Column(name="descricao", length=2048)
     private String descricao;
-    @ManyToOne
-    private Usuario usuario;
-    @ManyToOne
-    private Noticia noticias;
+    private String dt_entrada;
 }

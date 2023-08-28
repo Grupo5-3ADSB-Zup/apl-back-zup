@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CurtidaRepository extends JpaRepository<Curtida, Long> {
-
     @Query("SELECT c " +
             "FROM Curtida c " +
             "   JOIN FETCH Noticia n" +
@@ -19,5 +18,5 @@ public interface CurtidaRepository extends JpaRepository<Curtida, Long> {
             "                   WHERE u.id = :idUsuario" +
             "                       AND n.id = :idNoticia" +
             "                           ORDER BY c.id DESC")
-    Optional<Curtida> findFirstLikeWithLimit(Long idUsuario, int idNoticia);
+    Curtida findFirstLikeWithLimit(Long idUsuario, int idNoticia);
 }

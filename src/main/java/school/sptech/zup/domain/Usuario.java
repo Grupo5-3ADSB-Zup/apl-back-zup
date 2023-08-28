@@ -1,6 +1,5 @@
 package school.sptech.zup.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -29,19 +27,12 @@ public class Usuario {
     private String senha;
     @Schema(name = "Influencer", description = "Você é um influenciador ?", example = "@PrimoRico")
     private boolean influencer;
-
-    // lembrar de validar com o grupo esse atributo
     private Boolean autenticado;
-
     @Schema(name = "cpf", description = "Seu CPF", example = "123456764532")
     private String cpf;
     @Schema(name = "cnpj", description = "CNPJ da sua empresa", example = "12345678987654")
     private String cnpj;
-
     private int Admin;
-
-    //@JsonIgnore
     @Column(length = 50 * 1024 * 1024)
     private byte[] foto;
-
 }

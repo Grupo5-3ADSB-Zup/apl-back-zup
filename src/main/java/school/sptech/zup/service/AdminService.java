@@ -28,11 +28,8 @@ public class AdminService {
     private final NoticiaController _noticiaController;
     private final UsuarioController _usuarioController;
     private final CarteiraRepository _carteiraRepository;
-
     private final ComentarioRepository _comentarioRepository;
-
     private final CurtidaRepository _curtidaRepository;
-
     public AdminService(UsuarioRepository _usuarioRepository, NoticiaController _noticiaController,
                         UsuarioController _usuarioController, CarteiraRepository _carteiraRepository,
                         ComentarioRepository _comentarioRepository, CurtidaRepository _curtidaRepository) {
@@ -108,7 +105,6 @@ public class AdminService {
         }
       // return ResponseEntity.status(404).build();
     }
-
     public UsuarioObj pesquisaBinaria(String x) {
 
         ListaObj<UsuarioObj> consulta = getListUsuario();
@@ -134,7 +130,6 @@ public class AdminService {
 
         throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Não encontrado");
         }
-
     public BufferedWriter gravarRegistro(String registro, String nomeArq){
         BufferedWriter saida = null;
 
@@ -157,7 +152,6 @@ public class AdminService {
         }
         return saida;
     }
-
     public BufferedWriter gravarArquivoTxt(ListaObj<UsuarioObj> lista, String nomeArq){
         int contadorRegistroDadosGravados = 0;
 
@@ -193,7 +187,6 @@ public class AdminService {
 
         return (gravarRegistro(trailer, nomeArq));
     }
-
     public void lerArquivoTxt(MultipartFile nomeArq){
         BufferedReader entrada = null;
         String registro, tipoRegistro;
@@ -303,7 +296,6 @@ public class AdminService {
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Não autorizado");
 
     }
-
     public ListaObj<UsuarioObj> getListUsuario(){
         List<Usuario> usuarioConsulta = _usuarioRepository.findAll();
 
@@ -341,14 +333,16 @@ public class AdminService {
 
         return listaUsuario;
     }
-
     public List<NoticiaObj> getNoticiasFilaPilha(){
 
         var consultaNoticia = _noticiaController.getNoticia();
-        var consultaComentario = _comentarioRepository.findAll();
+        var consultaComentario = _comentarioRepository.findComment();
         var consultaCurtida = _curtidaRepository.findAll();
 
         List<NoticiaObj> filaNoticias = new ArrayList<>();
+
+        Integer contadorComentarios = 0;
+        Integer contadorCurtidas = 0;
 
         for (int i = 1; i < consultaNoticia.getBody().size(); i++){
             NoticiaObj noticiaObj = new NoticiaObj();
@@ -358,29 +352,35 @@ public class AdminService {
             noticiaObj.setDescricao(consultaNoticia.getBody().get(i).getDescricao());
             noticiaObj.setLink(consultaNoticia.getBody().get(i).getLink());
             noticiaObj.setEmissora(consultaNoticia.getBody().get(i).getEmissora());
-            noticiaObj.setDtNoticia(consultaNoticia.getBody().get(i).getDtNoticia());
+            noticiaObj.setDtNoticia(consultaNoticia.getBody().get(i).getDtNoticiaFormatado());
             noticiaObj.setFotoNoticia(consultaNoticia.getBody().get(i).getFoto());
 
             for (Comentario comentario :consultaComentario) {
 
                 if(comentario.getNoticias().getId() == noticiaObj.getId()) {
-                    noticiaObj.setComentario(new ComentarioResponse(comentario));
+                    contadorComentarios++;
+                    noticiaObj.setComentarios(new ComentarioResponse(comentario));
                 }
             }
 
             for (Curtida curtida : consultaCurtida){
 
                 if (curtida.getNoticias().getId() == noticiaObj.getId()) {
+                    if(curtida.getLikes() != 0){
+                        contadorCurtidas++;
+                    }
                     noticiaObj.setCurtidas(new CurtidaResponse(curtida));
                 }
             }
+
+            noticiaObj.setQtdComentarios(contadorComentarios);
+            noticiaObj.setQtdCurtidas(contadorCurtidas);
 
             filaNoticias.add(noticiaObj);
         }
 
         return filaNoticias;
     }
-
     public List<Usuario> getListTodosUsuario() {
         List<Usuario> usuarioConsulta = _usuarioRepository.findAll();
 
@@ -389,7 +389,6 @@ public class AdminService {
         }
         return usuarioConsulta;
     }
-
     public Usuario atualizarUsuarioParaInfluencer(Long idUsuario, boolean influencer) {
         Optional<Usuario> usuario = _usuarioRepository.findById(idUsuario);
 

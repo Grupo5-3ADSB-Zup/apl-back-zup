@@ -9,10 +9,7 @@ import school.sptech.zup.domain.Usuario;
 import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
-
     Optional<Usuario> findByUsername(String username);
-
-
     @Modifying
     @Transactional
     @Query("update Usuario u set u.foto = ?2 where u.id = ?1")

@@ -2,15 +2,11 @@ package school.sptech.zup.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.*;
-import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.service.CadastroUsuarioService;
-import school.sptech.zup.service.UsuarioService;
-import school.sptech.zup.util.DateUtil;
 
 @CrossOrigin(origins = "*")
 @RestController
