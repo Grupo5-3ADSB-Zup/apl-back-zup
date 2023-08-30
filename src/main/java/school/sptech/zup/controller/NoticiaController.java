@@ -39,16 +39,15 @@ public class NoticiaController {
     public void Agendamento(){
         //_noticiaService.getXmlInvestopedia(); Não rodar
         //_noticiaService.getXmlMarkets(); Não rodar
-        //_noticiaService.getXmlUOL();
-       //_noticiaService.getXmlGAZETA();
-       //_noticiaService.getXmlForbes();
-       //_noticiaService.getXmlGlobo();
-       //_noticiaService.getXmlCnbc();
+       _noticiaService.getXmlUOL();
+       _noticiaService.getXmlGAZETA();
+       _noticiaService.getXmlForbes();
+       _noticiaService.getXmlGlobo();
+       _noticiaService.getXmlCnbc();
        _noticiaService.getXmlFeedsMarketwatch();
 
         System.out.println("Tarefas Diárias executadas com sucesso");
     }
-
     @GetMapping("/rss/uol")
     //@Scheduled(cron = "0 1 12 * * ?")
     public ResponseEntity<List<Noticia>> getRssUOL(){
