@@ -35,15 +35,15 @@ public class NoticiaController {
 
 
     //@PostMapping("/rss/agendamento/diario")
-    @Scheduled(cron = "0 27 22 * * ?")
+    @Scheduled(cron = "0 54 20 * * ?")
     public void Agendamento(){
         //_noticiaService.getXmlInvestopedia(); Não rodar
         //_noticiaService.getXmlMarkets(); Não rodar
         //_noticiaService.getXmlUOL();
-       _noticiaService.getXmlGAZETA();
-       _noticiaService.getXmlForbes();
-       _noticiaService.getXmlGlobo();
-       _noticiaService.getXmlCnbc();
+       //_noticiaService.getXmlGAZETA();
+       //_noticiaService.getXmlForbes();
+       //_noticiaService.getXmlGlobo();
+       //_noticiaService.getXmlCnbc();
        _noticiaService.getXmlFeedsMarketwatch();
 
         System.out.println("Tarefas Diárias executadas com sucesso");
