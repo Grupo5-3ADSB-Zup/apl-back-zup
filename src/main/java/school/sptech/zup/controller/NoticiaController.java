@@ -35,11 +35,11 @@ public class NoticiaController {
 
 
     //@PostMapping("/rss/agendamento/diario")
-    @Scheduled(cron = "0 54 20 * * ?")
+    @Scheduled(cron = "0 11 15 * * ?")
     public void Agendamento(){
         //_noticiaService.getXmlInvestopedia(); Não rodar
         //_noticiaService.getXmlMarkets(); Não rodar
-       _noticiaService.getXmlUOL();
+       //_noticiaService.getXmlUOL();
        _noticiaService.getXmlGAZETA();
        _noticiaService.getXmlForbes();
        _noticiaService.getXmlGlobo();

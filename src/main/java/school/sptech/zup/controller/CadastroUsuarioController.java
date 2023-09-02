@@ -33,4 +33,13 @@ public class CadastroUsuarioController {
         var retorno = _cadastroService.saveUserAdmin(usuario);
         return ResponseEntity.ok(retorno);
     }
+
+    @PostMapping("/perfil/{idUsuario}/{idPerfil}")
+    public ResponseEntity<Usuario> salvarPerfil(@PathVariable Long idUsuario ,@PathVariable Long idPerfil){
+        var salvar = _cadastroService.salvarPerfil(idUsuario, idPerfil);
+        if (salvar != null){
+            return ResponseEntity.ok().build();
+        }
+        return null;
+    }
 }

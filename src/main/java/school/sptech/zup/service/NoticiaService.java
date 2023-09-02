@@ -134,7 +134,7 @@ public class NoticiaService {
     public List<Noticia>  getXmlGlobo(){
         try {
             List<Noticia> noticias = new ArrayList<>();
-            String url = "http://pox.globo.com/rss/valor";
+            String url = "https://g1.globo.com/rss/g1/economia";
             try (XmlReader reader = new XmlReader(new URL(url))) {
                 SyndFeed feed = new SyndFeedInput().build(reader);
                 for (SyndEntry entry : feed.getEntries()) {

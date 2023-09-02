@@ -24,15 +24,17 @@ public class CadastroUsuarioService {
     private final PasswordEncoder _passwordEncoder;
     private final GerenciadorTokenJwt _gerenciadorTokenJwt;
     private final AuthenticationManager _authenticationManager;
+    private final UsuarioService _usuarioService;
     @Autowired
     public CadastroUsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder,
                                   GerenciadorTokenJwt gerenciadorTokenJwt,
-                                        AuthenticationManager authenticationManager) {
+                                        AuthenticationManager authenticationManager, UsuarioService usuarioService) {
 
         _usuarioRepository = usuarioRepository;
         _passwordEncoder = passwordEncoder;
         _gerenciadorTokenJwt = gerenciadorTokenJwt;
         _authenticationManager = authenticationManager;
+        _usuarioService = usuarioService;
     }
     public Usuario saveUserComum(UsuarioComumRequestBody usuarioPostRequestBody) {
         var retorno = autenticar(usuarioPostRequestBody);
@@ -128,5 +130,28 @@ public class CadastroUsuarioService {
         final String token = _gerenciadorTokenJwt.generateToken(authentication);
 
         return MapperJWT.of(usuarioAutenticado, token);
+    }
+    public Usuario salvarPerfil(Long idUsuario, Long idPerfil){
+        var consulta = _usuarioService.buscaPorId(idUsuario);
+        if (consulta != null){
+            Usuario usuario = Usuario.builder()
+                    .id(consulta.getId())
+                    .nome(consulta.getNome())
+                    .email(consulta.getEmail())
+                    .username(consulta.getUsername())
+                    .senha(consulta.getSenha())
+                    .influencer(consulta.isInfluencer())
+                    .autenticado(consulta.getAutenticado())
+                    .cpf(consulta.getCpf())
+                    .cnpj(consulta.getCnpj())
+                    .Admin(consulta.getAdmin())
+                    .foto(consulta.getFoto())
+                    .IdPerfil(idPerfil)
+                    .build();
+
+            _usuarioRepository.save(usuario);
+            return usuario;
+        }
+        throw new IllegalArgumentException("Usuário não existe!");
     }
 }

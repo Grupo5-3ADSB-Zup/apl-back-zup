@@ -16,7 +16,6 @@ public class UsuarioResponse {
     private String username;
     @Schema(name = "senha", description = "Crie uma senha de acesso", example = "Carlos1994")
     private String senha;
-
     private byte[] foto;
 
     public UsuarioResponse(Usuario usuario) {
