@@ -341,10 +341,10 @@ public class AdminService {
 
         List<NoticiaObj> filaNoticias = new ArrayList<>();
 
-        Integer contadorComentarios = 0;
-        Integer contadorCurtidas = 0;
-
         for (int i = 1; i < consultaNoticia.getBody().size(); i++){
+            Integer contadorComentarios = 0;
+            Integer contadorCurtidas = 0;
+
             NoticiaObj noticiaObj = new NoticiaObj();
 
             noticiaObj.setId(consultaNoticia.getBody().get(i).getId());
@@ -378,7 +378,6 @@ public class AdminService {
 
             filaNoticias.add(noticiaObj);
         }
-
         return filaNoticias;
     }
     public List<Usuario> getListTodosUsuario() {

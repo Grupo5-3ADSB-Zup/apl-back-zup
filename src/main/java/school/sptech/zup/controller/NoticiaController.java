@@ -182,4 +182,10 @@ public class NoticiaController {
         }
         return ResponseEntity.status(200).body(noticiaPorId);
     }
+
+    @PostMapping("/chave/gpt/{idChave}")
+    public ResponseEntity<Optional<Noticia>> InserirChave(@PathVariable String idChave){
+        var inserirChave = _gptService.InserirChave(idChave);
+        return ResponseEntity.ok().build();
+    }
 }
