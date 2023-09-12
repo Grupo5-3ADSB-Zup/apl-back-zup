@@ -24,20 +24,16 @@ public class GptService {
     private final ZupLogRepository _zupLog;
     private final ChaveKeyRepository _chaveKey;
     private final DateUtil _dateutil;
-    //private static final String API_KEY ="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"; A CHAVE NOVA AQUI
-
-    private static final String API_KEY ="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";
-    //private String API_KEY = null;
     public ChaveKey InserirChave(String idChave){
         ChaveKey chave = new ChaveKey();
         chave.setIdChave(idChave);
         _chaveKey.save(chave);
         return chave;
     }
-    GptResponse gptResponse = new GptResponse();
     public GptResponse gptNoticia(Gpt gpt) {
 
-        var buscaChave = _chaveKey.findAll();
+        GptResponse gptResponse = new GptResponse();
+        var buscaChave = _chaveKey.UltimaChaveInserida();
 
         try{
             OpenAiService service = new OpenAiService(buscaChave.get(0).getIdChave());
