@@ -58,8 +58,8 @@ public class MobileController {
     }
 
     @GetMapping("/noticias/feed/comentarios/{idNoticia}")
-    public ResponseEntity<List<ComentarioMobileResponse>> getComentarioMobile(int idNoticia){
+    public ResponseEntity<List<ComentarioMobileResponse>> getComentarioMobile(@PathVariable int idNoticia){
         var buscarComentarios = _noticiaService.getComentarioNoticiaPorIdMobile(idNoticia);
-        return null;
+        return ResponseEntity.ok().body(buscarComentarios);
     }
 }

@@ -389,7 +389,11 @@ public class NoticiaService {
     }
 
     public List<ComentarioMobileResponse> getComentarioNoticiaPorIdMobile(int idNoticia) {
-        var Mapping = _mappings.MappingComentariosNoticiasMobile(idNoticia);
-        return Mapping;
+        var BuscarComentarios = _comentarioRepository.findCommentNoticy(idNoticia);
+        if (BuscarComentarios.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comentários não encontrados ou notícia não existe");
+        }
+        var mapping = _mappings.MappingComentariosNoticiasMobile(BuscarComentarios);
+        return mapping;
     }
 }

@@ -2,6 +2,7 @@ package school.sptech.zup.service.Mappings;
 
 import lombok.Data;
 import org.springframework.stereotype.Service;
+import school.sptech.zup.domain.Comentario;
 import school.sptech.zup.domain.Noticia;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.response.ComentarioMobileResponse;
@@ -56,12 +57,20 @@ public class Mappings {
         return listaNoticiasMobile;
     }
 
-    public List<ComentarioMobileResponse> MappingComentariosNoticiasMobile(int idNoticia) {
+    public List<ComentarioMobileResponse> MappingComentariosNoticiasMobile(List<Comentario> comentarios) {
 
-        //criar for que busca comentarios daquela notícia, nome e foto do usuário que fez aquele comentario (colocar os
-        // campos direto no Response da Repository)
-
+        var BuscaUsuarios = _comentarioRepository.findUsuariosComment(comentarios.get(0).getNoticias().getId());
         List<ComentarioMobileResponse> comentariosMobile = new ArrayList<>();
-        return null;
+        for (int i = 0; i < comentarios.size(); i++){
+            ComentarioMobileResponse comentario = new ComentarioMobileResponse();
+            comentario.setId(comentarios.get(i).getId());
+            comentario.setDescricao(comentarios.get(i).getDescricao());
+            if (comentarios.get(i).getUsuario().getId() == BuscaUsuarios.get(i).getId()){
+                comentario.setNome(BuscaUsuarios.get(i).getNome());
+                comentario.setFoto(BuscaUsuarios.get(i).getFoto());
+            }
+            comentariosMobile.add(comentario);
+        }
+        return comentariosMobile;
     }
 }
