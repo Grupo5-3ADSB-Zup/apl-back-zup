@@ -11,12 +11,15 @@ import org.springframework.web.server.ResponseStatusException;
 import school.sptech.zup.domain.*;
 import school.sptech.zup.dto.request.ComentarioRequest;
 import school.sptech.zup.dto.request.LikesRequest;
+import school.sptech.zup.dto.response.ComentarioMobileResponse;
 import school.sptech.zup.dto.response.ComentarioResponse;
+import school.sptech.zup.dto.response.NoticiaMobileResponse;
 import school.sptech.zup.dto.response.UsuarioResponse;
 import school.sptech.zup.repository.ComentarioRepository;
 import school.sptech.zup.repository.CurtidaRepository;
 import school.sptech.zup.repository.NoticiaRepository;
 import school.sptech.zup.repository.ZupLogRepository;
+import school.sptech.zup.service.Mappings.Mappings;
 import school.sptech.zup.util.DateUtil;
 
 import java.net.URL;
@@ -34,6 +37,7 @@ public class NoticiaService {
     private final CurtidaRepository _curtidaRepository;
     private final UsuarioService _usuarioService;
     private final ZupLogRepository _zupLogRepository;
+    private final Mappings _mappings;
     private final DateUtil _dateutil;
     public List<Noticia>  getXmlUOL(){
         try {
@@ -130,7 +134,6 @@ public class NoticiaService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Notícia não encontrado");
     }
-
     public List<Noticia>  getXmlGlobo(){
         try {
             List<Noticia> noticias = new ArrayList<>();
@@ -163,7 +166,6 @@ public class NoticiaService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Notícia não encontrado");
     }
-
     public List<Noticia>  getXmlInvestopedia(){
         try {
             List<Noticia> noticias = new ArrayList<>();
@@ -380,5 +382,14 @@ public class NoticiaService {
             return listaComentariosResponse;
         }
         return null;
+    }
+    public List<NoticiaMobileResponse> getNoticiaMobile(List<Noticia> noticias){
+        var Mapping = _mappings.MappingNoticiasMobile(noticias);
+        return Mapping;
+    }
+
+    public List<ComentarioMobileResponse> getComentarioNoticiaPorIdMobile(int idNoticia) {
+        var Mapping = _mappings.MappingComentariosNoticiasMobile(idNoticia);
+        return Mapping;
     }
 }

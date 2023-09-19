@@ -23,5 +23,19 @@ public interface ComentarioRepository extends JpaRepository<Comentario, Long> {
             "FROM Comentario c " +
             "       ORDER BY c.id DESC")
     List<Comentario> findComment();
+
+    @Query("SELECT AVG(c.id) " +
+            "FROM Comentario c " +
+            "   JOIN Noticia n" +
+            "       ON c.noticias.id = n.id" +
+            "           WHERE n.id = :idNoticia")
+    Integer findCountCommentNoticy(int idNoticia);
+
+    @Query("SELECT c " +
+            "FROM Comentario c " +
+            "   JOIN Noticia n" +
+            "       ON c.noticias.id = n.id" +
+            "           WHERE n.id = :idNoticia")
+    List<Comentario> findCommentNoticy(int idNoticia);
 }
 

@@ -19,4 +19,11 @@ public interface CurtidaRepository extends JpaRepository<Curtida, Long> {
             "                       AND n.id = :idNoticia" +
             "                           ORDER BY c.id DESC")
     Curtida findFirstLikeWithLimit(Long idUsuario, int idNoticia);
+
+    @Query("SELECT AVG(c.id) " +
+            "FROM Curtida c " +
+            "   JOIN Noticia n" +
+            "       ON c.noticias.id = n.id" +
+            "           WHERE n.id = :idNoticia")
+    Integer findCountLike(int idNoticia);
 }

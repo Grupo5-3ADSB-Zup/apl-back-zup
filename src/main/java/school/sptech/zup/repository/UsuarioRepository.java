@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import school.sptech.zup.domain.Usuario;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
@@ -17,4 +18,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     @Query("select u.foto from Usuario u where u.id = ?1")
     byte[] getFoto(Long id);
+
+    @Query("SELECT u" +
+            "   FROM Usuario u" +
+            "       WHERE u.IdPerfil = :IdPerfil")
+    List<Usuario> BuscaUsuarioTpPerfil(Long IdPerfil);
 }

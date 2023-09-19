@@ -1,5 +1,6 @@
 package school.sptech.zup.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import school.sptech.zup.domain.Carteira;
 import school.sptech.zup.domain.Comentario;
 import school.sptech.zup.domain.Curtida;
 import school.sptech.zup.domain.Usuario;
+import school.sptech.zup.service.Mappings.Mappings;
 import school.sptech.zup.dto.obj.*;
 import school.sptech.zup.dto.response.ComentarioResponse;
 import school.sptech.zup.dto.response.CurtidaResponse;
@@ -23,6 +25,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class AdminService {
     private final UsuarioRepository _usuarioRepository;
     private final NoticiaController _noticiaController;
@@ -30,17 +33,7 @@ public class AdminService {
     private final CarteiraRepository _carteiraRepository;
     private final ComentarioRepository _comentarioRepository;
     private final CurtidaRepository _curtidaRepository;
-    public AdminService(UsuarioRepository _usuarioRepository, NoticiaController _noticiaController,
-                        UsuarioController _usuarioController, CarteiraRepository _carteiraRepository,
-                        ComentarioRepository _comentarioRepository, CurtidaRepository _curtidaRepository) {
-
-        this._usuarioRepository = _usuarioRepository;
-        this._noticiaController = _noticiaController;
-        this._usuarioController = _usuarioController;
-        this._carteiraRepository = _carteiraRepository;
-        this._comentarioRepository = _comentarioRepository;
-        this._curtidaRepository = _curtidaRepository;
-    }
+    private final Mappings _mappingPerfilUsuario;
 
     public ResponseEntity<byte[]> gravarArquivoCsv(ListaObj<UsuarioObj> listaUsuarioObj, String nomeArquivo){
         FileWriter arq = null;

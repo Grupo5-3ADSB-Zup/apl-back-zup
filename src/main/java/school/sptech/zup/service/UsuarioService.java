@@ -1,7 +1,7 @@
 package school.sptech.zup.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
@@ -11,20 +11,18 @@ import school.sptech.zup.dto.UsuarioComumPutRequestBody;
 import school.sptech.zup.dto.UsuarioEmpresaPutRequestBody;
 import school.sptech.zup.dto.obj.ListaObj;
 import school.sptech.zup.dto.obj.UsuarioObj;
+import school.sptech.zup.dto.response.PerfilUsuarioResponse;
 import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
+import school.sptech.zup.service.Mappings.Mappings;
 
-import java.io.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioService {
     private final UsuarioRepository _usuarioRepository;
-    public UsuarioService(UsuarioRepository usuarioRepository) {
-        _usuarioRepository = usuarioRepository;
-    }
+    private final Mappings _mappingPerfilUsuario;
     public ListaObj<UsuarioObj> getListUsuario(){
         List<Usuario> usuarioConsulta = _usuarioRepository.findAll();
         if (usuarioConsulta.isEmpty()){
@@ -144,5 +142,15 @@ public class UsuarioService {
         var retorno = buscaPorId(id);
             retorno.setAutenticado(false);
             return retorno;
+    }
+
+    public List<PerfilUsuarioResponse> getPerfis(Long IdPerfil) {
+        var consultaPerfil = _usuarioRepository.BuscaUsuarioTpPerfil(IdPerfil);
+
+        if (consultaPerfil.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Perfil não encontrado");
+        }
+        var UsuarioPerfilResponse = _mappingPerfilUsuario.MappingPerfilUsuarioInfluencer(consultaPerfil);
+        return UsuarioPerfilResponse;
     }
 }
