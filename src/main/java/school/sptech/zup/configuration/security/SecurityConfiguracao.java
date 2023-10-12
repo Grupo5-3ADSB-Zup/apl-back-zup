@@ -71,7 +71,8 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("jdbc:sqlserver://projeto-zup.database.windows.net:1433;database=bd-projeto-zup;user=admin-zup@projeto-zup;password=#Gfgrupo5;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30"),
             new AntPathRequestMatcher("/3001/**"),
             new AntPathRequestMatcher("/3000/**"),
-            new AntPathRequestMatcher("https://apl-front-zup-teste-git-prodution-vercel-zup.vercel.app/home")
+            new AntPathRequestMatcher("https://apl-front-zup-teste-git-prodution-vercel-zup.vercel.app/home"),
+            new AntPathRequestMatcher("/IA/**")
     };
 
     @Bean

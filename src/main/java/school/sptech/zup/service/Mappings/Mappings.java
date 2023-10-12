@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import school.sptech.zup.domain.Comentario;
 import school.sptech.zup.domain.Noticia;
 import school.sptech.zup.domain.Usuario;
+import school.sptech.zup.dto.response.ComentarioIAResponse;
 import school.sptech.zup.dto.response.ComentarioMobileResponse;
 import school.sptech.zup.dto.response.NoticiaMobileResponse;
 import school.sptech.zup.dto.response.PerfilUsuarioResponse;
@@ -72,5 +73,21 @@ public class Mappings {
             comentariosMobile.add(comentario);
         }
         return comentariosMobile;
+    }
+
+    public List<ComentarioIAResponse> MappingComentariosIA(List<Comentario> comentarios) {
+
+        var BuscaUsuarios = _comentarioRepository.findUsuariosComment(comentarios.get(0).getNoticias().getId());
+        List<ComentarioIAResponse> comentariosIA = new ArrayList<>();
+        for (int i = 0; i < comentarios.size(); i++){
+            ComentarioIAResponse comentario = new ComentarioIAResponse();
+            comentario.setId(comentarios.get(i).getId());
+            comentario.setDescricao(comentarios.get(i).getDescricao());
+            if (comentarios.get(i).getUsuario().getId() == BuscaUsuarios.get(i).getId()){
+                comentario.setNome(BuscaUsuarios.get(i).getNome());
+            }
+            comentariosIA.add(comentario);
+        }
+        return comentariosIA;
     }
 }

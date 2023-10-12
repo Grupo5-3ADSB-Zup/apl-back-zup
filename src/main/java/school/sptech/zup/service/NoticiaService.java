@@ -11,10 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import school.sptech.zup.domain.*;
 import school.sptech.zup.dto.request.ComentarioRequest;
 import school.sptech.zup.dto.request.LikesRequest;
-import school.sptech.zup.dto.response.ComentarioMobileResponse;
-import school.sptech.zup.dto.response.ComentarioResponse;
-import school.sptech.zup.dto.response.NoticiaMobileResponse;
-import school.sptech.zup.dto.response.UsuarioResponse;
+import school.sptech.zup.dto.response.*;
 import school.sptech.zup.repository.ComentarioRepository;
 import school.sptech.zup.repository.CurtidaRepository;
 import school.sptech.zup.repository.NoticiaRepository;
@@ -26,6 +23,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -394,6 +392,15 @@ public class NoticiaService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comentários não encontrados ou notícia não existe");
         }
         var mapping = _mappings.MappingComentariosNoticiasMobile(BuscarComentarios);
+        return mapping;
+    }
+
+    public List<ComentarioIAResponse> getComentarioIA(Date dataIA) {
+        var BuscarComentarios = _comentarioRepository.findCommentIA(dataIA);
+        if (BuscarComentarios.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comentários não encontrados ou notícia não existe");
+        }
+        var mapping = _mappings.MappingComentariosIA(BuscarComentarios);
         return mapping;
     }
 }

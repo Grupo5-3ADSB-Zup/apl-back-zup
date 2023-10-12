@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -19,6 +20,8 @@ public class Comentario {
     @Lob
     @Column(name="descricao", length=2048)
     private String descricao;
+
+    private Date dtComentario;
     @ManyToOne
     private Usuario usuario;
     @ManyToOne
