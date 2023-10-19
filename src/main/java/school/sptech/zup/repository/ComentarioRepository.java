@@ -2,6 +2,8 @@ package school.sptech.zup.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import school.sptech.zup.domain.Comentario;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.response.ComentarioMobileResponse;
@@ -56,15 +58,14 @@ public interface ComentarioRepository extends JpaRepository<Comentario, Long> {
             "                        ORDER BY u.influencer DESC, c.id DESC")
     List<Usuario> findUsuariosComment(int idNoticia);
 
-
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @Query("SELECT c " +
             "FROM Comentario c " +
             "   JOIN FETCH Noticia n" +
             "       ON c.noticias.id = n.id" +
             "           JOIN FETCH Usuario u" +
             "               ON u.id = c.usuario.id" +
-            "                   WHERE n.id = :idNoticia" +
-            "                       AND c.dtComentario >= :startDate" +
-            "                           ORDER BY u.influencer DESC, c.id DESC")
+            "                   WHERE c.dtComentario >= :startDate" +
+            "                       ORDER BY u.influencer DESC, c.id DESC")
     List<Comentario> findCommentIA(Date startDate);
 }
