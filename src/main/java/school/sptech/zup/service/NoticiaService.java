@@ -21,6 +21,7 @@ import school.sptech.zup.util.DateUtil;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -306,6 +307,7 @@ public class NoticiaService {
                         .descricao(comentario.getComentario())
                         .usuario(buscaUsuario)
                         .noticias(noticias.get())
+                        .dtComentario(_dateutil.formLocalDate(LocalDateTime.now()))
                         .build();
                 _comentarioRepository.save(criarComentario);
                 return criarComentario;
@@ -314,6 +316,7 @@ public class NoticiaService {
                         .descricao(comentario.getComentario())
                         .usuario(comentarios.get(0).getUsuario())
                         .noticias(noticias.get())
+                        .dtComentario(_dateutil.formLocalDate(LocalDateTime.now()))
                         .build();
                 _comentarioRepository.save(criarComentario);
                 return criarComentario;

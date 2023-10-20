@@ -21,7 +21,9 @@ public class Comentario {
     @Column(name="descricao", length=2048)
     private String descricao;
 
-    private Date dtComentario;
+    private String dtComentario;
+
+    private Integer pesoComentario;
     @ManyToOne
     private Usuario usuario;
     @ManyToOne
