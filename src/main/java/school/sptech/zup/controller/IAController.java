@@ -28,8 +28,8 @@ public class IAController {
     @GetMapping("/noticias/comentarios")
     public ResponseEntity<List<ComentarioIAResponse>> BuscarComentariosDiarios(){
         LocalDateTime startDateLocal = LocalDateTime.now().minusDays(1);
-        var startDate = Date.from(startDateLocal.toInstant(ZoneOffset.UTC));
-        var busca = _noticiaService.getComentarioIA(startDate);
+        //var startDate = Date.from(startDateLocal.toInstant(ZoneOffset.UTC));
+        var busca = _noticiaService.getComentarioIA(startDateLocal);
         return ResponseEntity.ok().body(busca);
     }
 }

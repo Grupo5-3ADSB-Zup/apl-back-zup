@@ -8,6 +8,7 @@ import school.sptech.zup.domain.Comentario;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.response.ComentarioMobileResponse;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -67,5 +68,5 @@ public interface ComentarioRepository extends JpaRepository<Comentario, Long> {
             "               ON u.id = c.usuario.id" +
             "                   WHERE c.dtComentario >= :startDate" +
             "                       ORDER BY u.influencer DESC, c.id DESC")
-    List<Comentario> findCommentIA(Date startDate);
+    List<Comentario> findCommentIA(LocalDateTime startDate);
 }

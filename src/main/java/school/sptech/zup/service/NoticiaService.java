@@ -307,7 +307,8 @@ public class NoticiaService {
                         .descricao(comentario.getComentario())
                         .usuario(buscaUsuario)
                         .noticias(noticias.get())
-                        .dtComentario(_dateutil.formLocalDate(LocalDateTime.now()))
+                        .dtComentario(LocalDateTime.now())
+                        .dtComentarioFormatada(_dateutil.formLocalDate(LocalDateTime.now()))
                         .build();
                 _comentarioRepository.save(criarComentario);
                 return criarComentario;
@@ -316,7 +317,8 @@ public class NoticiaService {
                         .descricao(comentario.getComentario())
                         .usuario(comentarios.get(0).getUsuario())
                         .noticias(noticias.get())
-                        .dtComentario(_dateutil.formLocalDate(LocalDateTime.now()))
+                        .dtComentario(LocalDateTime.now())
+                        .dtComentarioFormatada(_dateutil.formLocalDate(LocalDateTime.now()))
                         .build();
                 _comentarioRepository.save(criarComentario);
                 return criarComentario;
@@ -398,7 +400,7 @@ public class NoticiaService {
         return mapping;
     }
 
-    public List<ComentarioIAResponse> getComentarioIA(Date dataIA) {
+    public List<ComentarioIAResponse> getComentarioIA(LocalDateTime dataIA) {
         var BuscarComentarios = _comentarioRepository.findCommentIA(dataIA);
         if (BuscarComentarios.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comentários não encontrados ou notícia não existe");

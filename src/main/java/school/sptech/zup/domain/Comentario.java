@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -21,7 +23,8 @@ public class Comentario {
     @Column(name="descricao", length=2048)
     private String descricao;
 
-    private String dtComentario;
+    private LocalDateTime dtComentario;
+    private String dtComentarioFormatada;
 
     private Integer pesoComentario;
     @ManyToOne
