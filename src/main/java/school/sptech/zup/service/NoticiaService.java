@@ -409,7 +409,7 @@ public class NoticiaService {
     }
     
     public void SalvarPesoComentario(List<PesoComentariosRequest> pesoComentariosRequest){
-        var BuscaIdComentario = GetComentarioId();
+        var BuscaIdComentario = GetComentarios();
         if (BuscaIdComentario.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comentáerio não existente");
 
         var comentario = _mappings.AtualizarComentario(BuscaIdComentario, pesoComentariosRequest);
@@ -417,7 +417,7 @@ public class NoticiaService {
         _comentarioRepository.saveAll(comentario);
     }
 
-    public List<Comentario> GetComentarioId() {
+    public List<Comentario> GetComentarios() {
         List<Comentario> BuscaComentario = _comentarioRepository.findAll();
         if (BuscaComentario.isEmpty())  throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comentáerio não existente");
         return BuscaComentario;
