@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import school.sptech.zup.domain.Comentario;
 import school.sptech.zup.domain.Noticia;
 import school.sptech.zup.domain.Usuario;
+import school.sptech.zup.dto.request.PesoComentariosRequest;
 import school.sptech.zup.dto.response.ComentarioIAResponse;
 import school.sptech.zup.dto.response.ComentarioMobileResponse;
 import school.sptech.zup.dto.response.NoticiaMobileResponse;
@@ -15,6 +16,7 @@ import school.sptech.zup.util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @Service
@@ -89,5 +91,18 @@ public class Mappings {
             comentariosIA.add(comentario);
         }
         return comentariosIA;
+    }
+
+    public Comentario AtualizarComentario(Optional<Comentario> comentario, PesoComentariosRequest pesoComentariosRequest){
+        Comentario comentarioAtualizado = Comentario.builder()
+                .id(comentario.get().getId())
+                .descricao(comentario.get().getDescricao())
+                .dtComentario(comentario.get().getDtComentario())
+                .dtComentarioFormatada(comentario.get().getDtComentarioFormatada())
+                .pesoComentario(pesoComentariosRequest.getPeso())
+                .usuario(comentario.get().getUsuario())
+                .noticias(comentario.get().getNoticias())
+                .build();
+        return comentarioAtualizado;
     }
 }

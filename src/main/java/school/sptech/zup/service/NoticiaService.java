@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import school.sptech.zup.domain.*;
 import school.sptech.zup.dto.request.ComentarioRequest;
 import school.sptech.zup.dto.request.LikesRequest;
+import school.sptech.zup.dto.request.PesoComentariosRequest;
 import school.sptech.zup.dto.response.*;
 import school.sptech.zup.repository.ComentarioRepository;
 import school.sptech.zup.repository.CurtidaRepository;
@@ -21,10 +22,8 @@ import school.sptech.zup.util.DateUtil;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -407,5 +406,20 @@ public class NoticiaService {
         }
         var mapping = _mappings.MappingComentariosIA(BuscarComentarios);
         return mapping;
+    }
+    
+    public void SalvarPesoComentario(PesoComentariosRequest pesoComentariosRequest){
+        var BuscaIdComentario = GetComentarioId(pesoComentariosRequest.getId());
+        if (BuscaIdComentario.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comentáerio não existente");
+
+        var comentario = _mappings.AtualizarComentario(BuscaIdComentario, pesoComentariosRequest);
+
+        _comentarioRepository.save(comentario);
+    }
+
+    public Optional<Comentario> GetComentarioId(Long id) {
+        Optional<Comentario> BuscaComentario = _comentarioRepository.findById(id);
+        if (BuscaComentario.isEmpty())  throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comentáerio não existente");
+        return BuscaComentario;
     }
 }
