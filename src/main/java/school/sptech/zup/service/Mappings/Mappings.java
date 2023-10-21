@@ -93,16 +93,22 @@ public class Mappings {
         return comentariosIA;
     }
 
-    public Comentario AtualizarComentario(Optional<Comentario> comentario, PesoComentariosRequest pesoComentariosRequest){
-        Comentario comentarioAtualizado = Comentario.builder()
-                .id(comentario.get().getId())
-                .descricao(comentario.get().getDescricao())
-                .dtComentario(comentario.get().getDtComentario())
-                .dtComentarioFormatada(comentario.get().getDtComentarioFormatada())
-                .pesoComentario(pesoComentariosRequest.getPeso())
-                .usuario(comentario.get().getUsuario())
-                .noticias(comentario.get().getNoticias())
-                .build();
-        return comentarioAtualizado;
+    public List<Comentario> AtualizarComentario(List<Comentario> comentarios, List<PesoComentariosRequest> pesoComentariosRequest){
+        List<Comentario> listaComentarios = new ArrayList<>();
+
+        for (int i = 0; i < comentarios.size(); i++){
+            Comentario comentarioAtualizado = Comentario.builder()
+                    .id(comentarios.get(i).getId())
+                    .descricao(comentarios.get(i).getDescricao())
+                    .dtComentario(comentarios.get(i).getDtComentario())
+                    .dtComentarioFormatada(comentarios.get(i).getDtComentarioFormatada())
+                    .pesoComentario(pesoComentariosRequest.get(i).getPeso())
+                    .usuario(comentarios.get(i).getUsuario())
+                    .noticias(comentarios.get(i).getNoticias())
+                    .build();
+
+            listaComentarios.add(comentarioAtualizado);
+        }
+        return listaComentarios;
     }
 }

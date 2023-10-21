@@ -408,17 +408,17 @@ public class NoticiaService {
         return mapping;
     }
     
-    public void SalvarPesoComentario(PesoComentariosRequest pesoComentariosRequest){
-        var BuscaIdComentario = GetComentarioId(pesoComentariosRequest.getId());
+    public void SalvarPesoComentario(List<PesoComentariosRequest> pesoComentariosRequest){
+        var BuscaIdComentario = GetComentarioId();
         if (BuscaIdComentario.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comentáerio não existente");
 
         var comentario = _mappings.AtualizarComentario(BuscaIdComentario, pesoComentariosRequest);
 
-        _comentarioRepository.save(comentario);
+        _comentarioRepository.saveAll(comentario);
     }
 
-    public Optional<Comentario> GetComentarioId(Long id) {
-        Optional<Comentario> BuscaComentario = _comentarioRepository.findById(id);
+    public List<Comentario> GetComentarioId() {
+        List<Comentario> BuscaComentario = _comentarioRepository.findAll();
         if (BuscaComentario.isEmpty())  throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comentáerio não existente");
         return BuscaComentario;
     }

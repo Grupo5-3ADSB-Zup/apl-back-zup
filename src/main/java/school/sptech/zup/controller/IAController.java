@@ -32,7 +32,7 @@ public class IAController {
     }
 
     @PostMapping("/noticias/comentarios/pesos")
-    public ResponseEntity<Void> PostPesoComentarios (@RequestBody PesoComentariosRequest pesoComentariosRequest){
+    public ResponseEntity<Void> PostPesoComentarios (@RequestBody List<PesoComentariosRequest> pesoComentariosRequest){
         _noticiaService.SalvarPesoComentario(pesoComentariosRequest);
         return ResponseEntity.ok().build();
     }
