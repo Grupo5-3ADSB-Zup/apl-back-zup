@@ -69,4 +69,16 @@ public interface ComentarioRepository extends JpaRepository<Comentario, Long> {
             "                   WHERE c.dtComentario >= :startDate" +
             "                       ORDER BY u.influencer DESC, c.id DESC")
     List<Comentario> findCommentIA(LocalDateTime startDate);
+
+    @Query("SELECT c" +
+            "   FROM Comentario c" +
+            "       JOIN FETCH Noticia n" +
+            "           ON c.noticias.id = n.id" +
+            "               WHERE n.id = :idNoticia")
+    List<Comentario> findComentOrderNoticy(int idNoticia);
+
+    @Query("SELECT c" +
+            "   FROM Comentario c" +
+            "       ORDER BY c.id DESC")
+    List<Comentario> findAllComents();
 }

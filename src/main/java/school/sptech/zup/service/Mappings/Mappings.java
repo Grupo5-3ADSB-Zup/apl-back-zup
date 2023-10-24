@@ -6,10 +6,7 @@ import school.sptech.zup.domain.Comentario;
 import school.sptech.zup.domain.Noticia;
 import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.request.PesoComentariosRequest;
-import school.sptech.zup.dto.response.ComentarioIAResponse;
-import school.sptech.zup.dto.response.ComentarioMobileResponse;
-import school.sptech.zup.dto.response.NoticiaMobileResponse;
-import school.sptech.zup.dto.response.PerfilUsuarioResponse;
+import school.sptech.zup.dto.response.*;
 import school.sptech.zup.repository.ComentarioRepository;
 import school.sptech.zup.repository.CurtidaRepository;
 import school.sptech.zup.util.DateUtil;
@@ -93,19 +90,61 @@ public class Mappings {
     public List<Comentario> AtualizarComentario(List<Comentario> comentarios, List<PesoComentariosRequest> pesoComentariosRequest){
         List<Comentario> listaComentarios = new ArrayList<>();
 
-        for (int i = 0; i < comentarios.size(); i++){
-            Comentario comentarioAtualizado = Comentario.builder()
-                    .id(comentarios.get(i).getId())
-                    .descricao(comentarios.get(i).getDescricao())
-                    .dtComentario(comentarios.get(i).getDtComentario())
-                    .dtComentarioFormatada(comentarios.get(i).getDtComentarioFormatada())
-                    .pesoComentario(pesoComentariosRequest.get(i).getPeso())
-                    .usuario(comentarios.get(i).getUsuario())
-                    .noticias(comentarios.get(i).getNoticias())
-                    .build();
+        for (int i = 0; i < pesoComentariosRequest.size(); i++){
 
-            listaComentarios.add(comentarioAtualizado);
+            if (pesoComentariosRequest.get(i).getId() == comentarios.get(i).getId()
+                    && comentarios.get(i).getPesoComentario() == null) {
+                Comentario comentarioAtualizado = Comentario.builder()
+                        .id(comentarios.get(i).getId())
+                        .descricao(comentarios.get(i).getDescricao())
+                        .dtComentario(comentarios.get(i).getDtComentario())
+                        .dtComentarioFormatada(comentarios.get(i).getDtComentarioFormatada())
+                        .pesoComentario(pesoComentariosRequest.get(i).getPeso())
+                        .usuario(comentarios.get(i).getUsuario())
+                        .noticias(comentarios.get(i).getNoticias())
+                        .build();
+                listaComentarios.add(comentarioAtualizado);
+            }
         }
         return listaComentarios;
+    }
+
+    public CalculoPesoPorNoticiaIAResponse MappingPesoPorcentagem(Double pesoCompra, Double pesoVenda, int idNoticia){
+
+        CalculoPesoPorNoticiaIAResponse calculo = new CalculoPesoPorNoticiaIAResponse();
+                calculo.setId(idNoticia);
+                calculo.setPorcentagemPesoCompra(Transformador(pesoCompra, pesoVenda, pesoCompra));
+                calculo.setPorcentagemPesoVenda(Transformador(pesoCompra, pesoVenda, pesoVenda));
+
+        return calculo;
+    }
+
+    public String Transformador(Double pesoCompra, Double pesoVenda, Double PesoMapping){
+
+        Double contadorPesos = pesoCompra + pesoVenda;
+        Double conversao = ((PesoMapping/contadorPesos) * 100);
+
+        String Porcentagem = String.valueOf(conversao);
+
+        return Porcentagem;
+    }
+
+    public  List<PesoComentariosRequest> PesosNulos(List<Comentario> comentariosBase, List<PesoComentariosRequest> pesoComentariosRequest){
+
+        List<PesoComentariosRequest> ListaPesos = new ArrayList<>();
+
+        for (int i = 0; i < pesoComentariosRequest.size(); i++){
+            if (pesoComentariosRequest.get(i).getId() == comentariosBase.get(i).getId()
+                    && comentariosBase.get(i).getPesoComentario() == null){
+
+                PesoComentariosRequest PesoComentarioNovo = new PesoComentariosRequest();
+
+                PesoComentarioNovo.setId(pesoComentariosRequest.get(i).getId());
+                PesoComentarioNovo.setPeso(pesoComentariosRequest.get(i).getPeso());
+
+                ListaPesos.add(PesoComentarioNovo);
+            }
+        }
+        return ListaPesos;
     }
 }

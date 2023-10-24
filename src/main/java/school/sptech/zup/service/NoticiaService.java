@@ -409,8 +409,10 @@ public class NoticiaService {
     }
     
     public void SalvarPesoComentario(List<PesoComentariosRequest> pesoComentariosRequest){
-        var BuscaIdComentario = GetComentarios();
-        if (BuscaIdComentario.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comentáerio não existente");
+        var BuscaIdComentario = _comentarioRepository.findAllComents();
+        if (BuscaIdComentario.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comentário não existente");
+
+        //var MapearPesosNulos = _mappings.PesosNulos(BuscaIdComentario, pesoComentariosRequest);
 
         var comentario = _mappings.AtualizarComentario(BuscaIdComentario, pesoComentariosRequest);
 
@@ -421,5 +423,36 @@ public class NoticiaService {
         List<Comentario> BuscaComentario = _comentarioRepository.findAll();
         if (BuscaComentario.isEmpty())  throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comentáerio não existente");
         return BuscaComentario;
+    }
+
+    public Noticia getNoticiaPorId(int idNoticia){
+        var buscaNoticia = _noticiaRepository.findById(idNoticia);
+
+        if (buscaNoticia.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comentáerio não existente");
+
+        return buscaNoticia.get();
+    }
+
+    public CalculoPesoPorNoticiaIAResponse getPorcentagemPesoComentario (Noticia noticia){
+        var buscaComentario = _comentarioRepository.findComentOrderNoticy(noticia.getId());
+
+        Integer PesoCompra = 1;
+        Integer PesoVenda = 2;
+
+        var contadorCompra = 0;
+        var contadorVenda = 0;
+
+        if (buscaComentario.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comentários não existentes");
+
+        for (int i = 0;  i < buscaComentario.size(); i++){
+            if (buscaComentario.get(i).getPesoComentario() == PesoCompra) contadorCompra++;
+            if (buscaComentario.get(i).getPesoComentario() == PesoVenda) contadorVenda++;
+        }
+
+        Double contadorCompraConvertido = Double.valueOf(contadorCompra);
+        Double contadorVendaConvertido = Double.valueOf(contadorVenda);
+
+        var mapping = _mappings.MappingPesoPorcentagem(contadorCompraConvertido, contadorVendaConvertido, noticia.getId());
+        return mapping;
     }
 }

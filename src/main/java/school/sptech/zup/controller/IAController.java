@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.dto.request.PesoComentariosRequest;
+import school.sptech.zup.dto.response.CalculoPesoPorNoticiaIAResponse;
 import school.sptech.zup.dto.response.ComentarioIAResponse;
 import school.sptech.zup.dto.response.ComentarioMobileResponse;
 import school.sptech.zup.service.NoticiaService;
@@ -35,5 +36,13 @@ public class IAController {
     public ResponseEntity<Void> PostPesoComentarios (@RequestBody List<PesoComentariosRequest> pesoComentariosRequest){
         _noticiaService.SalvarPesoComentario(pesoComentariosRequest);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/pesos/analise/porcentagem/{idNoticia}")
+    public ResponseEntity<CalculoPesoPorNoticiaIAResponse> GetPorcentagemPeso(@PathVariable int idNoticia){
+        var buscaNoticia = _noticiaService.getNoticiaPorId(idNoticia);
+        var CalculoPeso = _noticiaService.getPorcentagemPesoComentario(buscaNoticia);
+
+        return ResponseEntity.ok().body(CalculoPeso);
     }
 }
