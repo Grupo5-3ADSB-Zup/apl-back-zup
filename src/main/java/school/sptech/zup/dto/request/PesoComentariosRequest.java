@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 public class PesoComentariosRequest {
     private Long id;
 
-    private Integer Peso;
+    private Integer peso;
 }

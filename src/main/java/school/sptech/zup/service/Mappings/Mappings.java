@@ -16,7 +16,6 @@ import school.sptech.zup.util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Data
 @Service
@@ -78,16 +77,14 @@ public class Mappings {
     }
 
     public List<ComentarioIAResponse> MappingComentariosIA(List<Comentario> comentarios) {
-
-        var BuscaUsuarios = _comentarioRepository.findUsuariosComment(comentarios.get(0).getNoticias().getId());
         List<ComentarioIAResponse> comentariosIA = new ArrayList<>();
         for (int i = 0; i < comentarios.size(); i++){
             ComentarioIAResponse comentario = new ComentarioIAResponse();
             comentario.setId(comentarios.get(i).getId());
             comentario.setDescricao(comentarios.get(i).getDescricao());
-            if (comentarios.get(i).getUsuario().getId() == BuscaUsuarios.get(i).getId()){
-                comentario.setNome(BuscaUsuarios.get(i).getNome());
-            }
+            comentario.setNome(comentarios.get(i).getUsuario().getNome());
+
+
             comentariosIA.add(comentario);
         }
         return comentariosIA;
