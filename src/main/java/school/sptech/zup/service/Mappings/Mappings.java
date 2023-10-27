@@ -122,9 +122,9 @@ public class Mappings {
     public String Transformador(Double pesoCompra, Double pesoVenda, Double PesoMapping){
 
         Double contadorPesos = pesoCompra + pesoVenda;
-        Double conversao = ((PesoMapping/contadorPesos) * 100);
+        Double conversao = (Math.floor(((PesoMapping/contadorPesos) * 100)));
 
-        String Porcentagem = String.valueOf(conversao);
+        String Porcentagem = String.valueOf(conversao + " %");
 
         return Porcentagem;
     }
