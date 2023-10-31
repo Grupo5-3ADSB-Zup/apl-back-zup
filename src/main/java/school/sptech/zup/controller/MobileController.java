@@ -47,6 +47,12 @@ public class MobileController {
         return ResponseEntity.ok().body(buscar);
     }
 
+    @PostMapping("/usuarios/perfil")
+    public ResponseEntity<List<PerfilUsuarioResponse>> SalvarPerfilUsuario(@PathVariable Long IdPerfil){
+        // Fazer fluxo de registrar informações do usuário -> Falar com Matheus e Zinatto pra ver melhor pontuação
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/noticias/feed")
     public ResponseEntity<List<NoticiaMobileResponse>> getNoticiasMobile(){
         var buscarNoticias = _noticiaController.getNoticia();
