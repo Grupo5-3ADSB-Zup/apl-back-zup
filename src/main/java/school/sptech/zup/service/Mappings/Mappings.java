@@ -5,14 +5,17 @@ import org.springframework.stereotype.Service;
 import school.sptech.zup.domain.Comentario;
 import school.sptech.zup.domain.Noticia;
 import school.sptech.zup.domain.Usuario;
+import school.sptech.zup.dto.request.PerguntasPerfilRequest;
 import school.sptech.zup.dto.request.PesoComentariosRequest;
 import school.sptech.zup.dto.response.*;
 import school.sptech.zup.repository.ComentarioRepository;
 import school.sptech.zup.repository.CurtidaRepository;
+import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @Service
@@ -20,6 +23,7 @@ public class Mappings {
     private final DateUtil _dateUtil;
     private final ComentarioRepository _comentarioRepository;
     private final CurtidaRepository _curtidaRepository;
+    private final UsuarioRepository _usuarioRepository;
     public List<PerfilUsuarioResponse> MappingPerfilUsuarioInfluencer(List<Usuario> usuarios){
 
         List<PerfilUsuarioResponse> listaUsuariosPerfis = new ArrayList<>();
@@ -146,5 +150,45 @@ public class Mappings {
             }
         }
         return ListaPesos;
+    }
+
+    public Usuario MappingAtualizacaoUsuario(Optional<Usuario> usuario, AnalisePerfilResponse analise){
+        Usuario usuarioAtualizado = new Usuario().builder()
+                .id(usuario.get().getId())
+                .nome(usuario.get().getNome())
+                .email(usuario.get().getEmail())
+                .username(usuario.get().getUsername())
+                .senha(usuario.get().getSenha())
+                .influencer(usuario.get().isInfluencer())
+                .autenticado(usuario.get().getAutenticado())
+                .cpf(usuario.get().getCpf())
+                .Admin(usuario.get().getAdmin())
+                .foto(usuario.get().getFoto())
+                // Colocar o IdPerfil tbm
+                .IdPerfil(usuario.get().getIdPerfil())
+                .LinkYoutube(usuario.get().getLinkYoutube())
+                .LinkInstagram(usuario.get().getLinkInstagram())
+                .LinkTikTok(usuario.get().getLinkTikTok())
+                .DescPerfil(analise.getPerfil())
+                .build();
+
+       var salvar = _usuarioRepository.save(usuarioAtualizado);
+
+       return salvar;
+    }
+
+    public PerfilUsuarioResponse MappingUsuarioRetorno(Usuario usuario){
+
+        PerfilUsuarioResponse perfil = new PerfilUsuarioResponse();
+
+        perfil.setNome(usuario.getNome());
+        perfil.setFoto(usuario.getFoto());
+        perfil.setIdPerfil(usuario.getIdPerfil());
+        perfil.setLinkYoutube(usuario.getLinkYoutube());
+        perfil.setLinkInstagram(usuario.getLinkInstagram());
+        perfil.setLinkTikTok(usuario.getLinkTikTok());
+        perfil.setDescPerfil(usuario.getDescPerfil());
+
+        return perfil;
     }
 }

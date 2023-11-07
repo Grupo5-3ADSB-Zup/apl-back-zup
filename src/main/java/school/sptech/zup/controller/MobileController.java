@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import school.sptech.zup.domain.Noticia;
 import school.sptech.zup.domain.Usuario;
+import school.sptech.zup.dto.request.PerguntasPerfilRequest;
 import school.sptech.zup.dto.response.ComentarioMobileResponse;
 import school.sptech.zup.dto.response.NoticiaMobileResponse;
 import school.sptech.zup.dto.response.PerfilUsuarioResponse;
@@ -47,10 +48,12 @@ public class MobileController {
         return ResponseEntity.ok().body(buscar);
     }
 
+    //  /usuarios/perfil/influenciadores
+
     @PostMapping("/usuarios/perfil")
-    public ResponseEntity<List<PerfilUsuarioResponse>> SalvarPerfilUsuario(@PathVariable Long IdPerfil){
-        // Fazer fluxo de registrar informações do usuário -> Falar com Matheus e Zinatto pra ver melhor pontuação
-        return ResponseEntity.ok().build();
+    public ResponseEntity<PerfilUsuarioResponse> SalvarPerfilUsuario(@RequestBody PerguntasPerfilRequest perguntas){
+        var envio = _usuarioService.salvarPerfilUsuario(perguntas);
+        return ResponseEntity.ok().body(envio);
     }
 
     @GetMapping("/noticias/feed")
