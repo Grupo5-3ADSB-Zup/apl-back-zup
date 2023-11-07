@@ -180,15 +180,15 @@ public class UsuarioService {
         AnalisePerfilResponse analise = new AnalisePerfilResponse();
 
         if (conta < 4){
-            analise.setIdPerfil(1);
+            analise.setIdPerfil(1L);
             analise.setPerfil("Conservador");
         }
         else if (conta > 3 && conta < 7){
-            analise.setIdPerfil(2);
+            analise.setIdPerfil(2L);
             analise.setPerfil("Moderado");
         }
         else{
-            analise.setIdPerfil(3);
+            analise.setIdPerfil(3L);
             analise.setPerfil("Agressivo");
         }
 
@@ -211,26 +211,26 @@ public class UsuarioService {
         pesoTela1 = perguntas.getTela1().equals("Sim") ? 1 : 0;
 
         // Definição Pesos da Tela Formulario Mobile 2
-        if (perguntas.getTela2() == "R$ 0,00 - R$ 1000,00") pesoTela2 = 0;
-        else if (perguntas.getTela2() == "R$ 1000,00 - R$ 5000,00") pesoTela2 = 1;
-        else if (perguntas.getTela2() == "R$ 5000,00 ou mais") pesoTela2 = 2;
+        if (perguntas.getTela2().equals("R$ 0,00 - R$ 1000,00")) pesoTela2 = 0;
+        else if (perguntas.getTela2().equals("R$ 1000,00 - R$ 5000,00")) pesoTela2 = 1;
+        else if (perguntas.getTela2().equals("R$ 5000,00 ou mais")) pesoTela2 = 2;
 
         // Definição Pesos da Tela Formulario Mobile 3
-        if (perguntas.getTela2() == "Venderia na hora") pesoTela2 = 0;
-        else if (perguntas.getTela2() == "Esperaria recuperar o valor perdido e venderia") pesoTela2 = 1;
-        else if (perguntas.getTela2() == "Compraria mais") pesoTela2 = 2;
+        if (perguntas.getTela3().equals("Venderia na hora")) pesoTela3 = 0;
+        else if (perguntas.getTela3().equals("Esperaria recuperar o valor perdido e venderia")) pesoTela3 = 1;
+        else if (perguntas.getTela3().equals("Compraria mais")) pesoTela3 = 2;
 
 
         // Definição Pesos da Tela Formulario Mobile 4
-        if (perguntas.getTela2() == "Sim") pesoTela2 = 0;
-        else if (perguntas.getTela2() == "Não acredito muito na variação de mercado") pesoTela2 = 1;
-        else if (perguntas.getTela2() == "Não, acredito na variável do mercado") pesoTela2 = 2;
+        if (perguntas.getTela4().equals("Sim")) pesoTela4 = 0;
+        else if (perguntas.getTela4().equals("Não acredito muito na variação de mercado")) pesoTela4 = 1;
+        else if (perguntas.getTela4().equals("Não, acredito na variável do mercado")) pesoTela4 = 2;
 
 
         // Definição Pesos da Tela Formulario Mobile 5
-        if (perguntas.getTela2() == "Somente visitar, gostei das notícias daqui e é bem útil pro meu dia a dia") pesoTela2 = 0;
-        else if (perguntas.getTela2() == "Investir a partir do que consumir daqui") pesoTela2 = 1;
-        else if (perguntas.getTela2() == "Fazer análises minuciosas junto com os indicadores disponíveis na ZUP") pesoTela2 = 2;
+        if (perguntas.getTela5().equals("Somente visitar, gostei das notícias daqui e é bem útil pro meu dia a dia")) pesoTela5 = 0;
+        else if (perguntas.getTela5().equals("Investir a partir do que consumir daqui")) pesoTela5 = 1;
+        else if (perguntas.getTela5().equals("Fazer análises minuciosas junto com os indicadores disponíveis na ZUP")) pesoTela5 = 2;
 
         PesoFormulario pesoFormulario = new PesoFormulario();
 

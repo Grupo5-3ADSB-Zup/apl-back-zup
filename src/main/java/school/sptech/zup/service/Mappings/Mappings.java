@@ -164,8 +164,7 @@ public class Mappings {
                 .cpf(usuario.get().getCpf())
                 .Admin(usuario.get().getAdmin())
                 .foto(usuario.get().getFoto())
-                // Colocar o IdPerfil tbm
-                .IdPerfil(usuario.get().getIdPerfil())
+                .IdPerfil(analise.getIdPerfil())
                 .LinkYoutube(usuario.get().getLinkYoutube())
                 .LinkInstagram(usuario.get().getLinkInstagram())
                 .LinkTikTok(usuario.get().getLinkTikTok())
