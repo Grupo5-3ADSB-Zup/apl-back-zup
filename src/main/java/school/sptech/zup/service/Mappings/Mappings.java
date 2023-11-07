@@ -196,13 +196,17 @@ public class Mappings {
         List<PerfilUsuarioResponse> todosUsuariosInfluencers = new ArrayList<>();
 
         for (int i = 0; i < buscaTodos.size(); i++){
-            todosUsuariosInfluencers.get(i).setNome(buscaTodos.get(i).getNome());
-            todosUsuariosInfluencers.get(i).setFoto(buscaTodos.get(i).getFoto());
-            todosUsuariosInfluencers.get(i).setIdPerfil(buscaTodos.get(i).getIdPerfil());
-            todosUsuariosInfluencers.get(i).setLinkYoutube(buscaTodos.get(i).getLinkYoutube());
-            todosUsuariosInfluencers.get(i).setLinkInstagram(buscaTodos.get(i).getLinkInstagram());
-            todosUsuariosInfluencers.get(i).setLinkTikTok(buscaTodos.get(i).getLinkTikTok());
-            todosUsuariosInfluencers.get(i).setDescPerfil(buscaTodos.get(i).getDescPerfil());
+            PerfilUsuarioResponse perfil = new PerfilUsuarioResponse();
+
+            perfil.setNome(buscaTodos.get(i).getNome());
+            perfil.setFoto(buscaTodos.get(i).getFoto());
+            perfil.setIdPerfil(buscaTodos.get(i).getIdPerfil());
+            perfil.setLinkYoutube(buscaTodos.get(i).getLinkYoutube());
+            perfil.setLinkInstagram(buscaTodos.get(i).getLinkInstagram());
+            perfil.setLinkTikTok(buscaTodos.get(i).getLinkTikTok());
+            perfil.setDescPerfil(buscaTodos.get(i).getDescPerfil());
+
+            todosUsuariosInfluencers.add(perfil);
         }
         return todosUsuariosInfluencers;
     }
