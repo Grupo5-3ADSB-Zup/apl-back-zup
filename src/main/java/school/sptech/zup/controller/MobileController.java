@@ -42,6 +42,7 @@ public class MobileController {
             return xml;
     }
 
+
     // Inicio Region Perfil Usuario Mobile do Mobile
 
     @GetMapping("/usuarios/perfil/{IdPerfil}")
@@ -49,21 +50,19 @@ public class MobileController {
         var buscar = _usuarioService.getPerfis(IdPerfil);
         return ResponseEntity.ok().body(buscar);
     }
-
     @GetMapping("/usuarios/perfil/influenciadores")
     public ResponseEntity<List<PerfilUsuarioResponse>> BuscaTodosUsuariosInfluencers(){
         var buscar = _usuarioService.getTodosInfluencers();
         return ResponseEntity.ok().body(buscar);
     }
-
     @PostMapping("/usuarios/perfil")
     public ResponseEntity<PerfilUsuarioResponse> SalvarPerfilUsuario(@RequestBody PerguntasPerfilRequest perguntas){
         var envio = _usuarioService.salvarPerfilUsuario(perguntas);
         return ResponseEntity.ok().body(envio);
     }
 
-
     // Fim Region Perfil Usuario Mobile do Mobile
+
 
 
     // Inicio Region Notícias do Mobile
@@ -77,7 +76,6 @@ public class MobileController {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Notícia não encontrada");
     }
-
     @GetMapping("/noticias/feed/comentarios/{idNoticia}")
     public ResponseEntity<List<ComentarioMobileResponse>> getComentarioMobile(@PathVariable int idNoticia){
         var buscarComentarios = _noticiaService.getComentarioNoticiaPorIdMobile(idNoticia);
