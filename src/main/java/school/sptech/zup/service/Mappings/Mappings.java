@@ -191,4 +191,19 @@ public class Mappings {
 
         return perfil;
     }
+
+    public List<PerfilUsuarioResponse> MappingTodosInfluencers(List<Usuario> buscaTodos) {
+        List<PerfilUsuarioResponse> todosUsuariosInfluencers = new ArrayList<>();
+
+        for (int i = 0; i < buscaTodos.size(); i++){
+            todosUsuariosInfluencers.get(i).setNome(buscaTodos.get(i).getNome());
+            todosUsuariosInfluencers.get(i).setFoto(buscaTodos.get(i).getFoto());
+            todosUsuariosInfluencers.get(i).setIdPerfil(buscaTodos.get(i).getIdPerfil());
+            todosUsuariosInfluencers.get(i).setLinkYoutube(buscaTodos.get(i).getLinkYoutube());
+            todosUsuariosInfluencers.get(i).setLinkInstagram(buscaTodos.get(i).getLinkInstagram());
+            todosUsuariosInfluencers.get(i).setLinkTikTok(buscaTodos.get(i).getLinkTikTok());
+            todosUsuariosInfluencers.get(i).setDescPerfil(buscaTodos.get(i).getDescPerfil());
+        }
+        return todosUsuariosInfluencers;
+    }
 }

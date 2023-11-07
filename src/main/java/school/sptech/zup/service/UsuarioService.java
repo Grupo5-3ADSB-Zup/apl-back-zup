@@ -242,4 +242,12 @@ public class UsuarioService {
 
         return pesoFormulario;
     }
+
+    public List<PerfilUsuarioResponse> getTodosInfluencers() {
+        var buscaTodos = _usuarioRepository.BuscaTodosUsuariosInfluencers();
+
+        if (buscaTodos.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Erro ao tentar salvar Formulario");
+
+        return _mappingPerfilUsuario.MappingTodosInfluencers(buscaTodos);
+    }
 }
