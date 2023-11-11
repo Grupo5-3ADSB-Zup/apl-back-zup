@@ -1,0 +1,33 @@
+#!/usr/bin/env groovy
+ pipeline {
+     agent any
+     stages {
+         stage('Checkout') {
+             steps {
+                 echo "Teste de Hello Wordl!"
+                 sh "git "
+             }
+         }
+     stage('Construção') {
+             steps {
+                 echo "Teste de Hello Wordl!"
+             }
+         }
+         stage('Deploy Homologação') {
+             steps {
+                 echo "Teste de Hello Wordl!"
+             }
+         }
+             stage('Testes de Stress') {
+             steps {
+                 echo "Teste de Hello Wordl!"
+                 sh "jmeter -n -t Teste Frontend.jmx -l /tmp/log.txt -e -o /tmp/report.txt"
+             }
+         }
+         stage('Deploy Produção') {
+             steps {
+                 echo "Teste de Hello Wordl!"
+             }
+         }
+     }
+ }
