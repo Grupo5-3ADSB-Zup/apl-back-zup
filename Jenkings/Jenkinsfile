@@ -67,7 +67,7 @@ pipeline {
                     //def remoteDir = '~/apl-back-zup'
                     def remoteDir = '~/apl-back-zup'
 
-                    sh "ssh -i ${remoteUser}@${remoteHost} 'sudo su - -c \"cd ${remoteDir} && git fetch && git pull\"'"
+                    sh "ssh -i ${keyPath} -t ${remoteUser}@${remoteHost} 'sudo su - -c \"cd ${remoteDir} && git fetch && git pull\"'"
                     //  sh "ssh -i ${keyPath} ${remoteUser}@${remoteHost} 'sudo systemctl restart myapp'"
                 }
             }
