@@ -78,7 +78,7 @@ pipeline {
             steps {
                 script {
                     //def remoteHost = '<IP-DA-EC2>'
-                    def remoteHost = '54.243.12.33'
+                    def remoteHost = '34.230.61.255'
                     // def remoteUser = 'ec2-user'
                     def remoteUser = 'ec2-user'
                     //def keyPath = '/path/to/private/key.pem'
