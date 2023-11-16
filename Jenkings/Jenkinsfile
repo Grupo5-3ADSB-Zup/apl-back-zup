@@ -64,7 +64,7 @@ pipeline {
                     // def remoteUser = 'ec2-user'
                     def remoteUser = 'ec2-user'
                     //def keyPath = '/path/to/private/key.pem'
-                    def keyPath = sh "cp /var/lib/jenkins/workspace/apl-back-zup/key-repository/token.pem"
+                    def keyPath =  'cp /var/lib/jenkins/workspace/apl-back-zup/key-repository/token.pem'
                     //def remoteDir = '~/apl-back-zup'
                     def remoteDir = '/root/apl-back-zup'
 
