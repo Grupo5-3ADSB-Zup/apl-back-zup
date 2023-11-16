@@ -11,7 +11,7 @@ pipeline {
                 steps {
                     script {
                         // Verifica se o Maven já está instalado
-                        def mavenHome = tool 'Maven_Zup' ?? ''
+                        def mavenHome = tool 'Maven_Zup' ?: ''
                         def mavenVersion = '3.6.2'
 
                         if (mavenHome == '') {
