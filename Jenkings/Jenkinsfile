@@ -2,6 +2,45 @@
 pipeline {
     agent any
 
+    tools {
+            maven 'Maven_Zup'
+        }
+
+        stages {
+                stage('Install Maven') {
+                    steps {
+                        script {
+                            // Verifica se o Maven já está instalado
+                            def mavenHome = tool 'Maven_Zup' ?? ''
+                            def mavenVersion = '3.6.2'
+
+                            if (mavenHome == '') {
+                                echo "Maven não encontrado. Baixando e instalando..."
+
+                                // Baixa o Maven
+                                sh "curl -sL http://apache.mirror.gtcomm.net/maven/maven-3/${3.6.2}/binaries/apache-maven-${3.6.2}-bin.tar.gz -o maven.tar.gz"
+
+                                // Extrai o Maven
+                                sh 'tar -xf maven.tar.gz'
+
+                                // Renomeia a pasta extraída para facilitar o acesso
+                                sh "mv apache-maven-${3.6.2} maven"
+
+                                // Define a variável M2_HOME
+                                env.M2_HOME = "${WORKSPACE}/maven"
+
+                                // Adiciona o Maven ao PATH
+                                env.PATH = "${env.M2_HOME}/bin:${env.PATH}"
+
+                                // Configura o Maven
+                                sh 'mvn --version'
+                            } else {
+                                echo "Maven já instalado em: ${mavenHome}"
+                            }
+                        }
+                    }
+                }
+
     stages {
         stage('Checkout') {
             steps {
