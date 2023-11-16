@@ -64,12 +64,9 @@ pipeline {
                     // def remoteUser = 'ec2-user'
                     def remoteUser = 'ec2-user'
                     //def keyPath = '/path/to/private/key.pem'
-                    def keyPath = ''
+                    def keyPath = sh "cp /var/lib/jenkins/workspace/apl-back-zup/key-repository/token.pem"
                     //def remoteDir = '~/apl-back-zup'
                     def remoteDir = '/root/apl-back-zup'
-
-                    // Copia a chave privada do diretório clonado para o local desejado
-                    sh "cp /var/lib/jenkins/workspace/apl-back-zup/key-repository/token.pem ${keyPath}"
 
                     // Altera as permissões da chave
                     sh "chmod 600 ${keyPath}"
