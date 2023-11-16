@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script {
                     // Baixa a chave privada do repositório Git
-                    sh "git clone https://github.com/Eduardooliveira95/xxxa.git ${WORKSPACE}"
+                    sh "git clone https://github.com/Eduardooliveira95/xxxa.git ${WORKSPACE}/key-repository"
                 }
             }
         }
