@@ -7,25 +7,6 @@ pipeline {
         maven 'Maven_Zup'
     }
 
-    environment {
-        keyPath = "${/var/lib/jenkins/workspace/apl-back-zup/key-repository}"
-    }
-
-    stages {
-        stage('Download Key') {
-            steps {
-                script {
-                if (!fileExists('/var/lib/jenkins/workspace/apl-back-zup/key-repository/token.pem')) {
-                echo "Clonando a chave privada para ${keyRepositoryDir}..."
-                // Baixa a chave privada do repositório Git para o subdiretório key-repository
-                sh "git clone https://github.com/Eduardooliveira95/xxxa.git ${/var/lib/jenkins/workspace/apl-back-zup}/key-repository"
-                }   else {
-                    echo "} já existe"
-                    }
-                }
-            }
-        }
-
         stage('Install Maven') {
             steps {
                 script {
@@ -82,12 +63,12 @@ pipeline {
                     // def remoteUser = 'ec2-user'
                     def remoteUser = 'ec2-user'
                     //def keyPath = '/path/to/private/key.pem'
-                    def keyPath = '~/.ssh/'
+                    def keyPath = ''
                     //def remoteDir = '~/apl-back-zup'
                     def remoteDir = '/root/apl-back-zup'
 
                     // Copia a chave privada do diretório clonado para o local desejado
-                    sh "cp ${WORKSPACE}/key-repository/token.pem ${keyPath}"
+                    sh "cp /var/lib/jenkins/workspace/apl-back-zup/key-repository/token.pem ${keyPath}"
 
                     // Altera as permissões da chave
                     sh "chmod 600 ${keyPath}"
