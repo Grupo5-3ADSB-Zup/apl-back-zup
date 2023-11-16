@@ -6,6 +6,20 @@ pipeline {
         maven 'Maven_Zup'
     }
 
+    environment {
+            keyPath = "${WORKSPACE}/key.pem"
+    }
+
+    stages {
+            stage('Download Key') {
+                steps {
+                    script {
+                        // Baixa a chave privada do repositório Git
+                        sh "git clone https://github.com/Eduardooliveira95/xxxa.git ${WORKSPACE}"
+                    }
+                }
+            }
+
     stages {
         stage('Install Maven') {
             steps {
@@ -67,7 +81,13 @@ pipeline {
                     //def remoteDir = '~/apl-back-zup'
                     def remoteDir = '/root/apl-back-zup'
 
-                    sh "ssh -i ${remoteUser}@${remoteHost} 'sudo su - -c \"cd ${remoteDir} && git fetch && git pull\"'"
+                    // Copia a chave privada do diretório clonado para o local desejado
+                    sh "cp ${WORKSPACE}/key-repository/key.pem ${keyPath}"
+
+                    // Altera as permissões da chave
+                    sh "chmod 600 ${keyPath}"
+
+                    sh "ssh -i ${keyPath} -t ${remoteUser}@${remoteHost} 'sudo su - -c \"cd ${remoteDir} && git fetch && git pull\"'"
                     //  sh "ssh -i ${keyPath} ${remoteUser}@${remoteHost} 'sudo systemctl restart myapp'"
                 }
             }
