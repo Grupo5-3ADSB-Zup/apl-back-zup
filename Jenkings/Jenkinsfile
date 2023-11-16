@@ -15,8 +15,13 @@ pipeline {
         stage('Download Key') {
             steps {
                 script {
-                    // Baixa a chave privada do repositório Git
-                    sh "git clone https://github.com/Eduardooliveira95/xxxa.git ${WORKSPACE}/key-repository"
+                if (!fileExists('/var/lib/jenkins/workspace/apl-back-zup/key-repository/token.pem')) {
+                echo "Clonando a chave privada para ${keyRepositoryDir}..."
+                // Baixa a chave privada do repositório Git para o subdiretório key-repository
+                sh "git clone https://github.com/Eduardooliveira95/xxxa.git ${WORKSPACE}/key-repository"
+                }   else {
+                    echo "} já existe"
+                    }
                 }
             }
         }
@@ -82,7 +87,7 @@ pipeline {
                     def remoteDir = '/root/apl-back-zup'
 
                     // Copia a chave privada do diretório clonado para o local desejado
-                    sh "cp ${WORKSPACE}/key-repository/key.pem ${keyPath}"
+                    sh "cp ${WORKSPACE}/key-repository/token.pem ${keyPath}"
 
                     // Altera as permissões da chave
                     sh "chmod 600 ${keyPath}"
