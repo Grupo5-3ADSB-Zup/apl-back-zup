@@ -65,7 +65,7 @@ pipeline {
                     //def keyPath = '/path/to/private/key.pem'
                     def keyPath = '~/.ssh/'
                     //def remoteDir = '~/apl-back-zup'
-                    def remoteDir = '~/apl-back-zup'
+                    def remoteDir = '/root/apl-back-zup'
 
                     sh "ssh -i ${remoteUser}@${remoteHost} 'sudo su - -c \"cd ${remoteDir} && git fetch && git pull\"'"
                     //  sh "ssh -i ${keyPath} ${remoteUser}@${remoteHost} 'sudo systemctl restart myapp'"
