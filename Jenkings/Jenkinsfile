@@ -64,14 +64,14 @@ pipeline {
                     // def remoteUser = 'ec2-user'
                     def remoteUser = 'ec2-user'
                     //def keyPath = '/path/to/private/key.pem'
-                    def keyPath =  '/var/lib/jenkins/workspace/apl-back-zup/key-repository/token.pem'
+                    def keyPath =  '/var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem'
                     //def remoteDir = '~/apl-back-zup'
                     def remoteDir = '/root/apl-back-zup'
 
                     // Altera as permissões da chave
                     sh "chmod 600 ${keyPath}"
 
-sh "ssh -i /var/lib/jenkins/workspace/apl-back-zup/key-repository/token.pem -t ${remoteUser}@${remoteHost} 'sudo su - -c \"cd ${remoteDir} && git fetch && git pull\"'"
+sh "ssh -i /var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem ${remoteUser}@${remoteHost} 'sudo su - -c \"cd ${remoteDir} && git fetch && git pull\"'"
                     //  sh "ssh -i ${keyPath} ${remoteUser}@${remoteHost} 'sudo systemctl restart myapp'"
                 }
             }
