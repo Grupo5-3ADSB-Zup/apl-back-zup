@@ -1,0 +1,38 @@
+#!/usr/bin/env groovy
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    sh 'mvn clean package'
+                }
+            }
+        }
+
+        stage('Deploy to EC2') {
+            steps {
+                script {
+                    //def remoteHost = '<IP-DA-EC2>'
+                    def remoteHost = '54.243.12.33'
+                    // def remoteUser = 'ec2-user'
+                    def remoteUser = 'ec2-user'
+                    //def keyPath = '/path/to/private/key.pem'
+                    def keyPath = '~/.ssh/'
+                    //def remoteDir = '~/apl-back-zup'
+                    def remoteDir = '~/apl-back-zup'
+
+                    sh "ssh -i ${remoteUser}@${remoteHost} 'sudo su - -c \"cd ${remoteDir} && git fetch && git pull\"'"
+                  //  sh "ssh -i ${keyPath} ${remoteUser}@${remoteHost} 'sudo systemctl restart myapp'"
+                }
+            }
+        }
+    }
+}
