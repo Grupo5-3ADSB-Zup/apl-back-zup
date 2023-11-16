@@ -1,4 +1,5 @@
 #!/usr/bin/env groovy
+
 pipeline {
     agent any
 
@@ -7,20 +8,19 @@ pipeline {
     }
 
     environment {
-            keyPath = "${WORKSPACE}/key.pem"
+        keyPath = "${WORKSPACE}/key.pem"
     }
 
     stages {
-            stage('Download Key') {
-                steps {
-                    script {
-                        // Baixa a chave privada do repositório Git
-                        sh "git clone https://github.com/Eduardooliveira95/xxxa.git ${WORKSPACE}"
-                    }
+        stage('Download Key') {
+            steps {
+                script {
+                    // Baixa a chave privada do repositório Git
+                    sh "git clone https://github.com/Eduardooliveira95/xxxa.git ${WORKSPACE}"
                 }
             }
+        }
 
-    stages {
         stage('Install Maven') {
             steps {
                 script {
