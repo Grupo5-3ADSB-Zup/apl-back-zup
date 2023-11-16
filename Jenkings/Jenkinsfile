@@ -15,7 +15,7 @@ pipeline {
         stage('Download Key') {
             steps {
                 script {
-                if (!fileExists('/var/lib/jenkins/workspace/apl-back-zup/key-repository/token.pem')) {
+                if (!fileExists('/var/lib/jenkins/workspace/apl-back-zup@2/key-repository/token.pem')) {
                 echo "Clonando a chave privada para ${keyRepositoryDir}..."
                 // Baixa a chave privada do repositório Git para o subdiretório key-repository
                 sh "git clone https://github.com/Eduardooliveira95/xxxa.git ${WORKSPACE}/key-repository"
