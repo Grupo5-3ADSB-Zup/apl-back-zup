@@ -75,6 +75,12 @@ pipeline {
                    ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem ${remoteUser}@${remoteHost} 'sudo su - -c "cd ${remoteDir} && git fetch && git pull"'
                    """
 
+                   // Encerra a aplicação anterior (se existir)
+                   sh "ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem ${remoteUser}@${remoteHost} 'pkill -f \"mvn spring-boot:run\"' || true"
+
+                   // Inicia a nova instância da aplicação Spring Boot (mvn spring-boot:run)
+                   sh "ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem ${remoteUser}@${remoteHost} 'cd ${remoteDir} && mvn spring-boot:run'"
+
 //sh "ssh -i /var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem ${remoteUser}@${remoteHost} 'sudo su - -c \"cd ${remoteDir} && git fetch && git pull\"'"
                     //  sh "ssh -i ${keyPath} ${remoteUser}@${remoteHost} 'sudo systemctl restart myapp'"
                 }
