@@ -60,7 +60,7 @@ pipeline {
             steps {
                 script {
                     //def remoteHost = '<IP-DA-EC2>'
-                    def remoteHost = '54.226.87.173'
+                    def remoteHost = '  54.226.87.173'
                     // def remoteUser = 'ec2-user'
                     def remoteUser = 'ec2-user'
                     //def keyPath = '/path/to/private/key.pem'
@@ -79,7 +79,7 @@ pipeline {
                    sh "ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem ${remoteUser}@${remoteHost} 'pkill -f \"mvn spring-boot:run\"' || true"
 
                    // Inicia a nova instância da aplicação Spring Boot (mvn spring-boot:run)
-                   sh "ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem ${remoteUser}@${remoteHost} 'cd ${remoteDir} && mvn spring-boot:run'"
+                   //sh "ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem ${remoteUser}@${remoteHost} 'cd ${remoteDir} && mvn spring-boot:run'"
 
 //sh "ssh -i /var/lib/jenkins/workspace/apl-back-zup/tokens/token.pem ${remoteUser}@${remoteHost} 'sudo su - -c \"cd ${remoteDir} && git fetch && git pull\"'"
                     //  sh "ssh -i ${keyPath} ${remoteUser}@${remoteHost} 'sudo systemctl restart myapp'"
