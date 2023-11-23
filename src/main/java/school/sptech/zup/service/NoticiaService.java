@@ -437,22 +437,39 @@ public class NoticiaService {
         var buscaComentario = _comentarioRepository.findComentOrderNoticy(noticia.getId());
 
         Integer PesoCompra = 1;
-        Integer PesoVenda = 2;
+        Integer PesoPenseEmComprar = 3;
+        Integer Neutro = 5;
+        Integer PenseEmVender = 7;
+        Integer PesoVenda = 9;
 
         var contadorCompra = 0;
+        var contadorPensaEmCompra = 0;
+        var contadorNeutro = 0;
+        var contadorPenseEmVender = 0;
         var contadorVenda = 0;
 
         if (buscaComentario.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comentários não existentes");
 
         for (int i = 0;  i < buscaComentario.size(); i++){
             if (buscaComentario.get(i).getPesoComentario() == PesoCompra) contadorCompra++;
+            if (buscaComentario.get(i).getPesoComentario() == contadorPensaEmCompra) contadorPensaEmCompra++;
+            if (buscaComentario.get(i).getPesoComentario() == contadorNeutro) contadorNeutro++;
+            if (buscaComentario.get(i).getPesoComentario() == contadorPenseEmVender) contadorPenseEmVender++;
             if (buscaComentario.get(i).getPesoComentario() == PesoVenda) contadorVenda++;
         }
 
         Double contadorCompraConvertido = Double.valueOf(contadorCompra);
+        Double contadorPensaEmCompraConvertido = Double.valueOf(contadorPensaEmCompra);
+        Double contadorNeutroConvertido = Double.valueOf(contadorNeutro);
+        Double contadorPenseEmVenderConvertido = Double.valueOf(contadorPenseEmVender);
         Double contadorVendaConvertido = Double.valueOf(contadorVenda);
 
-        var mapping = _mappings.MappingPesoPorcentagem(contadorCompraConvertido, contadorVendaConvertido, noticia.getId());
+        var mapping = _mappings.MappingPesoPorcentagem(contadorCompraConvertido,
+                contadorPensaEmCompraConvertido,
+                contadorNeutroConvertido,
+                contadorPenseEmVenderConvertido,
+                contadorVendaConvertido,
+                noticia.getId());
         return mapping;
     }
 }

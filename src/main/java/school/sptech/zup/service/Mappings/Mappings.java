@@ -113,19 +113,26 @@ public class Mappings {
         return listaComentarios;
     }
 
-    public CalculoPesoPorNoticiaIAResponse MappingPesoPorcentagem(Double pesoCompra, Double pesoVenda, int idNoticia){
+    public CalculoPesoPorNoticiaIAResponse MappingPesoPorcentagem(Double pesoCompra,
+                                                                  Double pesoPensaEmCompra,
+                                                                  Double pesoNeutro,
+                                                                  Double pesoPenseEmVender,
+                                                                  Double pesoVenda, int idNoticia){
 
         CalculoPesoPorNoticiaIAResponse calculo = new CalculoPesoPorNoticiaIAResponse();
                 calculo.setId(idNoticia);
-                calculo.setPorcentagemPesoCompra(Transformador(pesoCompra, pesoVenda, pesoCompra));
-                calculo.setPorcentagemPesoVenda(Transformador(pesoCompra, pesoVenda, pesoVenda));
+                calculo.setPorcentagemPesoCompra(Transformador(pesoCompra, pesoPensaEmCompra, pesoNeutro, pesoPenseEmVender, pesoVenda, pesoCompra));
+                calculo.setPorcentagemPesoPensaEmCompra(Transformador(pesoCompra, pesoPensaEmCompra, pesoNeutro, pesoPenseEmVender, pesoVenda, pesoPensaEmCompra));
+                calculo.setPorcentagemPesoNeutro(Transformador(pesoCompra, pesoPensaEmCompra, pesoNeutro, pesoPenseEmVender, pesoVenda, pesoNeutro));
+                calculo.setPorcentagemPesoPenseEmVender(Transformador(pesoCompra, pesoPensaEmCompra, pesoNeutro, pesoPenseEmVender, pesoVenda, pesoPenseEmVender));
+                calculo.setPorcentagemPesoVenda(Transformador(pesoCompra, pesoPensaEmCompra, pesoNeutro, pesoPenseEmVender, pesoVenda, pesoVenda));
 
         return calculo;
     }
 
-    public String Transformador(Double pesoCompra, Double pesoVenda, Double PesoMapping){
+    public String Transformador(Double pesoCompra, Double pesoPensaEmCompra, Double pesoNeutro, Double pesoPenseEmVender, Double pesoVenda, Double PesoMapping){
 
-        Double contadorPesos = pesoCompra + pesoVenda;
+        Double contadorPesos = pesoCompra + pesoPensaEmCompra + pesoNeutro + pesoPensaEmCompra + pesoVenda;
         Double conversao = (Math.floor(((PesoMapping/contadorPesos) * 100)));
 
         String Porcentagem = String.valueOf(conversao + " %");
