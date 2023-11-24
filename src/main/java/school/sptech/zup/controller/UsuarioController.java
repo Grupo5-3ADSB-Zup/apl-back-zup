@@ -11,6 +11,7 @@ import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.UsuarioAdminPutRequest;
 import school.sptech.zup.dto.UsuarioComumPutRequestBody;
 import school.sptech.zup.dto.UsuarioEmpresaPutRequestBody;
+import school.sptech.zup.dto.request.FotoRequest;
 import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.service.UsuarioService;
 
@@ -40,9 +41,9 @@ public class UsuarioController {
     }
 
     @PatchMapping(value = "/foto/{idUsuario}")
-    public ResponseEntity<Void> adicionarImagem(@PathVariable Long idUsuario, @RequestBody byte[] foto){
-        var retorno = usuarioService.buscaPorId(idUsuario);
-            _usuarioRepository.setFoto(idUsuario, foto);
+    public ResponseEntity<Void> adicionarImagem(@PathVariable Long idUsuario, @RequestBody FotoRequest foto){
+        //var retorno = usuarioService.buscaPorId(idUsuario);
+            _usuarioRepository.setFoto(idUsuario, foto.getFoto());
             return ResponseEntity.ok().build();
     }
 
