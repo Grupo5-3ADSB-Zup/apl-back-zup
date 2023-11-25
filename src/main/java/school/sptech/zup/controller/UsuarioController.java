@@ -41,10 +41,10 @@ public class UsuarioController {
     }
 
     @PatchMapping(value = "/foto/{idUsuario}")
-    public ResponseEntity<Void> adicionarImagem(@PathVariable Long idUsuario, @RequestBody FotoRequest foto){
+    public ResponseEntity<byte[]> adicionarImagem(@PathVariable Long idUsuario, @RequestBody FotoRequest foto){
         //var retorno = usuarioService.buscaPorId(idUsuario);
             _usuarioRepository.setFoto(idUsuario, foto.getFoto());
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body(foto.getFoto());
     }
 
     @PutMapping("user/comum")
