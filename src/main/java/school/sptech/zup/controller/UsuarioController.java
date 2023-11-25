@@ -12,6 +12,7 @@ import school.sptech.zup.dto.UsuarioAdminPutRequest;
 import school.sptech.zup.dto.UsuarioComumPutRequestBody;
 import school.sptech.zup.dto.UsuarioEmpresaPutRequestBody;
 import school.sptech.zup.dto.request.FotoRequest;
+import school.sptech.zup.dto.response.FotoResponse;
 import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.service.UsuarioService;
 
@@ -41,10 +42,12 @@ public class UsuarioController {
     }
 
     @PatchMapping(value = "/foto/{idUsuario}")
-    public ResponseEntity<byte[]> adicionarImagem(@PathVariable Long idUsuario, @RequestBody FotoRequest foto){
+    public ResponseEntity<FotoResponse> adicionarImagem(@PathVariable Long idUsuario, @RequestBody FotoRequest foto){
         //var retorno = usuarioService.buscaPorId(idUsuario);
             _usuarioRepository.setFoto(idUsuario, foto.getFoto());
-            return ResponseEntity.ok().body(foto.getFoto());
+            FotoResponse fotoResponse = new FotoResponse();
+            fotoResponse.setFoto(foto.getFoto());
+            return ResponseEntity.ok().body(fotoResponse);
     }
 
     @PutMapping("user/comum")
