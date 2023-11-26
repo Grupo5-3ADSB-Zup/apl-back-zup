@@ -16,6 +16,7 @@ import school.sptech.zup.dto.response.FotoResponse;
 import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.service.UsuarioService;
 
+import java.util.Base64;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -44,9 +45,10 @@ public class UsuarioController {
     @PatchMapping(value = "/foto/{idUsuario}")
     public ResponseEntity<FotoResponse> adicionarImagem(@PathVariable Long idUsuario, @RequestBody FotoRequest foto){
         //var retorno = usuarioService.buscaPorId(idUsuario);
-            _usuarioRepository.setFoto(idUsuario, foto.getFoto());
+            byte[] byteArray = Base64.getDecoder().decode(foto.getFoto());
+            _usuarioRepository.setFoto(idUsuario, byteArray);
             FotoResponse fotoResponse = new FotoResponse();
-            fotoResponse.setFoto(foto.getFoto());
+            fotoResponse.setFoto(byteArray);
             return ResponseEntity.ok().body(fotoResponse);
     }
 
