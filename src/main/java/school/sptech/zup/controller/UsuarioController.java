@@ -11,6 +11,7 @@ import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.dto.UsuarioAdminPutRequest;
 import school.sptech.zup.dto.UsuarioComumPutRequestBody;
 import school.sptech.zup.dto.UsuarioEmpresaPutRequestBody;
+import school.sptech.zup.dto.request.CadastroDadosInfluencerRequest;
 import school.sptech.zup.dto.request.FotoRequest;
 import school.sptech.zup.dto.response.FotoResponse;
 import school.sptech.zup.repository.UsuarioRepository;
@@ -45,11 +46,10 @@ public class UsuarioController {
     @PatchMapping(value = "/foto/{idUsuario}")
     public ResponseEntity<FotoResponse> adicionarImagem(@PathVariable Long idUsuario, @RequestBody FotoRequest foto){
         //var retorno = usuarioService.buscaPorId(idUsuario);
-            byte[] byteArray = Base64.getDecoder().decode(foto.getFoto());
-            _usuarioRepository.setFoto(idUsuario, byteArray);
-            FotoResponse fotoResponse = new FotoResponse();
-            fotoResponse.setFoto(byteArray);
-            return ResponseEntity.ok().body(fotoResponse);
+
+
+            var salvarFoto = usuarioService.salvarFoto(idUsuario, foto);
+            return ResponseEntity.ok().body(salvarFoto);
     }
 
     @PutMapping("user/comum")
@@ -81,5 +81,15 @@ public class UsuarioController {
     public ResponseEntity<Usuario> getUsuarioId(@PathVariable Long id) {
         var retorno = usuarioService.buscaPorId(id);
         return ResponseEntity.ok(retorno);
+    }
+
+    @PostMapping("influencer/dados/cadastro")
+    public ResponseEntity<Boolean> cadastroInfluencerDados(@RequestBody CadastroDadosInfluencerRequest cadastro){
+        var buscaUsuario = usuarioService.buscaPorId(cadastro.getIdUsuario().longValue());
+        if (buscaUsuario != null){
+            var envioBd = usuarioService.salvarDadosInfleuncer(buscaUsuario, cadastro);
+            if(envioBd.booleanValue()) return ResponseEntity.status(200).body(true);
+        }
+        return ResponseEntity.notFound().build();
     }
 }

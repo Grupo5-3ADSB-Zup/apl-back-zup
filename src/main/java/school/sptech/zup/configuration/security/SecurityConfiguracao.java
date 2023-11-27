@@ -53,6 +53,7 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/usuarios/login/**"),
             new AntPathRequestMatcher("/usuario/id"),
             new AntPathRequestMatcher("/usuario/{id}"),
+            new AntPathRequestMatcher("/usuario/influencer/**"),
             //new AntPathRequestMatcher("/usuario/user/comum"),
             //new AntPathRequestMatcher("/usuario/user/empresa"),
             //new AntPathRequestMatcher("/usuario/user/admin"),

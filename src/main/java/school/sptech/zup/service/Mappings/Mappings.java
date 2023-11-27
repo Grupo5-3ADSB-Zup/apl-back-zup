@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import school.sptech.zup.domain.Comentario;
 import school.sptech.zup.domain.Noticia;
 import school.sptech.zup.domain.Usuario;
+import school.sptech.zup.dto.request.CadastroDadosInfluencerRequest;
+import school.sptech.zup.dto.request.FotoRequest;
 import school.sptech.zup.dto.request.PerguntasPerfilRequest;
 import school.sptech.zup.dto.request.PesoComentariosRequest;
 import school.sptech.zup.dto.response.*;
@@ -13,9 +15,7 @@ import school.sptech.zup.repository.CurtidaRepository;
 import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.util.DateUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Data
 @Service
@@ -215,5 +215,55 @@ public class Mappings {
             todosUsuariosInfluencers.add(perfil);
         }
         return todosUsuariosInfluencers;
+    }
+
+    public Usuario MappingDadosInfluencer(Usuario usuario, CadastroDadosInfluencerRequest cadastro){
+        Usuario usuarioNovo = Usuario.builder()
+                .id(usuario.getId())
+                .nome(usuario.getNome())
+                .email(usuario.getEmail())
+                .username(usuario.getUsername())
+                .senha(usuario.getSenha())
+                .autenticado(usuario.getAutenticado())
+                .influencer(usuario.isInfluencer())
+                .cpf(usuario.getCpf())
+                .cnpj(null)
+                .LinkYoutube(cadastro.getYoutube())
+                .LinkInstagram(cadastro.getInstagram())
+                .LinkTikTok(cadastro.getTiktok())
+                .build();
+        _usuarioRepository.save(usuarioNovo);
+        return usuarioNovo;
+    }
+
+    public FotoResponse mappingsalvarFoto(Long idUsuario, FotoRequest foto) {
+        var buscaUsuario = _usuarioRepository.BuscaUsuario(idUsuario);
+
+        if (buscaUsuario.isEmpty()) return null;
+
+        byte[] byteArray = Base64.getDecoder().decode(foto.getFoto());
+
+        Usuario usuarioNovo = Usuario.builder()
+                .id(buscaUsuario.get().getId())
+                .nome(buscaUsuario.get().getNome())
+                .email(buscaUsuario.get().getEmail())
+                .username(buscaUsuario.get().getUsername())
+                .senha(buscaUsuario.get().getSenha())
+                .autenticado(buscaUsuario.get().getAutenticado())
+                .influencer(buscaUsuario.get().isInfluencer())
+                .cpf(buscaUsuario.get().getCpf())
+                .cnpj(null)
+                .foto(byteArray)
+                .LinkYoutube(buscaUsuario.get().getLinkYoutube())
+                .LinkInstagram(buscaUsuario.get().getLinkInstagram())
+                .LinkTikTok(buscaUsuario.get().getLinkTikTok())
+                .build();
+        _usuarioRepository.save(usuarioNovo);
+
+        FotoResponse fotoResponse = new FotoResponse();
+
+        fotoResponse.setFoto(byteArray);
+
+        return fotoResponse;
     }
 }

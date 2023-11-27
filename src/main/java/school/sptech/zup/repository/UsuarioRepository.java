@@ -28,4 +28,22 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
             "   FROM Usuario u" +
             "       WHERE u.influencer = true")
     List<Usuario> BuscaTodosUsuariosInfluencers();
+
+    @Modifying
+    @Transactional
+    @Query("update Usuario u " +
+            "set u.LinkYoutube = :youtube," +
+            "    u.LinkInstagram = :instagram," +
+            "        u.LinkTikTok = :tiktok " +
+            "           where u.id = :id")
+    Boolean setDadosInfluencer(Long id,
+                            String tiktok,
+                            String youtube,
+                            String instagram);
+
+    @Query("SELECT u" +
+            "   FROM Usuario u" +
+            "       WHERE u.id = :idUsuario")
+    Optional<Usuario> BuscaUsuario(Long idUsuario);
+
 }

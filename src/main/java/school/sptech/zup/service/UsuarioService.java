@@ -12,8 +12,11 @@ import school.sptech.zup.dto.UsuarioComumPutRequestBody;
 import school.sptech.zup.dto.UsuarioEmpresaPutRequestBody;
 import school.sptech.zup.dto.obj.ListaObj;
 import school.sptech.zup.dto.obj.UsuarioObj;
+import school.sptech.zup.dto.request.CadastroDadosInfluencerRequest;
+import school.sptech.zup.dto.request.FotoRequest;
 import school.sptech.zup.dto.request.PerguntasPerfilRequest;
 import school.sptech.zup.dto.response.AnalisePerfilResponse;
+import school.sptech.zup.dto.response.FotoResponse;
 import school.sptech.zup.dto.response.PerfilUsuarioResponse;
 import school.sptech.zup.repository.UsuarioRepository;
 import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
@@ -249,5 +252,26 @@ public class UsuarioService {
         if (buscaTodos.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Erro ao tentar salvar Formulario");
 
         return _mappingPerfilUsuario.MappingTodosInfluencers(buscaTodos);
+    }
+
+
+    public Boolean salvarDadosInfleuncer(Usuario buscaUsuario, CadastroDadosInfluencerRequest cadastro){
+
+        var mapping = _mappingPerfilUsuario.MappingDadosInfluencer(buscaUsuario, cadastro);
+
+        if (mapping.getId() == buscaUsuario.getId()) return true;
+
+        return false;
+    }
+
+    public FotoResponse salvarFoto(Long idUsuario, FotoRequest foto) {
+
+        byte[] byteArray = Base64.getDecoder().decode(foto.getFoto());
+
+        var mapping = _mappingPerfilUsuario.mappingsalvarFoto(idUsuario, foto);
+
+        if (mapping == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi possível salvar a foto");
+
+        return mapping;
     }
 }
