@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import school.sptech.zup.domain.Comentario;
 import school.sptech.zup.domain.Noticia;
 import school.sptech.zup.domain.Usuario;
+import school.sptech.zup.domain.ZupLog;
 import school.sptech.zup.dto.request.CadastroDadosInfluencerRequest;
 import school.sptech.zup.dto.request.FotoRequest;
 import school.sptech.zup.dto.request.PerguntasPerfilRequest;
@@ -13,8 +14,10 @@ import school.sptech.zup.dto.response.*;
 import school.sptech.zup.repository.ComentarioRepository;
 import school.sptech.zup.repository.CurtidaRepository;
 import school.sptech.zup.repository.UsuarioRepository;
+import school.sptech.zup.repository.ZupLogRepository;
 import school.sptech.zup.util.DateUtil;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Data
@@ -24,6 +27,7 @@ public class Mappings {
     private final ComentarioRepository _comentarioRepository;
     private final CurtidaRepository _curtidaRepository;
     private final UsuarioRepository _usuarioRepository;
+    private final ZupLogRepository _zupLogRepository;
     public List<PerfilUsuarioResponse> MappingPerfilUsuarioInfluencer(List<Usuario> usuarios){
 
         List<PerfilUsuarioResponse> listaUsuariosPerfis = new ArrayList<>();
@@ -259,6 +263,13 @@ public class Mappings {
                 .LinkTikTok(buscaUsuario.get().getLinkTikTok())
                 .build();
         _usuarioRepository.save(usuarioNovo);
+
+        ZupLog log = new ZupLog();
+        log.setDescricao("IdUsuario -> " + idUsuario + "ByteFoto" + foto.getFoto().toString());
+        log.setDt_entrada(
+                _dateUtil.formLocalDate(LocalDateTime.now())
+        );
+        _zupLogRepository.save(log);
 
         FotoResponse fotoResponse = new FotoResponse();
 
