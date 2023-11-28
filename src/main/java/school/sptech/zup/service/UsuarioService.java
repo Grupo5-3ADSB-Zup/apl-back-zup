@@ -266,8 +266,6 @@ public class UsuarioService {
 
     public FotoResponse salvarFoto(Long idUsuario, FotoRequest foto) {
 
-        byte[] byteArray = Base64.getDecoder().decode(foto.getFoto());
-
         var mapping = _mappingPerfilUsuario.mappingsalvarFoto(idUsuario, foto);
 
         if (mapping == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi possível salvar a foto");

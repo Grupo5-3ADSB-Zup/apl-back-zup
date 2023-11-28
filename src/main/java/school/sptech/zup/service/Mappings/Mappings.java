@@ -239,9 +239,9 @@ public class Mappings {
     public FotoResponse mappingsalvarFoto(Long idUsuario, FotoRequest foto) {
         var buscaUsuario = _usuarioRepository.BuscaUsuario(idUsuario);
 
-        if (buscaUsuario.isEmpty()) return null;
-
-        byte[] byteArray = Base64.getDecoder().decode(foto.getFoto());
+        if (buscaUsuario.isEmpty()){
+            return null;
+        }
 
         Usuario usuarioNovo = Usuario.builder()
                 .id(buscaUsuario.get().getId())
@@ -253,7 +253,7 @@ public class Mappings {
                 .influencer(buscaUsuario.get().isInfluencer())
                 .cpf(buscaUsuario.get().getCpf())
                 .cnpj(null)
-                .foto(byteArray)
+                .foto(foto.getFoto())
                 .LinkYoutube(buscaUsuario.get().getLinkYoutube())
                 .LinkInstagram(buscaUsuario.get().getLinkInstagram())
                 .LinkTikTok(buscaUsuario.get().getLinkTikTok())
@@ -262,7 +262,7 @@ public class Mappings {
 
         FotoResponse fotoResponse = new FotoResponse();
 
-        fotoResponse.setFoto(byteArray);
+        fotoResponse.setFoto(foto.getFoto());
 
         return fotoResponse;
     }

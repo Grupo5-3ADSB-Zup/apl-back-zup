@@ -6,5 +6,5 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class FotoRequest {
-    private String foto;
+    private byte[] foto;
 }
