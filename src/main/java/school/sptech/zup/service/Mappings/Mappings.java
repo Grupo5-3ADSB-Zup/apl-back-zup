@@ -265,7 +265,7 @@ public class Mappings {
         _usuarioRepository.save(usuarioNovo);
 
         ZupLog log = new ZupLog();
-        log.setDescricao("IdUsuario -> " + idUsuario + "ByteFoto" + foto.getFoto().toString());
+        log.setDescricao("IdUsuario -> " + idUsuario + " ByteFoto " + foto.getFoto().toString());
         log.setDt_entrada(
                 _dateUtil.formLocalDate(LocalDateTime.now())
         );
