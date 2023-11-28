@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import school.sptech.zup.domain.Usuario;
@@ -50,7 +49,7 @@ public class UsuarioController {
 
 
             var salvarFoto = usuarioService.salvarFoto(idUsuario, foto);
-            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(salvarFoto);
+            return ResponseEntity.ok().body(salvarFoto);
     }
 
     @PutMapping("user/comum")
