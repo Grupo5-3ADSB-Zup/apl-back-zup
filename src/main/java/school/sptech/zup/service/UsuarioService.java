@@ -268,8 +268,9 @@ public class UsuarioService {
 
         var mapping = _mappingPerfilUsuario.mappingsalvarFoto(idUsuario, foto);
 
-        if (mapping == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi possível salvar a foto");
-
-        return mapping;
+        if (mapping != null){
+            return mapping;
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi possível salvar a foto");
     }
 }
