@@ -232,6 +232,8 @@ public class Mappings {
                 .influencer(usuario.isInfluencer())
                 .cpf(usuario.getCpf())
                 .cnpj(null)
+                .IdPerfil(usuario.getIdPerfil())
+                .DescPerfil(usuario.getDescPerfil())
                 .LinkYoutube(cadastro.getYoutube())
                 .LinkInstagram(cadastro.getInstagram())
                 .LinkTikTok(cadastro.getTiktok())
