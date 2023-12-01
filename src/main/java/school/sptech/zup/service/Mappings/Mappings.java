@@ -260,9 +260,11 @@ public class Mappings {
                 .cpf(buscaUsuario.get().getCpf())
                 .cnpj(null)
                 .foto(foto.getFoto())
+                .IdPerfil(buscaUsuario.get().getIdPerfil())
                 .LinkYoutube(buscaUsuario.get().getLinkYoutube())
                 .LinkInstagram(buscaUsuario.get().getLinkInstagram())
                 .LinkTikTok(buscaUsuario.get().getLinkTikTok())
+                .DescPerfil(buscaUsuario.get().getDescPerfil())
                 .build();
         _usuarioRepository.save(usuarioNovo);
 
