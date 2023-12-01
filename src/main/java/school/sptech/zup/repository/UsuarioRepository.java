@@ -21,7 +21,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     @Query("SELECT u" +
             "   FROM Usuario u" +
-            "       WHERE u.IdPerfil = :IdPerfil")
+            "       WHERE u.IdPerfil = :IdPerfil" +
+            "           AND u.influencer = true" +
+            "       ORDER BY u.influencer DESC")
     List<Usuario> BuscaUsuarioTpPerfil(Long IdPerfil);
 
     @Query("SELECT u" +
