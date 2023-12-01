@@ -8,7 +8,6 @@ import school.sptech.zup.domain.Usuario;
 import school.sptech.zup.domain.ZupLog;
 import school.sptech.zup.dto.request.CadastroDadosInfluencerRequest;
 import school.sptech.zup.dto.request.FotoRequest;
-import school.sptech.zup.dto.request.PerguntasPerfilRequest;
 import school.sptech.zup.dto.request.PesoComentariosRequest;
 import school.sptech.zup.dto.response.*;
 import school.sptech.zup.repository.ComentarioRepository;
