@@ -39,7 +39,7 @@ public class Mappings {
             perfilUsuario.setLinkInstagram(usuarios.get(i).getLinkInstagram());
             perfilUsuario.setLinkYoutube(usuarios.get(i).getLinkYoutube());
             perfilUsuario.setLinkTikTok(usuarios.get(i).getLinkTikTok());
-            perfilUsuario.setFoto(usuarios.get(i).getFoto());
+            //perfilUsuario.setFoto(usuarios.get(i).getFoto());
 
             listaUsuariosPerfis.add(perfilUsuario);
         }
