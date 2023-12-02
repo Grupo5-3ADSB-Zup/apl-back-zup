@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 import school.sptech.zup.domain.Usuario;
+import school.sptech.zup.domain.ZupLog;
 import school.sptech.zup.dto.PesoFormulario;
 import school.sptech.zup.dto.UsuarioAdminPutRequest;
 import school.sptech.zup.dto.UsuarioComumPutRequestBody;
@@ -19,9 +20,12 @@ import school.sptech.zup.dto.response.AnalisePerfilResponse;
 import school.sptech.zup.dto.response.FotoResponse;
 import school.sptech.zup.dto.response.PerfilUsuarioResponse;
 import school.sptech.zup.repository.UsuarioRepository;
+import school.sptech.zup.repository.ZupLogRepository;
 import school.sptech.zup.service.AutenticacaoJWT.UsuarioLoginDto;
 import school.sptech.zup.service.Mappings.Mappings;
+import school.sptech.zup.util.DateUtil;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -29,6 +33,8 @@ import java.util.*;
 public class UsuarioService {
     private final UsuarioRepository _usuarioRepository;
     private final Mappings _mappingPerfilUsuario;
+    private final DateUtil _dateUtil;
+    private final ZupLogRepository _zupLogRepository;
     public ListaObj<UsuarioObj> getListUsuario(){
         List<Usuario> usuarioConsulta = _usuarioRepository.findAll();
         if (usuarioConsulta.isEmpty()){
@@ -194,6 +200,13 @@ public class UsuarioService {
             analise.setIdPerfil(3L);
             analise.setPerfil("Agressivo");
         }
+
+        ZupLog log = new ZupLog();
+        log.setDescricao("Id= " + conta + ", " + analise.getPerfil());
+        log.setDt_entrada(
+                _dateUtil.formLocalDate(LocalDateTime.now())
+        );
+        _zupLogRepository.save(log);
 
         return analise;
     }
