@@ -308,6 +308,7 @@ public class NoticiaService {
                         .noticias(noticias.get())
                         .dtComentario(LocalDateTime.now())
                         .dtComentarioFormatada(_dateutil.formLocalDate(LocalDateTime.now()))
+                        .pesoComentario(0)
                         .build();
                 _comentarioRepository.save(criarComentario);
                 return criarComentario;
@@ -318,6 +319,7 @@ public class NoticiaService {
                         .noticias(noticias.get())
                         .dtComentario(LocalDateTime.now())
                         .dtComentarioFormatada(_dateutil.formLocalDate(LocalDateTime.now()))
+                        .pesoComentario(0)
                         .build();
                 _comentarioRepository.save(criarComentario);
                 return criarComentario;
