@@ -369,7 +369,8 @@ public class NoticiaService {
         return retorno;
     }
     public List<ComentarioResponse> getComentarioNoticiaPorId(Noticia noticia){
-        List<Comentario> comentarios = _comentarioRepository.findAll();
+        //List<Comentario> comentarios = _comentarioRepository.findAll();
+        List<Comentario> comentarios = _comentarioRepository.findCommentNoticy(noticia.getId());
         List<ComentarioResponse> listaComentariosResponse = new ArrayList();
         if (!comentarios.isEmpty()){
             for (int i = 0; i < comentarios.size(); i++){
