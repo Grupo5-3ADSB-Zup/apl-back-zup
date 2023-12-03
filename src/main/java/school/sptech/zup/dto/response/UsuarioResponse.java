@@ -2,9 +2,11 @@ package school.sptech.zup.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import school.sptech.zup.domain.Usuario;
 
 @Data
+@NoArgsConstructor
 public class UsuarioResponse {
 
     private Long id;

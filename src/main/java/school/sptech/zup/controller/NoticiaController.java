@@ -15,6 +15,7 @@ import school.sptech.zup.dto.response.ComentarioResponse;
 import school.sptech.zup.dto.response.GptResponse;
 import school.sptech.zup.repository.NoticiaRepository;
 import school.sptech.zup.service.GptService;
+import school.sptech.zup.service.Mappings.Mappings;
 import school.sptech.zup.service.NoticiaService;
 
 import java.time.LocalDateTime;
@@ -33,7 +34,7 @@ public class NoticiaController {
     private final NoticiaService _noticiaService;
     private final GptService _gptService;
 
-
+    private final Mappings _mappings;
     //@PostMapping("/rss/agendamento/diario")
     @Scheduled(cron = "0 11 15 * * ?")
     public void Agendamento(){
@@ -138,10 +139,11 @@ public class NoticiaController {
     }
 
     @PostMapping("/comentarios/{idUsuario}/{idNoticia}")
-    public ResponseEntity<Comentario> salvarComentario(@RequestBody ComentarioRequest comentario,
+    public ResponseEntity<ComentarioResponse> salvarComentario(@RequestBody ComentarioRequest comentario,
                                                     @PathVariable Long idUsuario, @PathVariable int idNoticia){
         var consultaNoticia = _noticiaService.buscarNoticiaPorIdComentario(comentario, idNoticia, idUsuario);
-        return ResponseEntity.status(200).body(consultaNoticia);
+        var mapping = _mappings.MappingSalvarComentario(consultaNoticia, idUsuario, idNoticia);
+        return ResponseEntity.status(200).body(mapping);
     }
 
     @PostMapping("/likes/{idUsuario}/{idNoticia}")

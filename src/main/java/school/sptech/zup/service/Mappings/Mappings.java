@@ -2,10 +2,7 @@ package school.sptech.zup.service.Mappings;
 
 import lombok.Data;
 import org.springframework.stereotype.Service;
-import school.sptech.zup.domain.Comentario;
-import school.sptech.zup.domain.Noticia;
-import school.sptech.zup.domain.Usuario;
-import school.sptech.zup.domain.ZupLog;
+import school.sptech.zup.domain.*;
 import school.sptech.zup.dto.request.CadastroDadosInfluencerRequest;
 import school.sptech.zup.dto.request.FotoRequest;
 import school.sptech.zup.dto.request.PesoComentariosRequest;
@@ -279,5 +276,24 @@ public class Mappings {
         fotoResponse.setFoto(foto.getFoto());
 
         return fotoResponse;
+    }
+
+    public ComentarioResponse MappingSalvarComentario(Comentario consultaNoticia, Long idUsuario, int idNoticia) {
+        var BuscaUsuario = _usuarioRepository.BuscaUsuario(idUsuario);
+        ComentarioResponse comentarioSalvo = new ComentarioResponse();
+
+        UsuarioResponse usuarioNovo = new UsuarioResponse();
+        usuarioNovo.setId(BuscaUsuario.get().getId());
+        usuarioNovo.setNome(BuscaUsuario.get().getNome());
+        usuarioNovo.setEmail(BuscaUsuario.get().getEmail());
+        usuarioNovo.setUsername(BuscaUsuario.get().getUsername());
+        usuarioNovo.setSenha(BuscaUsuario.get().getSenha());
+        usuarioNovo.setFoto(BuscaUsuario.get().getFoto());
+
+        comentarioSalvo.setId(consultaNoticia.getId());
+        comentarioSalvo.setDescricao(consultaNoticia.getDescricao());
+        comentarioSalvo.setUsuario(usuarioNovo);
+
+        return comentarioSalvo;
     }
 }
