@@ -454,11 +454,14 @@ public class NoticiaService {
         if (buscaComentario.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comentários não existentes");
 
         for (int i = 0;  i < buscaComentario.size(); i++){
-            if (buscaComentario.get(i).getPesoComentario() == PesoCompra) contadorCompra++;
-            if (buscaComentario.get(i).getPesoComentario() == contadorPensaEmCompra) contadorPensaEmCompra++;
-            if (buscaComentario.get(i).getPesoComentario() == contadorNeutro) contadorNeutro++;
-            if (buscaComentario.get(i).getPesoComentario() == contadorPenseEmVender) contadorPenseEmVender++;
-            if (buscaComentario.get(i).getPesoComentario() == PesoVenda) contadorVenda++;
+
+            if (buscaComentario.get(i).getPesoComentario() != 0){
+                if (buscaComentario.get(i).getPesoComentario() == PesoCompra) contadorCompra++;
+                if (buscaComentario.get(i).getPesoComentario() == contadorPensaEmCompra) contadorPensaEmCompra++;
+                if (buscaComentario.get(i).getPesoComentario() == contadorNeutro) contadorNeutro++;
+                if (buscaComentario.get(i).getPesoComentario() == contadorPenseEmVender) contadorPenseEmVender++;
+                if (buscaComentario.get(i).getPesoComentario() == PesoVenda) contadorVenda++;
+            }
         }
 
         Double contadorCompraConvertido = Double.valueOf(contadorCompra);
