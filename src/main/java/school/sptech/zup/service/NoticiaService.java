@@ -412,7 +412,8 @@ public class NoticiaService {
     }
     
     public void SalvarPesoComentario(List<PesoComentariosRequest> pesoComentariosRequest){
-        var BuscaIdComentario = _comentarioRepository.findAllComents();
+        LocalDateTime startDateLocal = LocalDateTime.now().minusDays(1);
+        var BuscaIdComentario = _comentarioRepository.findCommentIA(startDateLocal);
         if (BuscaIdComentario.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comentário não existente");
 
         //var MapearPesosNulos = _mappings.PesosNulos(BuscaIdComentario, pesoComentariosRequest);

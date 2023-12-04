@@ -96,8 +96,7 @@ public class Mappings {
 
         for (int i = 0; i < pesoComentariosRequest.size(); i++){
 
-            if (pesoComentariosRequest.get(i).getId() == comentarios.get(i).getId()
-                    && comentarios.get(i).getPesoComentario() == null) {
+            if (pesoComentariosRequest.get(i).getId() == comentarios.get(i).getId()) {
                 Comentario comentarioAtualizado = Comentario.builder()
                         .id(comentarios.get(i).getId())
                         .descricao(comentarios.get(i).getDescricao())
