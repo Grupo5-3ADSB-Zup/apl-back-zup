@@ -1,3 +1,7 @@
+jwt:
+  validity: 3600000
+  secret: "RXhpc3RlIHVtYSB0ZW9yaWEgcXVlIGRpeiBxdWUsIHNlIHVtIGRpYSBhbGd16W0gZGVzY29icmlyIGV4YXRhbWVudGUgcGFyYSBxdWUgc2VydmUgbyBVbml2ZXJzbyBlIHBvciBxdWUgZWxlIGVzdOEgYXF1aSwgZWxlIGRlc2FwYXJlY2Vy4SBpbnN0YW50YW5lYW1lbnRlIGUgc2Vy4SBzdWJzdGl0de1kbyBwb3IgYWxnbyBhaW5kYSBtYWlzIGVzdHJhbmhvIGUgaW5leHBsaWPhdmVsLiBFeGlzdGUgdW1hIHNlZ3VuZGEgdGVvcmlhIHF1ZSBkaXogcXVlIGlzc28gauEgYWNvbnRlY2V1Li4u"
+
 server:
   error:
     include-stacktrace: on_param
@@ -10,3 +14,13 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+      defer-datasource-initialization: true
+  main:
+    allow-circular-references: true
+  jackson:
+    serialization:
+      failon-empty-beans: false
+    dataformat:
+      xml:
+        default-use-wrapper: false
+      enable: true
